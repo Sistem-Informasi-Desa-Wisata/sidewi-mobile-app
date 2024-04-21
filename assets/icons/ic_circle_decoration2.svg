@@ -1,0 +1,15 @@
+<svg width="250" height="340" viewBox="0 0 250 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="paint0_linear_231_550" x1="432" y1="-216" x2="0" y2="-216" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1ABC9C" stop-opacity="0.1"/>
+      <stop offset="0.49" stop-color="#1ABC9C"/>
+    </linearGradient>
+    <filter id="filter0_f_231_550" x="-193.74" y="0.26" width="443.48" height="443.48" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="" /> <!-- Efek blur -->
+    </filter>
+  </defs>
+  <g opacity="0.25" filter="url(#filter0_f_231_550)">
+    <circle cx="216" cy="216" r="216" transform="matrix(1 0 0 -1 -188 438)" fill="url(#paint0_linear_231_550)" style=""/>
+  </g>
+</svg>
+

@@ -61,9 +61,9 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
-    - assets/icons/ic_apple.svg
-    - assets/icons/ic_facebook.svg
-    - assets/icons/ic_gogle.svg
+    - assets/images/background_decoration.jpeg
+    - assets/icons/ic_circle_decoration1.svg
+    - assets/icons/ic_circle_decoration2.svg
 
   #   - images/a_dot_ham.jpeg
 

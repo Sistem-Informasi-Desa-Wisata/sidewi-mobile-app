@@ -3,7 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/colors.dart';
 
 class ButtonMainWidget extends StatelessWidget {
-  const ButtonMainWidget({super.key});
+  const ButtonMainWidget({super.key, required this.label});
+
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +29,44 @@ class ButtonMainWidget extends StatelessWidget {
             ),
           ),
           child: Text(
-            'Login',
+            label,
             style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ButtonRectangleWidget extends StatelessWidget {
+  const ButtonRectangleWidget({super.key, required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () {
+            // Aksi yang akan dilakukan ketika tombol ditekan
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                side: BorderSide(color: MyColors.buttonColor, width: 2),
+              ),
+            ),
+            minimumSize: MaterialStateProperty.all<Size>(
+              Size(double.infinity, 48.0),
+            ),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(fontSize: 16, color: MyColors.buttonColor),
           ),
         ),
       ),
