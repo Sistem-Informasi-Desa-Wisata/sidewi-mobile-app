@@ -13,16 +13,14 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(children: [
-        Expanded(
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/background_decoration.jpeg'),
-                fit: BoxFit
-                    .cover, // Mengisi container dengan gambar tanpa mempertahankan aspek rasio
-              ),
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/background_decoration.jpeg'),
+              fit: BoxFit
+                  .cover, // Mengisi container dengan gambar tanpa mempertahankan aspek rasio
             ),
           ),
         ),

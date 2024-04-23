@@ -2,16 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_back_widget.dart';
+import 'package:sidewi_mobile_app/ui/widgets/upload_box.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
-import 'package:sidewi_mobile_app/ui/widgets/input_section_widget.dart';
 
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
+class FinalRegisScreen extends StatelessWidget {
+  const FinalRegisScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Container(
@@ -53,7 +52,7 @@ class RegisterScreen extends StatelessWidget {
                   height: 40,
                 ),
                 Text(
-                  "Langkah 2 dari 3",
+                  "Langkah 3 dari 3",
                   style: const TextStyle(
                     fontFamily: "Roboto",
                     fontSize: 10,
@@ -78,7 +77,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Masukan nama pengguna, alamat email dan password ",
+                  "Yey data diri anda sudah lengkap",
                   style: const TextStyle(
                     fontFamily: "Roboto",
                     fontSize: 12,
@@ -91,22 +90,41 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(
                   height: 40,
                 ),
-                InputTextWdiget(desc: "Nama pengguna"),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24),
-                  child: InputTextWdiget(
-                    desc: "Email",
+                Center(
+                  child: Container(
+                    width: 264,
+                    height: 264,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/congrate.png'),
+                        fit: BoxFit
+                            .cover, // Mengisi container dengan gambar tanpa mempertahankan aspek rasio
+                      ),
+                    ),
                   ),
                 ),
-                InputPasswordWdiget(desc: "Password"),
-                SizedBox(
-                  height: 24,
-                ),
-                InputPasswordWdiget(desc: "Password"),
                 Expanded(
                   child: SizedBox(),
                 ),
-                ButtonMainWidget(label: "Lanjut")
+                Center(
+                  child: SizedBox(
+                    width: 200,
+                    child: Text(
+                      "Silahkan klik tombol dibawah ini untuk membuat akun",
+                      style: const TextStyle(
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff000000),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 18,
+                ),
+                ButtonMainWidget(label: "Lanjut"),
               ],
             ),
           )
