@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sidewi_mobile_app/ui/widgets/button_back_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/input_section_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/text_widget.dart';
@@ -15,14 +13,16 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(children: [
-        Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/background_decoration.jpeg'),
-              fit: BoxFit
-                  .cover, // Mengisi container dengan gambar tanpa mempertahankan aspek rasio
+        Expanded(
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/background_decoration.jpeg'),
+                fit: BoxFit
+                    .cover, // Mengisi container dengan gambar tanpa mempertahankan aspek rasio
+              ),
             ),
           ),
         ),
@@ -64,14 +64,19 @@ class LoginScreen extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.only(bottom: 12),
                           child: Container(
+                            height: 178,
                             child: Column(
                               children: [
-                                InputEmailWdiget(
-                                  label: "Email",
-                                  desc: "Email",
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: InputTextWdiget(
+                                    desc: "Email",
+                                  ),
                                 ),
-                                InputPasswordWdiget(
-                                    label: "Password", desc: "Password"),
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: InputPasswordWdiget(desc: "Password"),
+                                ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -82,7 +87,6 @@ class LoginScreen extends StatelessWidget {
                                 )
                               ],
                             ),
-                            height: 152,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(8),
