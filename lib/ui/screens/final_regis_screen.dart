@@ -124,7 +124,10 @@ class FinalRegisScreen extends StatelessWidget {
                 SizedBox(
                   height: 18,
                 ),
-                ButtonMainWidget(label: "Lanjut"),
+                ButtonMainWidget(
+                  label: "Lanjut",
+                  onPressed: () {},
+                ),
               ],
             ),
           )

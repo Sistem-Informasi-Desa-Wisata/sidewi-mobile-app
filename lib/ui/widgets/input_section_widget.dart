@@ -51,7 +51,7 @@ class _InputTextWidgetState extends State<InputTextWdiget> {
                   height: 16 / 12,
                 ),
                 filled: true,
-                fillColor: _isFocused ? Colors.white : MyColors.mainGrey,
+                fillColor: MyColors.mainGrey,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Colors.white),
@@ -117,8 +117,7 @@ class _InputPasswordWidgetState extends State<InputPasswordWdiget> {
                   height: 16 / 12,
                 ),
                 filled: true,
-                fillColor:
-                    _isFocused == true ? Colors.white : MyColors.mainGrey,
+                fillColor: MyColors.mainGrey,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(

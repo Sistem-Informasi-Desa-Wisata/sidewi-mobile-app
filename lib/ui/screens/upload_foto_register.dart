@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sidewi_mobile_app/ui/screens/final_regis_screen.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_back_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/upload_box.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
@@ -95,7 +96,16 @@ class UploadFotoRegis extends StatelessWidget {
                   ],
                 ),
                 Expanded(child: SizedBox()),
-                ButtonMainWidget(label: "Lanjut"),
+                ButtonMainWidget(
+                  label: "Lanjut",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FinalRegisScreen()),
+                    );
+                  },
+                ),
               ],
             ),
           )

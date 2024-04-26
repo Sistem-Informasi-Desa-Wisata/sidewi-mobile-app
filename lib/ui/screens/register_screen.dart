@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sidewi_mobile_app/ui/screens/upload_foto_register.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_back_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/input_section_widget.dart';
@@ -106,7 +107,16 @@ class RegisterScreen extends StatelessWidget {
                 Expanded(
                   child: SizedBox(),
                 ),
-                ButtonMainWidget(label: "Lanjut")
+                ButtonMainWidget(
+                  label: "Lanjut",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UploadFotoRegis()),
+                    );
+                  },
+                ),
               ],
             ),
           )

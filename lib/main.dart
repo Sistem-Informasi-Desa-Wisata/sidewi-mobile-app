@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sidewi_mobile_app/ui/screens/login_screen.dart';
 import 'package:sidewi_mobile_app/ui/screens/main_screen.dart';
 
 void main() {
@@ -29,7 +30,7 @@ class DefaultHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: MainScreen(),
+      body: LoginScreen(),
     );
   }
 }
