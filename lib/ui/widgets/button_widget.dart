@@ -3,9 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/colors.dart';
 
 class ButtonMainWidget extends StatelessWidget {
-  const ButtonMainWidget({super.key, required this.label});
+  const ButtonMainWidget(
+      {super.key, required this.label, required this.onPressed});
 
   final String label;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +15,7 @@ class ButtonMainWidget extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: () {
-            // Aksi yang akan dilakukan ketika tombol ditekan
-          },
+          onPressed: onPressed,
           style: ButtonStyle(
             backgroundColor:
                 MaterialStateProperty.all<Color>(MyColors.buttonColor),
@@ -39,8 +39,10 @@ class ButtonMainWidget extends StatelessWidget {
 }
 
 class ButtonRectangleWidget extends StatelessWidget {
-  const ButtonRectangleWidget({super.key, required this.label});
+  const ButtonRectangleWidget(
+      {super.key, required this.label, required this.onPressed});
 
+  final VoidCallback onPressed;
   final String label;
 
   @override
@@ -49,9 +51,7 @@ class ButtonRectangleWidget extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: () {
-            // Aksi yang akan dilakukan ketika tombol ditekan
-          },
+          onPressed: onPressed,
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sidewi_mobile_app/ui/widgets/button_back_widget.dart';
+import 'package:sidewi_mobile_app/ui/screens/main_screen.dart';
+import 'package:sidewi_mobile_app/ui/screens/register_screen.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/input_section_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/text_widget.dart';
@@ -27,7 +27,7 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 80),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 115),
           child: SingleChildScrollView(
             reverse: true,
             child: Container(
@@ -36,9 +36,14 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12),
-                    child: Image.asset(
-                      'assets/images/logoBaru.png',
-                      filterQuality: FilterQuality.none,
+                    child: SizedBox(
+                      height: 42,
+                      width: 174,
+                      child: Image.asset(
+                        'assets/images/logoBaru.png',
+                        filterQuality: FilterQuality.none,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -56,22 +61,27 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 24,
+                    height: 40,
                   ),
                   Row(
                     children: [
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(bottom: 12),
+                          padding: EdgeInsets.only(bottom: 24),
                           child: Container(
+                            height: 178,
                             child: Column(
                               children: [
-                                InputEmailWdiget(
-                                  label: "Email",
-                                  desc: "Email",
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: InputTextWdiget(
+                                    desc: "Email",
+                                  ),
                                 ),
-                                InputPasswordWdiget(
-                                    label: "Password", desc: "Password"),
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: InputPasswordWdiget(desc: "Password"),
+                                ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -82,7 +92,6 @@ class LoginScreen extends StatelessWidget {
                                 )
                               ],
                             ),
-                            height: 152,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(8),
@@ -90,9 +99,9 @@ class LoginScreen extends StatelessWidget {
                                 BoxShadow(
                                   offset: Offset(0,
                                       1), // Perpindahan bayangan pada sumbu x dan y
-                                  blurRadius: 10, // Besarnya blur
+                                  blurRadius: 24, // Besarnya blur
                                   spreadRadius:
-                                      1, // Jarak penyebaran bayangan dari objek
+                                      12, // Jarak penyebaran bayangan dari objek
                                   color: Color(
                                       0x0D000000), // Warna bayangan dengan opacity (alpha) 0D
                                 ),
@@ -108,6 +117,13 @@ class LoginScreen extends StatelessWidget {
                       Expanded(
                           child: SizedBox(
                               child: ButtonMainWidget(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainScreen()),
+                          );
+                        },
                         label: "Masuk",
                       )))
                     ],
@@ -134,6 +150,13 @@ class LoginScreen extends StatelessWidget {
                           child: SizedBox(
                               child: ButtonRectangleWidget(
                         label: "Buat Akun",
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterScreen()),
+                          );
+                        },
                       )))
                     ],
                   ),
