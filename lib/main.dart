@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sidewi_mobile_app/ui/screens/login_screen.dart';
+import 'package:sidewi_mobile_app/ui/screens/final_regis_screen.dart';
 import 'package:sidewi_mobile_app/ui/screens/main_screen.dart';
+import 'package:sidewi_mobile_app/ui/screens/register_screen.dart';
+import 'package:sidewi_mobile_app/ui/screens/upload_foto_register.dart';
 
 void main() {
   runApp(const MyApp());

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sidewi_mobile_app/ui/widgets/copyRight.dart';
 import 'package:sidewi_mobile_app/ui/screens/final_regis_screen.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_back_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/upload_box.dart';
@@ -14,18 +15,16 @@ class UploadFotoRegis extends StatelessWidget {
       body: Stack(
         children: [
           Container(
+            alignment: Alignment.bottomCenter,
             width: double.infinity,
             height: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/background_decoration.jpeg'),
-                fit: BoxFit
-                    .cover, // Mengisi container dengan gambar tanpa mempertahankan aspek rasio
-              ),
+            child: SizedBox(
+              child:
+                  Image(image: AssetImage('assets/images/logo_background.png')),
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+            padding: EdgeInsets.only(left: 24, right: 24, top: 64, bottom: 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -40,7 +39,7 @@ class UploadFotoRegis extends StatelessWidget {
                       style: const TextStyle(
                         fontFamily: "Roboto",
                         fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         color: Color(0xff000000),
                         height: 16 / 16,
                       ),
@@ -49,10 +48,10 @@ class UploadFotoRegis extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 69,
                 ),
                 Text(
-                  "Langkah 1 dari 3",
+                  "Langkah 2 dari 2",
                   style: const TextStyle(
                     fontFamily: "Roboto",
                     fontSize: 10,
@@ -69,7 +68,7 @@ class UploadFotoRegis extends StatelessWidget {
                     style: const TextStyle(
                       fontFamily: "Roboto",
                       fontSize: 16,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                       color: Color(0xff000000),
                       height: 16 / 16,
                     ),
@@ -77,7 +76,7 @@ class UploadFotoRegis extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Masukan nama pengguna, alamat email dan password ",
+                  "Masukan foto profil anda",
                   style: const TextStyle(
                     fontFamily: "Roboto",
                     fontSize: 12,
@@ -90,22 +89,36 @@ class UploadFotoRegis extends StatelessWidget {
                 Stack(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 44),
-                      child: Center(child: Container(child: UploadBox())),
+                      padding: const EdgeInsets.symmetric(vertical: 64),
+                      child: Center(
+                          child: Container(
+                              height: 264, width: 264, child: UploadBox())),
                     ),
                   ],
                 ),
-                Expanded(child: SizedBox()),
-                ButtonMainWidget(
-                  label: "Lanjut",
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FinalRegisScreen()),
-                    );
-                  },
-                ),
+                Expanded(
+                    child: Container(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ButtonMainWidget(
+                        label: "Lewati",
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FinalRegisScreen()),
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        height: 17,
+                      ),
+                      TextCopyRight(),
+                    ],
+                  ),
+                ))
               ],
             ),
           )

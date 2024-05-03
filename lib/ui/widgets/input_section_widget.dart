@@ -24,7 +24,20 @@ class _InputTextWidgetState extends State<InputTextWdiget> {
         Expanded(
           child: Container(
             height: 48,
-            width: 288,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  offset:
+                      Offset(0, 1), // Perpindahan bayangan pada sumbu x dan y
+                  blurRadius: 24, // Besarnya blur
+                  spreadRadius: 4, // Jarak penyebaran bayangan dari objek
+                  color: Color(
+                      0x0D000000), // Warna bayangan dengan opacity (alpha) 0D
+                ),
+              ],
+            ),
             child: TextField(
               onTap: () {
                 setState(() {
@@ -51,7 +64,7 @@ class _InputTextWidgetState extends State<InputTextWdiget> {
                   height: 16 / 12,
                 ),
                 filled: true,
-                fillColor: MyColors.mainGrey,
+                fillColor: Colors.white,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Colors.white),
@@ -61,7 +74,7 @@ class _InputTextWidgetState extends State<InputTextWdiget> {
                   borderSide: BorderSide(color: Colors.blue),
                 ),
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 16, horizontal: 9),
+                    EdgeInsets.symmetric(vertical: 13, horizontal: 9),
               ),
             ),
           ),
@@ -94,6 +107,20 @@ class _InputPasswordWidgetState extends State<InputPasswordWdiget> {
           child: Container(
             height: 48,
             width: 288,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  offset:
+                      Offset(0, 1), // Perpindahan bayangan pada sumbu x dan y
+                  blurRadius: 24, // Besarnya blur
+                  spreadRadius: 4, // Jarak penyebaran bayangan dari objek
+                  color: Color(
+                      0x0D000000), // Warna bayangan dengan opacity (alpha) 0D
+                ),
+              ],
+            ),
             child: TextField(
               onTap: () {
                 setState(() {
@@ -117,7 +144,7 @@ class _InputPasswordWidgetState extends State<InputPasswordWdiget> {
                   height: 16 / 12,
                 ),
                 filled: true,
-                fillColor: MyColors.mainGrey,
+                fillColor: Colors.white,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(

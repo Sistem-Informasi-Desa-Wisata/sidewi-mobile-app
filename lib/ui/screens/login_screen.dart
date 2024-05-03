@@ -148,24 +148,33 @@ class LoginScreen extends StatelessWidget {
                       height: 24,
                     ),
                     Center(
-                      child: Container(
-                        width: 154,
-                        height: 30,
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Atau belum punya akun?\n',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              TextSpan(
-                                text: 'Buat akun sekarang',
-                                style: TextStyle(
-                                    color: MyColors.SecondaryColor,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterScreen()),
+                          );
+                        },
+                        child: Container(
+                          width: 154,
+                          height: 35,
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Atau belum punya akun?\n',
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                TextSpan(
+                                  text: 'Buat akun sekarang',
+                                  style: TextStyle(
+                                      color: MyColors.SecondaryColor,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

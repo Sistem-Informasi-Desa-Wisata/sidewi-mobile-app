@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:sidewi_mobile_app/ui/screens/upload_foto_register.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_back_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
+import 'package:sidewi_mobile_app/ui/widgets/copyRight.dart';
 import 'package:sidewi_mobile_app/ui/widgets/input_section_widget.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -15,19 +16,18 @@ class RegisterScreen extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
+// Background Section
           Container(
+            alignment: Alignment.bottomCenter,
             width: double.infinity,
             height: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/background_decoration.jpeg'),
-                fit: BoxFit
-                    .cover, // Mengisi container dengan gambar tanpa mempertahankan aspek rasio
-              ),
+            child: SizedBox(
+              child:
+                  Image(image: AssetImage('assets/images/logo_background.png')),
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 64),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -35,14 +35,14 @@ class RegisterScreen extends StatelessWidget {
                   children: [
                     ButtonBackWidget(),
                     SizedBox(
-                      width: 12,
+                      width: 16,
                     ),
                     Text(
                       "Buat Akun",
                       style: const TextStyle(
                         fontFamily: "Roboto",
                         fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         color: Color(0xff000000),
                         height: 16 / 16,
                       ),
@@ -51,10 +51,10 @@ class RegisterScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 69,
                 ),
                 Text(
-                  "Langkah 2 dari 3",
+                  "Langkah 1 dari 2",
                   style: const TextStyle(
                     fontFamily: "Roboto",
                     fontSize: 10,
@@ -71,26 +71,29 @@ class RegisterScreen extends StatelessWidget {
                     style: const TextStyle(
                       fontFamily: "Roboto",
                       fontSize: 16,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                       color: Color(0xff000000),
                       height: 16 / 16,
                     ),
                     textAlign: TextAlign.left,
                   ),
                 ),
-                Text(
-                  "Masukan nama pengguna, alamat email dan password ",
-                  style: const TextStyle(
-                    fontFamily: "Roboto",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff000000),
-                    height: 12 / 12,
+                Container(
+                  width: 253,
+                  height: 30,
+                  child: Text(
+                    "Masukan nama pengguna, alamat email\n" "dan password",
+                    style: const TextStyle(
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff000000),
+                        height: 14 / 12),
+                    textAlign: TextAlign.left,
                   ),
-                  textAlign: TextAlign.left,
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 64,
                 ),
                 InputTextWdiget(desc: "Nama pengguna"),
                 Padding(
@@ -103,20 +106,30 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(
                   height: 24,
                 ),
-                InputPasswordWdiget(desc: "Password"),
+                InputPasswordWdiget(desc: "Ulangi Password"),
                 Expanded(
-                  child: SizedBox(),
-                ),
-                ButtonMainWidget(
-                  label: "Lanjut",
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => UploadFotoRegis()),
-                    );
-                  },
-                ),
+                    child: Container(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ButtonMainWidget(
+                        label: "Lewati",
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UploadFotoRegis()),
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        height: 17,
+                      ),
+                      TextCopyRight(),
+                    ],
+                  ),
+                ))
               ],
             ),
           )
