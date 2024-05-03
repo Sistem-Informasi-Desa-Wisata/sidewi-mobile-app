@@ -135,8 +135,8 @@ class _InputPasswordWidgetState extends State<InputPasswordWdiget> {
                     _obscureText
                         ? 'assets/icons/ic_password_hidden.svg'
                         : 'assets/icons/ic_paswword_visible.svg',
-                    height: 24,
-                    width: 24,
+                    height: 16,
+                    width: 16,
                     color: Colors.grey,
                   ),
                   onPressed: () {
