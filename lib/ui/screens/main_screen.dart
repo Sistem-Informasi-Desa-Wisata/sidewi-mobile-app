@@ -40,22 +40,25 @@ class _MainScreen extends State<MainScreen> {
         onTap: _onTap,
         items: [
           BottomNavigationBarItem(
-              icon:
-                  Icon(_selectedIndex == 0 ? Icons.home : Icons.home_outlined),
+              icon: SvgPicture.asset(_selectedIndex == 0
+                  ? 'assets/icons/ic_home_active.svg'
+                  : 'assets/icons/ic_home_nonactive.svg'),
               label: "Home"),
           BottomNavigationBarItem(
-              icon: Icon(
-                  _selectedIndex == 1 ? Icons.search : Icons.search_outlined),
-              label: "Search"),
+              icon: SvgPicture.asset(_selectedIndex == 1
+                  ? 'assets/icons/ic_favorite_active.svg'
+                  : 'assets/icons/ic_favorite_nonactive.svg'),
+              label: "Favorite"),
           BottomNavigationBarItem(
-              icon: Icon(_selectedIndex == 2
-                  ? Icons.video_call
-                  : Icons.video_call_outlined),
-              label: "Live"),
+              icon: SvgPicture.asset(_selectedIndex == 2
+                  ? 'assets/icons/ic_notification_active.svg'
+                  : 'assets/icons/ic_notification_nonactive.svg'),
+              label: "Notification"),
           BottomNavigationBarItem(
-              icon:
-                  Icon(_selectedIndex == 3 ? Icons.shop : Icons.shop_outlined),
-              label: "Shop"),
+              icon: SvgPicture.asset(_selectedIndex == 3
+                  ? 'assets/icons/ic_profile_active.svg'
+                  : 'assets/icons/ic_profile_nonactive.svg'),
+              label: "Profile"),
         ],
       ),
     );

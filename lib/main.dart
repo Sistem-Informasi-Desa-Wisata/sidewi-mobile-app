@@ -33,7 +33,7 @@ class DefaultHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: LoginScreen(),
+      body: MainScreen(),
     );
   }
 }
