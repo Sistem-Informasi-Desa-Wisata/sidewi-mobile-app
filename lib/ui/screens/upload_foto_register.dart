@@ -7,10 +7,22 @@ import 'package:sidewi_mobile_app/ui/widgets/upload_box.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
 
 class UploadFotoRegis extends StatelessWidget {
-  const UploadFotoRegis({super.key});
+  const UploadFotoRegis(
+      {super.key,
+      required this.username,
+      required this.email,
+      required this.password,
+      required this.confirmPassword});
+
+  final String username;
+  final String email;
+  final String password;
+  final String confirmPassword;
 
   @override
   Widget build(BuildContext context) {
+    print(
+        "username :$username, email :$email, password :$password, confirmPassword :$confirmPassword");
     return Scaffold(
       body: Stack(
         children: [
@@ -51,7 +63,7 @@ class UploadFotoRegis extends StatelessWidget {
                   height: 69,
                 ),
                 Text(
-                  "Langkah 2 dari 2",
+                  "Langkah 2 dari $username",
                   style: const TextStyle(
                     fontFamily: "Roboto",
                     fontSize: 10,
@@ -86,13 +98,21 @@ class UploadFotoRegis extends StatelessWidget {
                   ),
                   textAlign: TextAlign.left,
                 ),
+
+// Upload Foto
                 Stack(
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 64),
                       child: Center(
                           child: Container(
-                              height: 264, width: 264, child: UploadBox())),
+                              height: 264,
+                              width: 264,
+                              child: UploadBox(
+                                onImageSelected: (image) {
+                                  print('Image selected: $image');
+                                },
+                              ))),
                     ),
                   ],
                 ),

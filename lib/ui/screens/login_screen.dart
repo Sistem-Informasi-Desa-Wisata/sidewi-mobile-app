@@ -11,7 +11,18 @@ import 'package:sidewi_mobile_app/ui/widgets/input_section_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/text_widget.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  String username = "";
+  String password = "";
+
+  void _handleUsernameChanged(String value) {
+    username = value;
+  }
+
+  void _handlePasswordChanged(String value) {
+    password = value;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,12 +99,15 @@ class LoginScreen extends StatelessWidget {
                                           const EdgeInsets.only(bottom: 12),
                                       child: InputTextWdiget(
                                         desc: "Email",
+                                        onValueChanged: _handleUsernameChanged,
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(bottom: 8),
-                                      child:
-                                          InputPasswordWdiget(desc: "Password"),
+                                      child: InputPasswordWdiget(
+                                        desc: "Password",
+                                        onValueChanged: _handlePasswordChanged,
+                                      ),
                                     ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,

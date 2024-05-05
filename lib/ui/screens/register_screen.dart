@@ -8,7 +8,28 @@ import 'package:sidewi_mobile_app/ui/widgets/copyRight.dart';
 import 'package:sidewi_mobile_app/ui/widgets/input_section_widget.dart';
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
+  RegisterScreen({super.key});
+
+  String username = "";
+  String email = "";
+  String password = "";
+  String confirmPassword = "";
+
+  void _handleUsernameChanged(String value) {
+    username = value;
+  }
+
+  void _handleEmailChanged(String value) {
+    email = value;
+  }
+
+  void _handlePasswordChanged(String value) {
+    password = value;
+  }
+
+  void _handleConfirmPasswordChanged(String value) {
+    confirmPassword = value;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,18 +116,28 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(
                   height: 64,
                 ),
-                InputTextWdiget(desc: "Nama pengguna"),
+                InputTextWdiget(
+                  desc: "Nama pengguna",
+                  onValueChanged: _handleUsernameChanged,
+                ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 24),
-                  child: InputTextWdiget(
+                  child: InputEmailWidget(
                     desc: "Email",
+                    onValueChanged: _handleEmailChanged,
                   ),
                 ),
-                InputPasswordWdiget(desc: "Password"),
+                InputPasswordWdiget(
+                  desc: "Password",
+                  onValueChanged: _handlePasswordChanged,
+                ),
                 SizedBox(
                   height: 24,
                 ),
-                InputPasswordWdiget(desc: "Ulangi Password"),
+                InputPasswordWdiget(
+                  desc: "Ulangi Password",
+                  onValueChanged: _handleConfirmPasswordChanged,
+                ),
                 Expanded(
                     child: Container(
                   alignment: Alignment.bottomCenter,
@@ -114,12 +145,16 @@ class RegisterScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ButtonMainWidget(
-                        label: "Lewati",
+                        label: "Lanjut",
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => UploadFotoRegis()),
+                                builder: (context) => UploadFotoRegis(
+                                    username: username,
+                                    email: email,
+                                    password: password,
+                                    confirmPassword: confirmPassword)),
                           );
                         },
                       ),

@@ -33,7 +33,12 @@ class DefaultHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: MainScreen(),
+      body: UploadFotoRegis(
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      ),
     );
   }
 }
