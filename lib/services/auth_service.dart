@@ -1,28 +1,25 @@
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:sidewi_mobile_app/models/request/register_request_model.dart';
+import 'package:sidewi_mobile_app/models/response/register_response_model.dart';
 
-class AuthService {
-  static const String baseUrl = 'your_api_base_url';
+class APIService {
+  static const String baseURL = 'http://localhost:3000/akun';
 
-  Future<bool> register(String username, String email, String password) async {
-    try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/register'),
-        body: {
-          'username': username,
-          'email': email,
-          'password': password,
-        },
-      );
+  Future<RegisterResponseModel> register(
+      RegisterRequestModel requestModel) async {
+    final response = await http.post(
+      Uri.parse('$baseURL/add'),
+      body: jsonEncode(requestModel.toJson()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
 
-      if (response.statusCode == 200) {
-        return true; // Registrasi berhasil
-      } else {
-        print('Registration failed. Error: ${response.statusCode}');
-        return false; // Registrasi gagal
-      }
-    } catch (e) {
-      print('Error during registration: $e');
-      return false; // Terjadi kesalahan
+    if (response.statusCode == 200) {
+      return RegisterResponseModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to register');
     }
   }
 }
