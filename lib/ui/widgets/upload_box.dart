@@ -16,7 +16,7 @@ class UploadBox extends StatefulWidget {
 }
 
 class _UploadBoxState extends State<UploadBox> {
-  File? _image;
+  File? _foto;
 
   Future<void> _getImage() async {
     final picker = ImagePicker();
@@ -24,9 +24,9 @@ class _UploadBoxState extends State<UploadBox> {
 
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        _foto = File(pickedFile.path);
       });
-      widget.onImageSelected(_image);
+      widget.onImageSelected(_foto);
     }
   }
 
@@ -55,7 +55,7 @@ class _UploadBoxState extends State<UploadBox> {
                 ),
                 width: 120,
                 height: 120,
-                child: _image == null
+                child: _foto == null
                     ? IconButton(
                         iconSize: 24,
                         padding: EdgeInsets.zero,
@@ -65,7 +65,7 @@ class _UploadBoxState extends State<UploadBox> {
                           filterQuality: FilterQuality.none,
                         ),
                       )
-                    : Image.file(_image!, fit: BoxFit.cover),
+                    : Image.file(_foto!, fit: BoxFit.cover),
               ),
             ),
           ),

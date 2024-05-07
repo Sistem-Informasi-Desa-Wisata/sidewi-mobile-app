@@ -12,6 +12,7 @@ class RegisterRepository {
       return await _apiService.register(request);
     } catch (e) {
       print('Error during registration: $e');
+      print('Error code: ${e.hashCode}');
       throw Exception('Failed to register');
     }
   }

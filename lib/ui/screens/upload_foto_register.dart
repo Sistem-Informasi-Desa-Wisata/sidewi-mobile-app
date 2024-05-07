@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'dart:io';
+import 'package:sidewi_mobile_app/models/request/register_request_model.dart';
+import 'package:sidewi_mobile_app/provider/register_provider.dart';
 import 'package:sidewi_mobile_app/ui/widgets/copyRight.dart';
 import 'package:sidewi_mobile_app/ui/screens/final_regis_screen.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_back_widget.dart';
@@ -7,22 +10,62 @@ import 'package:sidewi_mobile_app/ui/widgets/upload_box.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
 
 class UploadFotoRegis extends StatelessWidget {
-  const UploadFotoRegis(
-      {super.key,
-      required this.username,
-      required this.email,
-      required this.password,
-      required this.confirmPassword});
+  UploadFotoRegis({
+    super.key,
+    required this.nama,
+    required this.email,
+    required this.password,
+    required this.confirmPassword,
+    required this.registerProvider,
+  });
 
-  final String username;
+  final String nama;
   final String email;
   final String password;
   final String confirmPassword;
 
+  final RegisterProvider registerProvider;
+
+  File? _selectedImage;
+
+  void _handleImageSelected(File? foto) {
+    _selectedImage = foto;
+  }
+
+  void _onButtonPressed(BuildContext context, File? foto) async {
+    // Membuat instance RegisterRequestModel dengan data yang diperlukan
+    RegisterRequestModel request = RegisterRequestModel(
+      nama: nama,
+      email: email,
+      password: password,
+      foto: foto, // Menggunakan foto yang diterima dari parameter
+    );
+
+    // Melakukan proses registrasi dengan memanggil metode register dari registerProvider
+    try {
+      await registerProvider.register(request);
+
+      // Navigasi ke halaman akhir registrasi jika registrasi berhasil
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => FinalRegisScreen()),
+      );
+    } catch (e) {
+      // Menampilkan pesan error jika terjadi kesalahan saat registrasi
+      print('Error during registration: $e');
+      // Menampilkan pesan kesalahan ke pengguna
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to register. Please try again.'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     print(
-        "username :$username, email :$email, password :$password, confirmPassword :$confirmPassword");
+        "username :$nama, email :$email, password :$password, confirmPassword :$confirmPassword");
     return Scaffold(
       body: Stack(
         children: [
@@ -63,7 +106,7 @@ class UploadFotoRegis extends StatelessWidget {
                   height: 69,
                 ),
                 Text(
-                  "Langkah 2 dari $username",
+                  "Langkah 2 dari 2",
                   style: const TextStyle(
                     fontFamily: "Roboto",
                     fontSize: 10,
@@ -109,9 +152,7 @@ class UploadFotoRegis extends StatelessWidget {
                               height: 264,
                               width: 264,
                               child: UploadBox(
-                                onImageSelected: (image) {
-                                  print('Image selected: $image');
-                                },
+                                onImageSelected: _handleImageSelected,
                               ))),
                     ),
                   ],
@@ -125,11 +166,7 @@ class UploadFotoRegis extends StatelessWidget {
                       ButtonMainWidget(
                         label: "Lewati",
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FinalRegisScreen()),
-                          );
+                          _onButtonPressed(context, _selectedImage);
                         },
                       ),
                       SizedBox(

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sidewi_mobile_app/provider/register_provider.dart';
+import 'package:sidewi_mobile_app/services/auth_service.dart';
 import 'package:sidewi_mobile_app/ui/screens/upload_foto_register.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_back_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
@@ -10,13 +12,13 @@ import 'package:sidewi_mobile_app/ui/widgets/input_section_widget.dart';
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
 
-  String username = "";
+  String nama = "";
   String email = "";
   String password = "";
   String confirmPassword = "";
 
   void _handleUsernameChanged(String value) {
-    username = value;
+    nama = value;
   }
 
   void _handleEmailChanged(String value) {
@@ -33,6 +35,7 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RegisterProvider registerProvider = RegisterProvider(APIService());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -151,10 +154,12 @@ class RegisterScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => UploadFotoRegis(
-                                    username: username,
-                                    email: email,
-                                    password: password,
-                                    confirmPassword: confirmPassword)),
+                                      nama: nama,
+                                      email: email,
+                                      password: password,
+                                      confirmPassword: confirmPassword,
+                                      registerProvider: registerProvider,
+                                    )),
                           );
                         },
                       ),

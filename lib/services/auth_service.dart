@@ -1,24 +1,32 @@
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sidewi_mobile_app/models/request/register_request_model.dart';
 import 'package:sidewi_mobile_app/models/response/register_response_model.dart';
 
 class APIService {
-  static const String baseURL = 'http://localhost:3000/akun';
+  static const String baseURL = 'http://192.168.1.72:3000/akun';
 
   Future<RegisterResponseModel> register(
       RegisterRequestModel requestModel) async {
-    final response = await http.post(
-      Uri.parse('$baseURL/add'),
-      body: jsonEncode(requestModel.toJson()),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
+    var request = http.MultipartRequest('POST', Uri.parse('$baseURL/add'));
+    request.fields['nama'] = requestModel.nama;
+    request.fields['email'] = requestModel.email;
+    request.fields['password'] = requestModel.password;
+
+    var fotoFile =
+        await http.MultipartFile.fromPath('foto', requestModel.foto!.path);
+    request.files.add(fotoFile);
+
+    // Mengirim request dan mendapatkan response
+    var response = await request.send();
 
     if (response.statusCode == 200) {
-      return RegisterResponseModel.fromJson(json.decode(response.body));
+      // Jika berhasil, membaca response body dan mengonversinya menjadi JSON
+      var responseBody = await response.stream.bytesToString();
+      return RegisterResponseModel.fromJson(json.decode(responseBody));
     } else {
+      // Jika gagal, melemparkan exception
       throw Exception('Failed to register');
     }
   }
