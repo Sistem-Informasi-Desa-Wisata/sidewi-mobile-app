@@ -27,3 +27,23 @@ class TextHeaderWidget extends StatelessWidget {
     );
   }
 }
+
+class TextSecondary extends StatelessWidget {
+  const TextSecondary({super.key, required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        fontFamily: "Roboto",
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: MyColors.SecondaryColor,
+        height: 12 / 10,
+      ),
+    );
+  }
+}
