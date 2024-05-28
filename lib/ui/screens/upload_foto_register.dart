@@ -1,31 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'dart:io';
+import 'package:sidewi_mobile_app/models/request/register_request_model.dart';
+import 'package:sidewi_mobile_app/provider/register_provider.dart';
+import 'package:sidewi_mobile_app/ui/widgets/copyRight.dart';
 import 'package:sidewi_mobile_app/ui/screens/final_regis_screen.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_back_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/upload_box.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
 
 class UploadFotoRegis extends StatelessWidget {
-  const UploadFotoRegis({super.key});
+  UploadFotoRegis({
+    super.key,
+    required this.nama,
+    required this.email,
+    required this.password,
+    required this.confirmPassword,
+    required this.registerProvider,
+  });
+
+  final String nama;
+  final String email;
+  final String password;
+  final String confirmPassword;
+
+  final RegisterProvider registerProvider;
+
+  File? _selectedImage;
+
+  void _handleImageSelected(File? foto) {
+    _selectedImage = foto;
+  }
+
+  void _onButtonPressed(BuildContext context, File? foto) async {
+    // Membuat instance RegisterRequestModel dengan data yang diperlukan
+    RegisterRequestModel request = RegisterRequestModel(
+      nama: nama,
+      email: email,
+      password: password,
+      foto: foto, // Menggunakan foto yang diterima dari parameter
+    );
+
+    // Melakukan proses registrasi dengan memanggil metode register dari registerProvider
+    try {
+      await registerProvider.register(request);
+
+      // Navigasi ke halaman akhir registrasi jika registrasi berhasil
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => FinalRegisScreen()),
+      );
+    } catch (e) {
+      // Menampilkan pesan error jika terjadi kesalahan saat registrasi
+      print('Error during registration: $e');
+      // Menampilkan pesan kesalahan ke pengguna
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to register. Please try again.'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(
+        "username :$nama, email :$email, password :$password, confirmPassword :$confirmPassword");
     return Scaffold(
       body: Stack(
         children: [
           Container(
+            alignment: Alignment.bottomCenter,
             width: double.infinity,
             height: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/background_decoration.jpeg'),
-                fit: BoxFit
-                    .cover, // Mengisi container dengan gambar tanpa mempertahankan aspek rasio
-              ),
+            child: SizedBox(
+              child:
+                  Image(image: AssetImage('assets/images/logo_background.png')),
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+            padding: EdgeInsets.only(left: 24, right: 24, top: 64, bottom: 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -40,7 +94,7 @@ class UploadFotoRegis extends StatelessWidget {
                       style: const TextStyle(
                         fontFamily: "Roboto",
                         fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         color: Color(0xff000000),
                         height: 16 / 16,
                       ),
@@ -49,10 +103,10 @@ class UploadFotoRegis extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 69,
                 ),
                 Text(
-                  "Langkah 1 dari 3",
+                  "Langkah 2 dari 2",
                   style: const TextStyle(
                     fontFamily: "Roboto",
                     fontSize: 10,
@@ -69,7 +123,7 @@ class UploadFotoRegis extends StatelessWidget {
                     style: const TextStyle(
                       fontFamily: "Roboto",
                       fontSize: 16,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                       color: Color(0xff000000),
                       height: 16 / 16,
                     ),
@@ -77,7 +131,7 @@ class UploadFotoRegis extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Masukan nama pengguna, alamat email dan password ",
+                  "Masukan foto profil anda",
                   style: const TextStyle(
                     fontFamily: "Roboto",
                     fontSize: 12,
@@ -87,25 +141,41 @@ class UploadFotoRegis extends StatelessWidget {
                   ),
                   textAlign: TextAlign.left,
                 ),
+
+// Upload Foto
                 Stack(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 44),
-                      child: Center(child: Container(child: UploadBox())),
+                      padding: const EdgeInsets.symmetric(vertical: 64),
+                      child: Center(
+                          child: Container(
+                              height: 264,
+                              width: 264,
+                              child: UploadBox(
+                                onImageSelected: _handleImageSelected,
+                              ))),
                     ),
                   ],
                 ),
-                Expanded(child: SizedBox()),
-                ButtonMainWidget(
-                  label: "Lanjut",
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FinalRegisScreen()),
-                    );
-                  },
-                ),
+                Expanded(
+                    child: Container(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ButtonMainWidget(
+                        label: "Lewati",
+                        onPressed: () {
+                          _onButtonPressed(context, _selectedImage);
+                        },
+                      ),
+                      SizedBox(
+                        height: 17,
+                      ),
+                      TextCopyRight(),
+                    ],
+                  ),
+                ))
               ],
             ),
           )

@@ -35,17 +35,14 @@ class TextSecondary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontFamily: "Roboto",
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          color: Color(0xff000000),
-          height: 12 / 10,
-        ),
+    return Text(
+      text,
+      style: const TextStyle(
+        fontFamily: "Roboto",
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: MyColors.SecondaryColor,
+        height: 12 / 10,
       ),
     );
   }
