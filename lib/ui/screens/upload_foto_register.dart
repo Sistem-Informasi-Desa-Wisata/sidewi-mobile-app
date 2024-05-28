@@ -51,8 +51,6 @@ class UploadFotoRegis extends StatelessWidget {
         MaterialPageRoute(builder: (context) => FinalRegisScreen()),
       );
     } catch (e) {
-      // Menampilkan pesan error jika terjadi kesalahan saat registrasi
-      print('Error during registration: $e');
       // Menampilkan pesan kesalahan ke pengguna
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

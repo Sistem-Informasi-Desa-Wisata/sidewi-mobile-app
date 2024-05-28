@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sidewi_mobile_app/ui/screens/detail_screen.dart';
+import 'package:sidewi_mobile_app/ui/screens/fake_screen.dart';
+import 'package:sidewi_mobile_app/ui/screens/home_screen.dart';
 import 'package:sidewi_mobile_app/ui/screens/login_screen.dart';
 import 'package:sidewi_mobile_app/ui/screens/final_regis_screen.dart';
 import 'package:sidewi_mobile_app/ui/screens/main_screen.dart';
@@ -31,6 +34,6 @@ class DefaultHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(resizeToAvoidBottomInset: false, body: LoginScreen());
+    return Scaffold(resizeToAvoidBottomInset: false, body: DetailScreen());
   }
 }
