@@ -1,36 +1,37 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sidewi_mobile_app/models/request/register_request_model.dart';
-import 'package:sidewi_mobile_app/models/response/register_response_model.dart';
 import 'package:sidewi_mobile_app/repository/user_repository.dart';
 
-import '../services/auth_service.dart';
+// Satate management
 
-class RegisterProvider extends ChangeNotifier {
-  final RegisterRepository _repository;
+class RegisterProvider with ChangeNotifier {
+  final UserRepository userRepository;
 
-  // Constructor RegisterProvider
-  RegisterProvider(APIService apiService)
-      : _repository = RegisterRepository(apiService);
+  RegisterProvider(this.userRepository);
 
-  late RegisterResponseModel _response;
   bool _isLoading = false;
+  String? _message;
 
-  RegisterResponseModel get response => _response;
   bool get isLoading => _isLoading;
+  String? get message => _message;
 
-  Future<void> register(RegisterRequestModel request) async {
+  Future<void> register(
+      String username, String password, String email, File foto) async {
     _isLoading = true;
     notifyListeners();
 
-    try {
-      _response = await _repository.register(request);
-    } catch (e) {
-      print('Error during registration: $e');
-      _response =
-          RegisterResponseModel(success: false, message: 'Failed to register');
-    }
+    final request = RegisterRequest(
+        username: username, email: email, password: password, foto: foto);
 
-    _isLoading = false;
-    notifyListeners();
+    try {
+      final response = await userRepository.register(request);
+      _message = response.message;
+    } catch (e) {
+      _message = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

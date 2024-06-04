@@ -35,7 +35,7 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RegisterProvider registerProvider = RegisterProvider(APIService());
+    // RegisterProvider registerProvider = RegisterProvider(APIService());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -158,7 +158,7 @@ class RegisterScreen extends StatelessWidget {
                                       email: email,
                                       password: password,
                                       confirmPassword: confirmPassword,
-                                      registerProvider: registerProvider,
+                                      // registerProvider: registerProvider,
                                     )),
                           );
                         },
