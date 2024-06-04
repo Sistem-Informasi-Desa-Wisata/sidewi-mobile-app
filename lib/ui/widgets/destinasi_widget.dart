@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -65,31 +66,55 @@ class DestinasiItemsWidget extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.only(top: 109, left: 8),
+              padding:
+                  const EdgeInsets.only(top: 12, left: 8, right: 8, bottom: 18),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Sangeh",
-                    style: const TextStyle(
-                      fontFamily: "Montserrat",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      height: 15 / 12,
-                    ),
-                    textAlign: TextAlign.left,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.topRight,
+                          width: 16,
+                          height: 16,
+                          child: GestureDetector(
+                              onTap: () {
+                                // Aksi ketika tombol ditekan
+                              },
+                              child: SvgPicture.asset(
+                                  'assets/icons/ic_outline_love.svg')),
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "Kabupaten Badung",
-                    style: const TextStyle(
-                      fontFamily: "Montserrat",
-                      fontSize: 8,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                      height: 10 / 8,
-                    ),
-                    textAlign: TextAlign.left,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Sangeh",
+                        style: const TextStyle(
+                          fontFamily: "Montserrat",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          height: 15 / 12,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      Text(
+                        "Kabupaten Badung",
+                        style: const TextStyle(
+                          fontFamily: "Montserrat",
+                          fontSize: 8,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                          height: 10 / 8,
+                        ),
+                        textAlign: TextAlign.left,
+                      )
+                    ],
                   )
                 ],
               ),

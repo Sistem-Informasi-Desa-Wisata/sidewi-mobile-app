@@ -16,15 +16,14 @@ class UploadFotoRegis extends StatelessWidget {
     required this.email,
     required this.password,
     required this.confirmPassword,
-    required this.registerProvider,
+    // required this.registerProvider,
   });
 
   final String nama;
   final String email;
   final String password;
   final String confirmPassword;
-
-  final RegisterProvider registerProvider;
+  // final RegisterProvider registerProvider;
 
   File? _selectedImage;
 
@@ -34,30 +33,30 @@ class UploadFotoRegis extends StatelessWidget {
 
   void _onButtonPressed(BuildContext context, File? foto) async {
     // Membuat instance RegisterRequestModel dengan data yang diperlukan
-    RegisterRequestModel request = RegisterRequestModel(
-      nama: nama,
-      email: email,
-      password: password,
-      foto: foto, // Menggunakan foto yang diterima dari parameter
-    );
+    // RegisterRequestModel request = RegisterRequestModel(
+    //   nama: nama,
+    //   email: email,
+    //   password: password,
+    //   foto: foto, // Menggunakan foto yang diterima dari parameter
+    // );
 
     // Melakukan proses registrasi dengan memanggil metode register dari registerProvider
-    try {
-      await registerProvider.register(request);
+    // try {
+    //   await registerProvider.register(request);
 
-      // Navigasi ke halaman akhir registrasi jika registrasi berhasil
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => FinalRegisScreen()),
-      );
-    } catch (e) {
-      // Menampilkan pesan kesalahan ke pengguna
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to register. Please try again.'),
-        ),
-      );
-    }
+    //   // Navigasi ke halaman akhir registrasi jika registrasi berhasil
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => FinalRegisScreen()),
+    //   );
+    // } catch (e) {
+    //   // Menampilkan pesan kesalahan ke pengguna
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(
+    //       content: Text('Failed to register. Please try again.'),
+    //     ),
+    //   );
+    // }
   }
 
   @override

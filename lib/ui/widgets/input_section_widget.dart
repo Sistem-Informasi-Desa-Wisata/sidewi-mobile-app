@@ -21,7 +21,19 @@ class InputTextWdiget extends StatefulWidget {
 
 class _InputTextWidgetState extends State<InputTextWdiget> {
   bool _isFocused = false;
-  TextEditingController _controller = TextEditingController();
+  // TextEditingController _controller = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return false; // Email is required
+    }
+    if (!value.contains('@')) {
+      return false; // Invalid email
+    }
+    return true; // Valid email
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +57,7 @@ class _InputTextWidgetState extends State<InputTextWdiget> {
               ],
             ),
             child: TextField(
-              controller: _controller,
+              controller: _emailController,
               onTap: () {
                 setState(() {
                   _isFocused = true;
@@ -81,6 +93,12 @@ class _InputTextWidgetState extends State<InputTextWdiget> {
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Colors.blue),
                 ),
+                suffixIcon: !_validateEmail(_emailController.text) && _isFocused
+                    ? Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      ) // Tidak ada ikon jika email valid
+                    : null,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 13, horizontal: 9),
               ),
