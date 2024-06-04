@@ -5,7 +5,7 @@ import 'package:sidewi_mobile_app/colors.dart';
 import 'package:sidewi_mobile_app/ui/widgets/category_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/header_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/search_widget.dart';
-import 'package:sidewi_mobile_app/ui/widgets/wisata_widget.dart';
+import 'package:sidewi_mobile_app/ui/widgets/destinasi_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -58,15 +58,16 @@ class HomeScreen extends StatelessWidget {
                   Padding(
                     padding:
                         const EdgeInsets.only(top: 24.0, bottom: 12, left: 6),
-                    child:
-                        Container(child: Center(child: ListCategoryWidget())),
+                    child: Container(
+                        // color: Colors.amber,
+                        child: Center(child: ListCategoryWidget())),
                   ),
 
                   // List Wisata
                   Container(
                     height: 150,
                     width: double.infinity,
-                    child: WisataWidgetListHorizontal(),
+                    child: DestinasiWidgetListHorizontal(),
                   ),
 
                   // Text
@@ -107,7 +108,7 @@ class HomeScreen extends StatelessWidget {
                   // Destinasi lain section
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: WisataWidgetListVertical(),
+                    child: DestinasiWidgetListVertical(),
                   )
                 ],
               )

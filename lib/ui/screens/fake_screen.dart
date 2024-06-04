@@ -6,7 +6,7 @@ import 'package:sidewi_mobile_app/ui/widgets/button_back_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/input_section_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/text_widget.dart';
-import 'package:sidewi_mobile_app/ui/widgets/wisata_widget.dart';
+import 'package:sidewi_mobile_app/ui/widgets/destinasi_widget.dart';
 
 class FakeScreen extends StatelessWidget {
   const FakeScreen({super.key});

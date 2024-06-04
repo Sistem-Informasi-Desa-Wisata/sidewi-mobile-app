@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sidewi_mobile_app/ui/widgets/card_item_widget.dart';
 
-class ListWisataWidget extends StatelessWidget {
-  const ListWisataWidget({super.key});
+class ListBeritaWidget extends StatelessWidget {
+  const ListBeritaWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
