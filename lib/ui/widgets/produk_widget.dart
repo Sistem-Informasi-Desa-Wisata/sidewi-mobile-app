@@ -15,7 +15,7 @@ class ListProdukWidget extends StatelessWidget {
           crossAxisCount: 2,
           crossAxisSpacing: 0,
           mainAxisSpacing: 0,
-          childAspectRatio: 0.80, // Atur sesuai dengan rasio yang diinginkan
+          childAspectRatio: 0.75,
         ),
         itemBuilder: (context, index) {
           return ProdukItemWidget();

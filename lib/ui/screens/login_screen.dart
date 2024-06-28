@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:sidewi_mobile_app/colors.dart';
+import 'package:sidewi_mobile_app/provider/login_provider.dart';
+import 'package:sidewi_mobile_app/provider/register_provider.dart';
 import 'package:sidewi_mobile_app/ui/screens/main_screen.dart';
 import 'package:sidewi_mobile_app/ui/screens/register_screen.dart';
 import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
@@ -10,22 +13,22 @@ import 'package:sidewi_mobile_app/ui/widgets/copyRight.dart';
 import 'package:sidewi_mobile_app/ui/widgets/input_section_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/text_widget.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
 
-  String username = "";
-  String password = "";
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
-  void _handleUsernameChanged(String value) {
-    username = value;
-  }
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailCotroller = TextEditingController();
 
-  void _handlePasswordChanged(String value) {
-    password = value;
-  }
+  final TextEditingController _passwordColtroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final loginProvider = Provider.of<LoginProvider>(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(children: [
@@ -97,16 +100,16 @@ class LoginScreen extends StatelessWidget {
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(bottom: 12),
-                                      child: InputTextWdiget(
+                                      child: InputEmailWidget(
                                         desc: "Email",
-                                        onValueChanged: _handleUsernameChanged,
+                                        controller: _emailCotroller,
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(bottom: 8),
                                       child: InputPasswordWdiget(
                                         desc: "Password",
-                                        onValueChanged: _handlePasswordChanged,
+                                        controller: _passwordColtroller,
                                       ),
                                     ),
                                     Row(
@@ -146,16 +149,46 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         Expanded(
                             child: SizedBox(
-                                child: ButtonMainWidget(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MainScreen()),
-                            );
-                          },
-                          label: "Masuk",
-                        )))
+                                child: loginProvider.isLoading
+                                    ? const Center(
+                                        child: CircularProgressIndicator())
+                                    : ButtonMainWidget(
+                                        onPressed: () async {
+                                          if (_emailCotroller.text.isEmpty ||
+                                              _passwordColtroller
+                                                  .text.isEmpty) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  'Form tidak boleh kosong'),
+                                            ));
+                                          } else {
+                                            await loginProvider.login(
+                                                _emailCotroller.text,
+                                                _passwordColtroller.text);
+                                            if (loginProvider.errorMessage !=
+                                                null) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(loginProvider
+                                                      .errorMessage!),
+                                                ),
+                                              );
+                                            }
+                                            if (loginProvider.isSuccess) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MainScreen()),
+                                              );
+                                            }
+                                            setState(() {});
+                                          }
+                                        },
+                                        label: "Masuk",
+                                      )))
                       ],
                     ),
                     SizedBox(

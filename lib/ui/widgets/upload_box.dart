@@ -35,11 +35,12 @@ class _UploadBoxState extends State<UploadBox> {
     return Stack(
       children: [
         Container(
-          child: Image.asset(
-            'assets/images/dashBox.png',
-            filterQuality: FilterQuality.none,
-          ),
-        ),
+            width: 264,
+            height: 264,
+            child: Image.asset(
+              'assets/images/dashBox.png',
+              filterQuality: FilterQuality.none,
+            )),
         Positioned(
           left: 0,
           right: 0,
@@ -53,15 +54,16 @@ class _UploadBoxState extends State<UploadBox> {
                   color: MyColors.mainGrey,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                width: 120,
-                height: 120,
+                width: 260,
+                height: 260,
                 child: _foto == null
                     ? IconButton(
-                        iconSize: 24,
                         padding: EdgeInsets.zero,
                         onPressed: null,
                         icon: Image.asset(
                           'assets/images/foto.png',
+                          width: 120,
+                          height: 120,
                           filterQuality: FilterQuality.none,
                         ),
                       )

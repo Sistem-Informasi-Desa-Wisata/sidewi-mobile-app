@@ -8,11 +8,11 @@ class InputTextWdiget extends StatefulWidget {
   const InputTextWdiget({
     super.key,
     required this.desc,
-    required this.onValueChanged,
+    required this.controller,
   });
 
   final String desc;
-  final void Function(String) onValueChanged;
+  final TextEditingController controller;
 
 // State
   @override
@@ -22,15 +22,12 @@ class InputTextWdiget extends StatefulWidget {
 class _InputTextWidgetState extends State<InputTextWdiget> {
   bool _isFocused = false;
   // TextEditingController _controller = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+  // TextEditingController _emailController = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool _validateEmail(String? value) {
+  bool _validateText(String? value) {
     if (value == null || value.isEmpty) {
       return false; // Email is required
-    }
-    if (!value.contains('@')) {
-      return false; // Invalid email
     }
     return true; // Valid email
   }
@@ -57,7 +54,7 @@ class _InputTextWidgetState extends State<InputTextWdiget> {
               ],
             ),
             child: TextField(
-              controller: _emailController,
+              controller: widget.controller,
               onTap: () {
                 setState(() {
                   _isFocused = true;
@@ -69,7 +66,6 @@ class _InputTextWidgetState extends State<InputTextWdiget> {
                 });
               },
               onChanged: (value) {
-                widget.onValueChanged(value);
                 setState(() {
                   _isFocused = true;
                 });
@@ -93,7 +89,7 @@ class _InputTextWidgetState extends State<InputTextWdiget> {
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Colors.blue),
                 ),
-                suffixIcon: !_validateEmail(_emailController.text) && _isFocused
+                suffixIcon: !_validateText(widget.controller.text) && _isFocused
                     ? Icon(
                         Icons.error,
                         color: Colors.red,
@@ -113,11 +109,11 @@ class _InputTextWidgetState extends State<InputTextWdiget> {
 // input Email Widget
 class InputEmailWidget extends StatefulWidget {
   const InputEmailWidget(
-      {Key? key, required this.desc, required this.onValueChanged})
+      {Key? key, required this.desc, required this.controller})
       : super(key: key);
 
   final String desc;
-  final void Function(String) onValueChanged;
+  final TextEditingController controller;
 
   @override
   _InputEmailWidgetState createState() => _InputEmailWidgetState();
@@ -125,7 +121,6 @@ class InputEmailWidget extends StatefulWidget {
 
 class _InputEmailWidgetState extends State<InputEmailWidget> {
   bool _isFocused = false;
-  TextEditingController _emailController = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool _validateEmail(String? value) {
@@ -160,7 +155,7 @@ class _InputEmailWidgetState extends State<InputEmailWidget> {
                 ],
               ),
               child: TextFormField(
-                controller: _emailController,
+                controller: widget.controller,
                 onTap: () {
                   setState(() {
                     _isFocused = true;
@@ -172,9 +167,8 @@ class _InputEmailWidgetState extends State<InputEmailWidget> {
                   });
                 },
                 onChanged: (value) {
-                  widget.onValueChanged(value);
                   setState(() {
-                    _isFocused = true;
+                    var _isEmailValid = _validateEmail(value);
                   });
                 },
                 decoration: InputDecoration(
@@ -197,7 +191,7 @@ class _InputEmailWidgetState extends State<InputEmailWidget> {
                     borderSide: BorderSide(color: Colors.blue),
                   ),
                   suffixIcon:
-                      !_validateEmail(_emailController.text) && _isFocused
+                      !_validateEmail(widget.controller.text) && _isFocused
                           ? Icon(
                               Icons.error,
                               color: Colors.red,
@@ -218,11 +212,14 @@ class _InputEmailWidgetState extends State<InputEmailWidget> {
 // input password widget
 
 class InputPasswordWdiget extends StatefulWidget {
-  const InputPasswordWdiget(
-      {super.key, required this.desc, required this.onValueChanged});
+  const InputPasswordWdiget({
+    super.key,
+    required this.desc,
+    required this.controller,
+  });
 
   final String desc;
-  final void Function(String) onValueChanged;
+  final TextEditingController controller;
 
   @override
   _InputPasswordWidgetState createState() => _InputPasswordWidgetState();
@@ -256,7 +253,7 @@ class _InputPasswordWidgetState extends State<InputPasswordWdiget> {
               ],
             ),
             child: TextField(
-              controller: _passwordController,
+              controller: widget.controller,
               onTap: () {
                 setState(() {
                   _isFocused = true;
@@ -268,7 +265,8 @@ class _InputPasswordWidgetState extends State<InputPasswordWdiget> {
                 });
               },
               onChanged: (value) {
-                widget.onValueChanged(value);
+                setState(() {});
+                ;
               },
               obscureText: _obscureText,
               obscuringCharacter: '•',
