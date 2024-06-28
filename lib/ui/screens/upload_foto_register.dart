@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:sidewi_mobile_app/models/request/register_request_model.dart';
 import 'package:sidewi_mobile_app/provider/register_provider.dart';
@@ -13,18 +15,15 @@ class UploadFotoRegis extends StatelessWidget {
   UploadFotoRegis({
     super.key,
     required this.nama,
+    required this.noTelp,
     required this.email,
     required this.password,
-    required this.confirmPassword,
-    required this.registerProvider,
   });
 
   final String nama;
+  final String noTelp;
   final String email;
   final String password;
-  final String confirmPassword;
-
-  final RegisterProvider registerProvider;
 
   File? _selectedImage;
 
@@ -32,38 +31,15 @@ class UploadFotoRegis extends StatelessWidget {
     _selectedImage = foto;
   }
 
-  void _onButtonPressed(BuildContext context, File? foto) async {
-    // Membuat instance RegisterRequestModel dengan data yang diperlukan
-    RegisterRequestModel request = RegisterRequestModel(
-      nama: nama,
-      email: email,
-      password: password,
-      foto: foto, // Menggunakan foto yang diterima dari parameter
-    );
-
-    // Melakukan proses registrasi dengan memanggil metode register dari registerProvider
-    try {
-      await registerProvider.register(request);
-
-      // Navigasi ke halaman akhir registrasi jika registrasi berhasil
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => FinalRegisScreen()),
-      );
-    } catch (e) {
-      // Menampilkan pesan kesalahan ke pengguna
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to register. Please try again.'),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    print(
-        "username :$nama, email :$email, password :$password, confirmPassword :$confirmPassword");
+    print("username :$nama, email :$email, password :$password");
+    // Deklarasi provider
+
+    // fungsi request api
+
+    final registerProvider = Provider.of<RegisterProvider>(context);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -83,7 +59,11 @@ class UploadFotoRegis extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    ButtonBackWidget(),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: ButtonBackWidget()),
                     SizedBox(
                       width: 12,
                     ),
@@ -161,12 +141,32 @@ class UploadFotoRegis extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      ButtonMainWidget(
-                        label: "Lewati",
-                        onPressed: () {
-                          _onButtonPressed(context, _selectedImage);
-                        },
-                      ),
+                      if (registerProvider.isLoading)
+                        CircularProgressIndicator(),
+                      if (!registerProvider.isLoading)
+                        ButtonMainWidget(
+                          onPressed: () async {
+                            // _onButtonPressed(context, _selectedImage);
+                            await registerProvider.register(
+                                nama, noTelp, email, password);
+
+                            if (registerProvider.message != null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(registerProvider.message!),
+                                ),
+                              );
+                            }
+                            if (registerProvider.isSuccess) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          FinalRegisScreen()));
+                            }
+                          },
+                          label: "Lewati",
+                        ),
                       SizedBox(
                         height: 17,
                       ),

@@ -1,19 +1,22 @@
+import 'package:sidewi_mobile_app/models/request/login_request_model.dart';
 import 'package:sidewi_mobile_app/models/request/register_request_model.dart';
+import 'package:sidewi_mobile_app/models/response/login_response_model.dart';
 import 'package:sidewi_mobile_app/models/response/register_response_model.dart';
-import 'package:sidewi_mobile_app/services/auth_service.dart';
+import 'package:sidewi_mobile_app/services/api_service.dart';
 
-class RegisterRepository {
-  final APIService _apiService;
+// api service
+// Data dari provider dikirim ke service(API)
 
-  RegisterRepository(this._apiService);
+class UserRepository {
+  final ApiService apiService;
 
-  Future<RegisterResponseModel> register(RegisterRequestModel request) async {
-    try {
-      return await _apiService.register(request);
-    } catch (e) {
-      print('Error during registration: $e');
-      print('Error code: ${e.hashCode}');
-      throw Exception('Failed to register');
-    }
+  UserRepository(this.apiService);
+
+  Future<RegisterResponse> register(RegisterRequest request) {
+    return apiService.register(request);
+  }
+
+  Future<LoginResponse> login(LoginRequest request) {
+    return apiService.login(request);
   }
 }

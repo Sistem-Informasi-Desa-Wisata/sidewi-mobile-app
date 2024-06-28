@@ -1,33 +1,50 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sidewi_mobile_app/ui/widgets/button_back_widget.dart';
-import 'package:sidewi_mobile_app/ui/widgets/button_widget.dart';
-import 'package:sidewi_mobile_app/ui/widgets/input_section_widget.dart';
-import 'package:sidewi_mobile_app/ui/widgets/text_widget.dart';
-import 'package:sidewi_mobile_app/ui/widgets/wisata_widget.dart';
 
 class FakeScreen extends StatelessWidget {
-  const FakeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Outer Scaffold'),
-        ),
-        body: Center(
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text('Inner Scaffold'),
-            ),
-            body: Center(
-              child: Text('Content of Inner Scaffold'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Sliver Bottom Pinned Example'),
+      ),
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => ListTile(title: Text('Item #$index')),
+                  childCount: 50,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Container(
+                  height: 300,
+                  color: Colors.blueGrey,
+                  child: Center(
+                    child: Text(
+                      'Some Content Here',
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 60.0,
+              color: Colors.blue,
+              child: Center(
+                child: Text(
+                  'Pinned Bottom Bar',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

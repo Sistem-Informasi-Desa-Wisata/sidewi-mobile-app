@@ -1,36 +1,49 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sidewi_mobile_app/models/request/register_request_model.dart';
-import 'package:sidewi_mobile_app/models/response/register_response_model.dart';
 import 'package:sidewi_mobile_app/repository/user_repository.dart';
 
-import '../services/auth_service.dart';
+// Satate management register
+//  Data dari UI ke Repository
 
-class RegisterProvider extends ChangeNotifier {
-  final RegisterRepository _repository;
+class RegisterProvider with ChangeNotifier {
+  final UserRepository userRepository;
 
-  // Constructor RegisterProvider
-  RegisterProvider(APIService apiService)
-      : _repository = RegisterRepository(apiService);
+  RegisterProvider(this.userRepository);
 
-  late RegisterResponseModel _response;
   bool _isLoading = false;
+  String? _message;
+  String? _sucsesmessage;
+  bool _isSuccess = false;
 
-  RegisterResponseModel get response => _response;
   bool get isLoading => _isLoading;
+  String? get message => _message;
+  bool get isSuccess => _isSuccess;
 
-  Future<void> register(RegisterRequestModel request) async {
+  Future<void> register(
+      String nama, String no_telp, String email, String password
+      //  File foto
+      ) async {
     _isLoading = true;
     notifyListeners();
 
-    try {
-      _response = await _repository.register(request);
-    } catch (e) {
-      print('Error during registration: $e');
-      _response =
-          RegisterResponseModel(success: false, message: 'Failed to register');
-    }
+    final request = RegisterRequest(
+        nama: nama, no_telp: no_telp, email: email, password: password
+        // foto: foto
+        );
 
-    _isLoading = false;
-    notifyListeners();
+    try {
+      final response = await userRepository.register(request);
+      _message = response.msg;
+      _isSuccess = true;
+      _sucsesmessage = "Registrasi berhasil!";
+    } catch (e) {
+      _isSuccess = false;
+      _sucsesmessage = "Registrasi gagal!";
+      _message = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

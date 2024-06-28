@@ -69,20 +69,6 @@ class _SearchWidgetState extends State<SearchWidget> {
               ),
             ),
           ),
-          SizedBox(
-            width: 16,
-          ),
-          Container(
-            width: 32,
-            height: 32,
-            color: MyColors.mainGrey,
-            child: IconButton(
-              icon: Transform.scale(
-                  scale: 1.5,
-                  child: SvgPicture.asset('assets/icons/ic_candle.svg')),
-              onPressed: () {},
-            ),
-          )
         ],
       ),
     );

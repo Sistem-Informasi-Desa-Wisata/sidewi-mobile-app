@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sidewi_mobile_app/ui/widgets/berita_widget.dart';
+import 'package:sidewi_mobile_app/ui/widgets/produk_widget.dart';
+import 'package:sidewi_mobile_app/ui/widgets/wisata_widget.dart';
 
 class DetailScreen extends StatelessWidget {
   const DetailScreen({super.key});
@@ -16,9 +19,36 @@ class DetailScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+                    alignment: Alignment.topCenter,
                     height: 376,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 60, horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: SvgPicture.asset(
+                                  'assets/icons/ic_back_white.svg')),
+                          IconButton(
+                              onPressed: null,
+                              icon:
+                                  SvgPicture.asset('assets/icons/ic_share.svg'))
+                        ],
+                      ),
+                    ),
                   ),
                   Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16),
+                        topRight: Radius.circular(16),
+                      ),
+                    ),
                     height: 800,
                     child: DetailPage(),
                   )
@@ -58,14 +88,16 @@ class _DetailPageState extends State<DetailPage>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
       child: Column(
         children: [
           // Heading tab pagination section
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: Color(0x0D000000),
@@ -249,21 +281,21 @@ class DetailTab extends StatelessWidget {
 class BeritaTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Berita'));
+    return ListBeritaWidget();
   }
 }
 
 class WisataTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Wisata'));
+    return ListWisataWidget();
   }
 }
 
 class ProdukTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Produk'));
+    return ListProdukWidget();
   }
 }
 
@@ -275,20 +307,22 @@ class BackgroundDetail extends StatelessWidget {
     return Container(
       alignment: Alignment.topLeft,
       height: 400,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 56, horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-                onPressed: null,
-                icon: SvgPicture.asset('assets/icons/ic_back_white.svg')),
-            IconButton(
-                onPressed: null,
-                icon: SvgPicture.asset('assets/icons/ic_share.svg'))
-          ],
-        ),
-      ),
+      // child: Padding(
+      //   padding: const EdgeInsets.symmetric(vertical: 56, horizontal: 20),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //     children: [
+      //       IconButton(
+      //           onPressed: () {
+      //             Navigator.pop(context);
+      //           },
+      //           icon: SvgPicture.asset('assets/icons/ic_back_white.svg')),
+      //       IconButton(
+      //           onPressed: null,
+      //           icon: SvgPicture.asset('assets/icons/ic_share.svg'))
+      //     ],
+      //   ),
+      // ),
       decoration: BoxDecoration(
         image: DecorationImage(
             image: AssetImage('assets/images/detail_foto.png'),
