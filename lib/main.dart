@@ -17,12 +17,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< Updated upstream
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+=======
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => RegisterProvider(UserRepository(ApiService())),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => LoginProvider(
+              UserRepository(ApiService())), // Tambahkan LoginProvider
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+          useMaterial3: true,
+        ),
+        home: DefaultHome(),
+>>>>>>> Stashed changes
       ),
       home: DefaultHome(),
     );

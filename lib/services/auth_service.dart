@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -30,4 +31,8 @@ class APIService {
       throw Exception('Failed to register');
     }
   }
+=======
+class ApiConfig {
+  static const String baseUrl = 'http://10.0.2.2:3000/';
+>>>>>>> Stashed changes
 }
