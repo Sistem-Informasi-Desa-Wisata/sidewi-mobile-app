@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 Widget NotificationCard(
-    BuildContext context, double top, String title, String description,
+    BuildContext context, double top,String description,
     [bool extraImage = false]) {
   return Positioned(
     left: 24,
@@ -39,20 +39,11 @@ Widget NotificationCard(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
                   description,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: Color(0xFF9FA5A9),
+                    color: Color.fromARGB(255, 0, 0, 0),
                     fontSize: 12,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,

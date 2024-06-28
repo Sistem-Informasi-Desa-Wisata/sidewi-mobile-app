@@ -8,7 +8,7 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Notifikasi',
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -29,94 +29,65 @@ class NotificationScreen extends StatelessWidget {
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+          child: ListView(
             children: [
-              SizedBox(height: 12), // Using SizedBox for margin
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0x0C000000),
-                      blurRadius: 24,
-                      offset: Offset(0, 1),
-                      spreadRadius: 4,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
-                  children: [
-                    Text(
-                      'Hari ini',
-                      style: TextStyle(
-                        color: Color(0xFF9FA5A9),
-                        fontSize: 16,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 12), // Adjust spacing as needed
-                    NotificationCard(
-                      context,
-                      147,
-                      "Desa Jatiluwih memposting berita baru",
-                      "Festival Budaya merupakan sebuah acara tahunan yang diadakan di Desa Jatiluwih, Kabupaten Badung, Bali. Festival ini bertujuan untuk melestarikan seni, adat, dan budaya Bali, khususnya yang ada di Desa Sangeh",
-                    ),
-                    NotificationCard(
-                      context,
-                      147,
-                      "Desa Jatiluwih memposting berita baru",
-                      "Festival Budaya merupakan sebuah acara tahunan yang diadakan di Desa Jatiluwih, Kabupaten Badung, Bali. Festival ini bertujuan untuk melestarikan seni, adat, dan budaya Bali, khususnya yang ada di Desa Sangeh",
-                    ),
-                  ],
-                ),
+              const SizedBox(height: 12),
+              _buildNotificationSection(
+                context: context,
+                title: 'Hari ini',
+                notifications: [
+                  "Festival Budaya merupakan sebuah acara tahunan yang diadakan di Desa Jatiluwih, Kabupaten Badung, Bali. Festival ini bertujuan untuk melestarikan seni, adat, dan budaya Bali, khususnya yang ada di Desa Sangeh",
+                  "Festival Budaya merupakan sebuah acara tahunan yang diadakan di Desa Jatiluwih, Kabupaten Badung, Bali. Festival ini bertujuan untuk melestarikan seni, adat, dan budaya Bali, khususnya yang ada di Desa Sangeh",
+                ],
               ),
-              SizedBox(height: 12),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0x0C000000),
-                      blurRadius: 24,
-                      offset: Offset(0, 1),
-                      spreadRadius: 4,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
-                  children: [
-                    Text(
-                      'Kemarin',
-                      style: TextStyle(
-                        color: Color(0xFF9FA5A9),
-                        fontSize: 16,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 12), // Adjust spacing as needed
-                    NotificationCard(
-                      context,
-                      147,
-                      "Desa Jatiluwih memposting berita baru",
-                      "Festival Budaya merupakan sebuah acara tahunan yang diadakan di Desa Jatiluwih, Kabupaten Badung, Bali. Festival ini bertujuan untuk melestarikan seni, adat, dan budaya Bali, khususnya yang ada di Desa Sangeh",
-                    ),
-                    NotificationCard(
-                      context,
-                      147,
-                      "Desa Jatiluwih memposting berita baru",
-                      "Festival Budaya merupakan sebuah acara tahunan yang diadakan di Desa Jatiluwih, Kabupaten Badung, Bali. Festival ini bertujuan untuk melestarikan seni, adat, dan budaya Bali, khususnya yang ada di Desa Sangeh",
-                    ),
-                  ],
-                ),
+              const SizedBox(height: 12),
+              _buildNotificationSection(
+                context: context,
+                title: 'Kemarin',
+                notifications: [
+                  "Festival Budaya merupakan sebuah acara tahunan yang diadakan di Desa Jatiluwih, Kabupaten Badung, Bali. Festival ini bertujuan untuk melestarikan seni, adat, dan budaya Bali, khususnya yang ada di Desa Sangeh",
+                  "Festival Budaya merupakan sebuah acara tahunan yang diadakan di Desa Jatiluwih, Kabupaten Badung, Bali. Festival ini bertujuan untuk melestarikan seni, adat, dan budaya Bali, khususnya yang ada di Desa Sangeh",
+                ],
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildNotificationSection({required BuildContext context, required String title, required List<String> notifications}) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x0C000000),
+            blurRadius: 24,
+            offset: Offset(0, 1),
+            spreadRadius: 4,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: Color(0xFF9FA5A9),
+              fontSize: 16,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 12),
+          ...notifications.map((notification) => NotificationCard(
+            context, // Pass context here if needed
+            147,
+            notification,
+          )),
+        ],
       ),
     );
   }
