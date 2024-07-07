@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sidewi_mobile_app/middleware/routeGuard.dart'; // Sesuaikan dengan lokasi file RouteGuard Anda
 import 'package:sidewi_mobile_app/provider/login_provider.dart';
 import 'package:sidewi_mobile_app/provider/register_provider.dart';
+import 'package:sidewi_mobile_app/provider/logout_provider.dart';
 import 'package:sidewi_mobile_app/repository/user_repository.dart';
 import 'package:sidewi_mobile_app/services/api_service.dart';
 import 'package:sidewi_mobile_app/ui/screens/detail_berita.dart';
@@ -37,6 +39,10 @@ class MyApp extends StatelessWidget {
           create: (_) => LoginProvider(
               UserRepository(ApiService())), // Tambahkan LoginProvider
         ),
+        ChangeNotifierProvider(
+          create: (_) => LogoutProvider(
+              UserRepository(ApiService())), // Tambahkan LoginProvider
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -45,7 +51,26 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: DefaultHome(),
+        onGenerateRoute: RouteGuard.onGenerateRoute((context, args) {
+          // Definisikan halaman yang memerlukan autentikasi di sini
+          if (args?['route'] == '/home') {
+            return HomeScreen();
+          } else if (args?['route'] == '/detail') {
+            // Contoh halaman lain yang memerlukan autentikasi
+            return DetailScreen();
+          }
+          // Jika tidak sesuai dengan halaman yang memerlukan autentikasi,
+          // arahkan ke halaman login
+          return LoginScreen();
+        }),
+        initialRoute: '/login',
+        // Atur halaman login sebagai halaman awal
+        routes: {
+          '/login': (context) => LoginScreen(),
+          '/home': (context) => HomeScreen(),
+          '/detail': (context) => DetailScreen(),
+          // Definisikan halaman lain di sini
+        },
       ),
     );
   }
