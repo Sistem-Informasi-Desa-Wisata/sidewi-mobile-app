@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:sidewi_mobile_app/models/request/login_request_model.dart';
 import 'package:sidewi_mobile_app/models/request/register_request_model.dart';
+import 'package:sidewi_mobile_app/models/response/desawisata_response_model.dart';
 import 'package:sidewi_mobile_app/models/response/login_response_model.dart';
 import 'package:sidewi_mobile_app/models/response/register_response_model.dart';
 import 'package:sidewi_mobile_app/services/auth_service.dart';
@@ -54,6 +55,19 @@ class ApiService {
       }
     } else {
       throw Exception('Failed to login: ${response.statusCode}');
+    }
+  }
+
+// service untuk desa wisata
+  Future<List<DesaWisata>> fetchDesa() async {
+    final response =
+        await http.get(Uri.parse('${ApiConfig.baseUrl}desawisata'));
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((data) => DesaWisata.fromJson(data)).toList();
+    } else {
+      throw Exception('Failed to load destinasi');
     }
   }
 }

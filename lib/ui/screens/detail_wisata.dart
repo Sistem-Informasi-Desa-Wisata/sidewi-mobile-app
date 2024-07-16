@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/colors.dart';
+import 'package:sidewi_mobile_app/ui/screens/review_screen.dart';
 import 'package:sidewi_mobile_app/ui/widgets/ReviewCardWidget.dart';
 
 class DetailWisataScreen extends StatelessWidget {
@@ -106,17 +107,7 @@ class DetailWisataScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Text(
-                        "25 Januari 2024",
-                        style: const TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff000000),
-                          height: 15 / 12,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
+
                       Padding(
                         padding: const EdgeInsets.only(top: 16, bottom: 24),
                         child: Container(
@@ -179,48 +170,33 @@ class DetailWisataScreen extends StatelessWidget {
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: Container(
-                  // width: 268,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: MyColors.mainGrey,
-                      hintText: 'Berikan Ulasan ...',
-                      hintStyle: TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: MyColors.textGrey,
-                        height: 12 / 12,
-                      ),
-                      border: OutlineInputBorder(
-                        // Menggunakan OutlineInputBorder
-                        borderRadius: BorderRadius.circular(
-                            8.0), // Menetapkan border radius di sini
-                        borderSide: BorderSide.none, // Tidak ada border tepi
-                      ),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-                      suffixIcon: IconButton(
-                        icon: Transform.scale(
-                          scale: 1,
-                          child: SvgPicture.asset(
-                            'assets/icons/ic_send.svg',
-                            height: 24,
-                            width: 24,
-                          ),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ReviewScreen()));
+                  },
+                  child: Container(
+                    width: 260,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Berikan Ulasan",
+                        style: const TextStyle(
+                          fontFamily: "Montserrat",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          height: 15 / 12,
                         ),
-                        onPressed: () {
-                          // Lakukan sesuatu ketika tombol pencarian ditekan
-                          print('Search button pressed');
-                        },
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                    onChanged: null,
                   ),
                 ),
               ),

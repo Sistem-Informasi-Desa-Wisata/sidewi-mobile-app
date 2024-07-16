@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sidewi_mobile_app/ui/screens/detail_wisata.dart';
-import 'package:sidewi_mobile_app/ui/widgets/card_item_widget.dart';
+import 'package:sidewi_mobile_app/ui/widgets/caard_item_wisata_widget.dart';
 
 class ListWisataWidget extends StatelessWidget {
   const ListWisataWidget({super.key});
@@ -19,7 +19,7 @@ class ListWisataWidget extends StatelessWidget {
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
-              child: CardItemWidget(
+              child: CardItemWisataWidget(
                 onTap: () {
                   Navigator.push(
                       context,

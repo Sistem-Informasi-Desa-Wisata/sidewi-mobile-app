@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/colors.dart';
 import 'package:sidewi_mobile_app/ui/widgets/category_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/header_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/search_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/destinasi_widget.dart';
+import 'package:sidewi_mobile_app/ui/widgets/search_widget_statis.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -40,10 +42,10 @@ class HomeScreen extends StatelessWidget {
                         height: 64,
                       ),
                       HeaderWidget(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 24),
-                        child: SearchWidget(),
-                      )
+                      SizedBox(
+                        height: 20,
+                      ),
+                      SearchWidgetStatis()
                     ],
                   ),
                 ),
@@ -59,15 +61,16 @@ class HomeScreen extends StatelessWidget {
                     padding:
                         const EdgeInsets.only(top: 24.0, bottom: 12, left: 6),
                     child: Container(
-                        // color: Colors.amber,
-                        child: Center(child: ListCategoryWidget())),
+                        width: double.infinity, child: ListCategoryWidget()),
                   ),
 
                   // List Wisata
-                  Container(
-                    height: 150,
-                    width: double.infinity,
-                    child: DestinasiWidgetListHorizontal(),
+                  SizedBox(
+                    height: 140,
+                    width: MediaQuery.of(context).size.width,
+                    child: Container(
+                        width: double.infinity,
+                        child: DestinasiWidgetListHorizontal()),
                   ),
 
                   // Text

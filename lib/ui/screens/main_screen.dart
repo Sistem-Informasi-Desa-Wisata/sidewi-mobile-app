@@ -46,8 +46,8 @@ class _MainScreen extends State<MainScreen> {
               label: "Home"),
           BottomNavigationBarItem(
               icon: SvgPicture.asset(_selectedIndex == 1
-                  ? 'assets/icons/ic_favorite_active.svg'
-                  : 'assets/icons/ic_favorite_nonactive.svg'),
+                  ? 'assets/icons/ic_bottom_love_active.svg'
+                  : 'assets/icons/ic_bottom_love_nonactive.svg'),
               label: "Favorite"),
           BottomNavigationBarItem(
               icon: SvgPicture.asset(_selectedIndex == 2

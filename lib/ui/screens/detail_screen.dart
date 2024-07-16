@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sidewi_mobile_app/models/response/desawisata_response_model.dart';
 import 'package:sidewi_mobile_app/ui/widgets/berita_widget.dart';
+import 'package:sidewi_mobile_app/ui/widgets/detail_desa_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/produk_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/wisata_widget.dart';
 
@@ -72,6 +74,8 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
+  bool _isFavorite = true;
 
   @override
   void initState() {
@@ -145,10 +149,15 @@ class _DetailPageState extends State<DetailPage>
                         child: Center(
                           child: GestureDetector(
                               onTap: () {
-                                // Aksi ketika tombol ditekan
+                                setState(() {
+                                  _isFavorite = !_isFavorite;
+                                });
                               },
-                              child: SvgPicture.asset(
-                                  'assets/icons/ic_full_love.svg')),
+                              child: _isFavorite == true
+                                  ? SvgPicture.asset(
+                                      'assets/icons/ic_full_love.svg')
+                                  : SvgPicture.asset(
+                                      'assets/icons/ic_bottom_love_nonactive.svg')),
                         ),
                       )
                     ],
@@ -206,75 +215,7 @@ class _DetailPageState extends State<DetailPage>
 class DetailTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Desa Sangeh, Terletak sekitar 35 km dari Bandara Internasional I Gusti Ngurah Rai, dapat ditempuh dalam waktu 1 jam. Daerah ini terletak di Desa Sangeh, Kecamatan Abiansemal, Kabupaten Badung.\n\n"
-            "Hutan Sangeh atau kadang-kadang disebut sebagai Hutan Pala dikenal dengan hutan seluas 13 hektar yang didominasi oleh pohon pala dan mayoritas penghuninya adalah kera abu-abu berekor panjang (Macaca fascicularis).\n\n"
-            "Berdasarkan pada mitologi, nama Sangeh terdiri dari dua kata, yaitu 'Sang' yang berarti 'manusia' dan 'Ngeh' yang berarti 'Lihat'. Jadi Sangeh dapat ditafsirkan sebagai orang yang 'Lihat'. Menurut legenda, hutan yang sekarang disebut Sangeh terjadi ketika seorang putri para Dewa dari Gunung Agung ingin pindah ke Mengwi. Di malam hari hutan pala juga berjalan untuk menemani Dewi. Namun, dalam perjalanan mereka, ada orang-orang yang melihat gerakan mereka, lalu hutan berhenti di sana hingga saat ini. Sang Dewi kemudian disebut sebagai memiliki kuilnya di Bukit Sari Temple, kuil di tengah Hutan Sangeh sementara prajuritnya dikutuk ke dalam monyet yang tetap setia untuk menemani Dewi di hutan.\n\n"
-            "Memasuki daerah ini, di Candi Bentar (gerbang), ada patung besar seorang kesatria raksasa, yaitu, kumbakarna diserang oleh puluhan kera. Patung itu menggambarkan kisah boneka Ramayana yang sangat terkenal di Bali. Sekitar Status Kumbakarna ada dua patung singa. Ada sebuah kuil kecil yang disebut Candi Melanting di tengah kawasan hutan dan kuil besar yang disebut Candi Pucak Sari. Di ujung jalan menuju jalan keluar, ada pohon pala suci yang sangat besar.\n\n"
-            "Pohon-pohon ini memiliki keunikan dan mereka disebut sebagai pohon Lanang dan Wadon (pohon jantan-betina). Ini bertiga dinamai demikian, karena pohon pala berbentuk seperti alat kelamin laki-laki dan perempuan yang saling berdampingan. Keajaiban pohon-pohon itu merupakan keunikan yang menarik di kawasan wisata sangeh",
-            style: const TextStyle(
-              fontFamily: "Montserrat",
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: Color(0xff000000),
-              height:
-                  1.0, // Sesuaikan dengan jenis font dan ukuran yang digunakan
-            ),
-            textAlign: TextAlign.left,
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Text(
-            "Lokasi",
-            style: const TextStyle(
-              fontFamily: "Montserrat",
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xff000000),
-              height: 20 / 16,
-            ),
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          Card(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            clipBehavior: Clip.antiAlias,
-            child: Container(
-              height: 200,
-              width: double.infinity, // Optional: Adjust width if needed
-              child: Image.asset(
-                'assets/images/lokasi_foto.png', // Path to your image asset
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Text(
-            "Kontak",
-            style: const TextStyle(
-              fontFamily: "Montserrat",
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xff000000),
-              height: 20 / 16,
-            ),
-            textAlign: TextAlign.left,
-          )
-        ],
-      ),
-    );
+    return DetailDesaWidget();
   }
 }
 
@@ -307,22 +248,6 @@ class BackgroundDetail extends StatelessWidget {
     return Container(
       alignment: Alignment.topLeft,
       height: 400,
-      // child: Padding(
-      //   padding: const EdgeInsets.symmetric(vertical: 56, horizontal: 20),
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //     children: [
-      //       IconButton(
-      //           onPressed: () {
-      //             Navigator.pop(context);
-      //           },
-      //           icon: SvgPicture.asset('assets/icons/ic_back_white.svg')),
-      //       IconButton(
-      //           onPressed: null,
-      //           icon: SvgPicture.asset('assets/icons/ic_share.svg'))
-      //     ],
-      //   ),
-      // ),
       decoration: BoxDecoration(
         image: DecorationImage(
             image: AssetImage('assets/images/detail_foto.png'),

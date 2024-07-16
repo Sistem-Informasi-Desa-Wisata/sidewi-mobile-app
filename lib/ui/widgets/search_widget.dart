@@ -21,7 +21,7 @@ class _SearchWidgetState extends State<SearchWidget> {
             // untuk search
             child: Container(
               // width: 268,
-              height: 32,
+              height: 35,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
               ),
@@ -35,7 +35,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     color: MyColors.textGrey,
-                    height: 12 / 12,
+                    // height: 12 / 12,
                   ),
                   border: OutlineInputBorder(
                     // Menggunakan OutlineInputBorder
@@ -50,8 +50,8 @@ class _SearchWidgetState extends State<SearchWidget> {
                       scale: 1.5,
                       child: SvgPicture.asset(
                         'assets/icons/ic_search.svg',
-                        height: 24,
-                        width: 24,
+                        height: 15,
+                        width: 15,
                       ),
                     ),
                     onPressed: () {
