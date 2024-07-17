@@ -1,6 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:sidewi_mobile_app/models/response/desawisata_response_model.dart';
+import 'package:sidewi_mobile_app/provider/desa_provider.dart';
+import 'package:sidewi_mobile_app/ui/widgets/destinasi_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/search_widget.dart';
 
 class SearchingScreen extends StatelessWidget {
@@ -95,17 +101,7 @@ class SearchingScreen extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: Text(
-                      "Paling Banyak dicari",
-                      style: const TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff000000),
-                        height: 20 / 16,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
+                    child: DestinasiWidgetListVertical(),
                   )
                 ],
               ),
@@ -113,6 +109,57 @@ class SearchingScreen extends StatelessWidget {
           ]),
         ),
       ]),
+    );
+  }
+}
+
+class DestinasiWidgetListVertical extends StatefulWidget {
+  const DestinasiWidgetListVertical({super.key});
+
+  @override
+  State<DestinasiWidgetListVertical> createState() =>
+      _DestinasiWidgetListVerticalState();
+}
+
+class _DestinasiWidgetListVerticalState
+    extends State<DestinasiWidgetListVertical> {
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Gunakan WidgetsBinding untuk memanggil fetchDesa setelah build selesai
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Provider.of<DesaProvider>(context, listen: false).fetchDesa().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final desaProvider = Provider.of<DesaProvider>(context);
+
+    if (desaProvider.isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    return SizedBox(
+      child: ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          scrollDirection: Axis.vertical,
+          itemCount: desaProvider.desaList.length,
+          itemBuilder: (context, index) {
+            DesaWisata desaWisata = desaProvider.desaList[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: DestinasiItemsWidgetVertical(desaWisata: desaWisata),
+            );
+          }),
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sidewi_mobile_app/ui/screens/detail_produk_screen.dart';
+import 'package:sidewi_mobile_app/ui/screens/review_screen.dart';
 
 class ListProdukWidget extends StatelessWidget {
   const ListProdukWidget({super.key});
@@ -31,75 +33,81 @@ class ProdukItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Stack(
-        children: [
-          Container(
-            width: 150,
-            height: 200,
-            decoration: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.circular(8),
-              image: DecorationImage(
-                image: AssetImage('assets/images/foto_berita.png'),
-                fit: BoxFit.cover,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => DetailProdukScreen()));
+        },
+        child: Stack(
+          children: [
+            Container(
+              width: 150,
+              height: 200,
+              decoration: BoxDecoration(
+                color: Colors.amber,
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                  image: AssetImage('assets/images/foto_berita.png'),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          Container(
-            width: 150,
-            height: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              gradient: LinearGradient(
-                colors: [
-                  Color(0XFF00000000).withOpacity(0),
-                  Color(0XFF00000000).withOpacity(0.7),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+            Container(
+              width: 150,
+              height: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0XFF00000000).withOpacity(0),
+                    Color(0XFF00000000).withOpacity(0.7),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8, bottom: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 90,
-                    child: Text(
-                      "Festival Budaya Sangeh",
-                      style: const TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8, bottom: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 90,
+                      child: Text(
+                        "Beras Merah Cendana",
+                        style: const TextStyle(
+                          fontFamily: "Montserrat",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      textAlign: TextAlign.left,
                     ),
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-                  Container(
-                    width: 50,
-                    child: Text(
-                      "25 Mei 2024",
-                      style: const TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 8,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white,
-                        height: 10 / 8,
+                    SizedBox(
+                      height: 6,
+                    ),
+                    Container(
+                      width: 50,
+                      child: Text(
+                        "Rp 40.000",
+                        style: const TextStyle(
+                          fontFamily: "Montserrat",
+                          fontSize: 8,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                          height: 10 / 8,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      textAlign: TextAlign.left,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/colors.dart';
+import 'package:sidewi_mobile_app/ui/screens/detail_berita.dart';
+import 'package:sidewi_mobile_app/ui/screens/list_desa_screen.dart';
 import 'package:sidewi_mobile_app/ui/widgets/category_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/header_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/search_widget.dart';
@@ -87,7 +89,7 @@ class HomeScreen extends StatelessWidget {
                               fontFamily: "Montserrat",
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xff000000),
+                              color: Colors.black,
                               height: 24 / 20,
                             ),
                             textAlign: TextAlign.center,
@@ -101,7 +103,13 @@ class HomeScreen extends StatelessWidget {
                                   scale: 1.5,
                                   child: SvgPicture.asset(
                                       'assets/icons/ic_next.svg')),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ListDesaScreen()));
+                              },
                             ),
                           )
                         ],
