@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sidewi_mobile_app/views/screens/kelolaakun_screen.dart';
 import 'package:sidewi_mobile_app/views/screens/list_desa_screen.dart';
 import 'views/screens/favorite_screen.dart';
 import 'views/screens/final_regis_screen.dart';
@@ -35,8 +36,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<AuthViewModel>(
         builder: (context, authViewModel, child) {
           return MaterialApp(
-            home: MainScreen(),
-            // home: authViewModel.user != null ? MainScreen() : LoginScreen(),
+            home: authViewModel.user != null ? MainScreen() : LoginScreen(),
             routes: {
               '/login_screen': (context) => LoginScreen(),
               '/register-screen': (context) => RegisterScreen(),
