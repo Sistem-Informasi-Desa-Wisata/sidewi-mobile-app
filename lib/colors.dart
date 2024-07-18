@@ -6,4 +6,5 @@ class MyColors {
   static const Color buttonColor = Color(0xFF007BA7);
   static const Color SecondaryColor = Color(0xff1e4e58);
   static const Color PrimaryColor = Color(0xFF53BFCB);
+  static const Color DangerColor = Color.fromARGB(255, 248, 60, 91);
 }
