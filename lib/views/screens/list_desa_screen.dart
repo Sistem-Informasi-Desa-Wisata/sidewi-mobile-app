@@ -173,9 +173,15 @@ class ListDesaWidget extends StatelessWidget {
   }
 }
 
-class DesaItemWidget extends StatelessWidget {
+class DesaItemWidget extends StatefulWidget {
   const DesaItemWidget({super.key});
 
+  @override
+  State<DesaItemWidget> createState() => _DesaItemWidgetState();
+}
+
+class _DesaItemWidgetState extends State<DesaItemWidget> {
+  bool _isFavorite = true;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -192,7 +198,6 @@ class DesaItemWidget extends StatelessWidget {
                 width: 160,
                 height: 200,
                 decoration: BoxDecoration(
-                  color: Colors.amber,
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
                     image: AssetImage('assets/images/foto_berita.png'),
@@ -218,41 +223,96 @@ class DesaItemWidget extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 8, bottom: 10),
+                  padding: const EdgeInsets.only(
+                      top: 12, left: 8, right: 8, bottom: 18),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        width: 90,
-                        child: Text(
-                          "Beras Merah Cendana",
-                          style: const TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    transitionDuration: Duration(
+                                        milliseconds: 500), // Durasi animasi
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        DetailScreen(),
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      var begin = Offset(1.0, 0.0);
+                                      var end = Offset.zero;
+                                      var curve = Curves.ease;
+
+                                      var tween = Tween(begin: begin, end: end)
+                                          .chain(CurveTween(curve: curve));
+
+                                      return FadeTransition(
+                                        opacity: animation,
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                height: 80,
+                              ),
+                            ),
                           ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 6,
-                      ),
-                      Container(
-                        width: 50,
-                        child: Text(
-                          "Rp 40.000",
-                          style: const TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: 8,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
-                            height: 10 / 8,
+                          Container(
+                            alignment: Alignment.topRight,
+                            width: 24,
+                            height: 24,
+                            child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isFavorite =
+                                        !_isFavorite; // Toggle nilai _isFavorite
+                                  });
+                                },
+                                child: _isFavorite == true
+                                    ? SvgPicture.asset(
+                                        'assets/icons/ic_favorite_active.svg')
+                                    : SvgPicture.asset(
+                                        'assets/icons/ic_favorite_nonactive.svg')),
                           ),
-                          textAlign: TextAlign.left,
-                        ),
+                        ],
                       ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Sangeh",
+                            // widget.desaWisata.nama,
+                            style: const TextStyle(
+                              fontFamily: "Montserrat",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                              height: 15 / 12,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          Text(
+                            "Kabupaten Badung",
+                            style: const TextStyle(
+                              fontFamily: "Montserrat",
+                              fontSize: 8,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                              height: 10 / 8,
+                            ),
+                            textAlign: TextAlign.left,
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
