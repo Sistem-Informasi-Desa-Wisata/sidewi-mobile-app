@@ -43,7 +43,7 @@ class AuthViewModel extends ChangeNotifier {
       // Mendapatkan token dari service
       final String accessToken = await _authService.login(email, password);
       _accessToken = accessToken;
-
+      print(_accessToken);
       // Memproses JWT dan menyimpan hasilnya di _user
       final decodedToken = _authService.parseJwt(accessToken);
 
@@ -79,6 +79,7 @@ class AuthViewModel extends ChangeNotifier {
       if (_accessToken != null) {
         await _authService.logout(_accessToken!);
       }
+      print("logout success");
       _accessToken = null;
       _user = null;
       notifyListeners();
