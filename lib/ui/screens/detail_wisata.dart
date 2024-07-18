@@ -140,7 +140,7 @@ class DetailWisataScreen extends StatelessWidget {
                           height:
                               1.0, // Sesuaikan dengan jenis font dan ukuran yang digunakan
                         ),
-                        textAlign: TextAlign.left,
+                        textAlign: TextAlign.justify,
                       ),
 
                       Padding(

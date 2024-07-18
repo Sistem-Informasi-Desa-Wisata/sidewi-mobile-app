@@ -20,7 +20,7 @@ class _ListCategoryWidgetState extends State<ListCategoryWidget> {
       height: 24,
       child: Center(
         child: Container(
-          constraints: BoxConstraints(maxWidth: 320),
+          constraints: BoxConstraints(maxWidth: 350),
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.zero,

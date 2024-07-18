@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sidewi_mobile_app/ui/widgets/webView_map_wdiget.dart';
 
 class DetailDesaWidget extends StatelessWidget {
   @override
@@ -22,7 +23,7 @@ class DetailDesaWidget extends StatelessWidget {
               height:
                   1.0, // Sesuaikan dengan jenis font dan ukuran yang digunakan
             ),
-            textAlign: TextAlign.left,
+            textAlign: TextAlign.justify,
           ),
           SizedBox(
             height: 24,
@@ -40,22 +41,18 @@ class DetailDesaWidget extends StatelessWidget {
           SizedBox(
             height: 12,
           ),
-          Card(
+          Material(
             elevation: 4,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            clipBehavior: Clip.antiAlias,
             child: Container(
-              height: 200,
-              width: double.infinity,
-              // child: WebMap(),
-              // Optional: Adjust width if needed
-              child: Image.asset(
-                'assets/images/dummymap.png', // Path to your image asset
-                fit: BoxFit.cover,
-              ),
-            ),
+                width: double.infinity,
+                height: 300,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: MapPage()),
           ),
           SizedBox(
             height: 24,

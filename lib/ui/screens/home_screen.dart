@@ -60,8 +60,10 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   // Category
                   Padding(
-                    padding:
-                        const EdgeInsets.only(top: 24.0, bottom: 12, left: 6),
+                    padding: const EdgeInsets.only(
+                      top: 24.0,
+                      bottom: 12,
+                    ),
                     child: Container(
                         width: double.infinity, child: ListCategoryWidget()),
                   ),

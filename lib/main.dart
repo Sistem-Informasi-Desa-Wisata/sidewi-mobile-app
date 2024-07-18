@@ -23,6 +23,7 @@ import 'package:sidewi_mobile_app/ui/widgets/berita_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/destinasi_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/detail_desa_widget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/produk_widget.dart';
+import 'package:sidewi_mobile_app/ui/widgets/webView_map_wdiget.dart';
 import 'package:sidewi_mobile_app/ui/widgets/wisata_widget.dart';
 
 void main() {
@@ -62,6 +63,6 @@ class DefaultHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(resizeToAvoidBottomInset: false, body: HomeScreen());
+    return Scaffold(resizeToAvoidBottomInset: false, body: MainScreen());
   }
 }

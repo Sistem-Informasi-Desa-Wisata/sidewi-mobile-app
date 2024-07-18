@@ -144,7 +144,7 @@ class DetailBeritaScreen extends StatelessWidget {
                         height:
                             1.0, // Sesuaikan dengan jenis font dan ukuran yang digunakan
                       ),
-                      textAlign: TextAlign.left,
+                      textAlign: TextAlign.justify,
                     ),
                     SizedBox(
                       height: 24,
