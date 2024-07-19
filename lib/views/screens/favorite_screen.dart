@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/viewmodels/destinasiwisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
@@ -228,6 +229,166 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
   @override
   Widget build(BuildContext context) {
     // Implement your build logic here
-    return Container();
+    return Container(
+      child: Center(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                transitionDuration:
+                    Duration(milliseconds: 500), // Transition duration
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    DetailScreen(id: 1 /*widget.desaWisata.id*/),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  var fadeAnimation =
+                      Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.ease,
+                  ));
+                  return FadeTransition(opacity: fadeAnimation, child: child);
+                },
+              ),
+            );
+          },
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  width: 160,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    image: DecorationImage(
+                      image: AssetImage(
+                          'assets/images/foto_berita.png'), // Update with actual image URL if needed
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  width: 160,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0XFF00000000).withOpacity(0),
+                        Color(0XFF00000000).withOpacity(0.7),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 12, left: 8, right: 8, bottom: 18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(
+                                          milliseconds:
+                                              500), // Transition duration
+                                      pageBuilder: (context, animation,
+                                              secondaryAnimation) =>
+                                          DetailScreen(
+                                        id: 1, /*id: widget.desaWisata.id*/
+                                      ),
+                                      transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        var fadeAnimation =
+                                            Tween(begin: 0.0, end: 1.0)
+                                                .animate(CurvedAnimation(
+                                          parent: animation,
+                                          curve: Curves.ease,
+                                        ));
+                                        return FadeTransition(
+                                            opacity: fadeAnimation,
+                                            child: child);
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  height: 80,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.topRight,
+                              width: 24,
+                              height: 24,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isFavorite =
+                                        !_isFavorite; // Toggle favorite status
+                                  });
+                                  // Optionally, update favorite status in the ViewModel or API
+                                },
+                                child: _isFavorite
+                                    ? SvgPicture.asset(
+                                        'assets/icons/ic_favorite_active.svg')
+                                    : SvgPicture.asset(
+                                        'assets/icons/ic_favorite_nonactive.svg'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "nama desa wisata",
+                              // widget.desaWisata.nama,
+                              style: const TextStyle(
+                                fontFamily: "Montserrat",
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                height: 15 / 12,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                            Text(
+                              "alamat desa wisata",
+                              // widget.desaWisata.alamat, // Assuming there's a location field
+                              style: const TextStyle(
+                                fontFamily: "Montserrat",
+                                fontSize: 8,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                                height: 10 / 8,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
