@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:sidewi_mobile_app/views/screens/detail_screen.dart';
 import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/viewmodels/destinasiwisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/models/destinasiwisata_model.dart';
+import 'package:sidewi_mobile_app/views/screens/detail_screen.dart';
 import 'package:sidewi_mobile_app/services/api_config.dart';
 
-class FavoriteScreen extends StatelessWidget {
+class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
 
+  @override
+  State<FavoriteScreen> createState() => _FavoriteScreenState();
+}
+
+class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: DetailPage());
@@ -29,15 +32,17 @@ class _DetailPageState extends State<DetailPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  bool _isFavorite = true;
-
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    Provider.of<DesaWisataViewModel>(context, listen: false).fetchDesaWisata();
-    Provider.of<DestinasiWisataViewModel>(context, listen: false)
-        .fetchDestinasiWisataList();
+    // Fetch data here
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<DesaWisataViewModel>(context, listen: false)
+          .fetchDesaWisata();
+      Provider.of<DestinasiWisataViewModel>(context, listen: false)
+          .fetchDestinasiWisataList();
+    });
   }
 
   @override
@@ -129,7 +134,12 @@ class _DetailPageState extends State<DetailPage>
   }
 }
 
-class Desa extends StatelessWidget {
+class Desa extends StatefulWidget {
+  @override
+  State<Desa> createState() => _DesaState();
+}
+
+class _DesaState extends State<Desa> {
   @override
   Widget build(BuildContext context) {
     var desaWisataList =
@@ -138,7 +148,12 @@ class Desa extends StatelessWidget {
   }
 }
 
-class Wisata extends StatelessWidget {
+class Wisata extends StatefulWidget {
+  @override
+  State<Wisata> createState() => _WisataState();
+}
+
+class _WisataState extends State<Wisata> {
   @override
   Widget build(BuildContext context) {
     var destinasiWisataList =
@@ -155,7 +170,7 @@ class ListWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       padding: EdgeInsets.only(left: 24, right: 24, top: 24),
-      itemCount: 10,
+      itemCount: items.length, // Use items.length here
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 0,
@@ -187,7 +202,9 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
   void initState() {
     super.initState();
     if (widget.item is DestinasiWisataModel) {
-      fetchCategoryName();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await fetchCategoryName();
+      });
     } else {
       setState(() {
         _isLoading = false;
@@ -200,181 +217,17 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
         Provider.of<DestinasiWisataViewModel>(context, listen: false);
     String? name = await viewModel.getCategoryName(
         (widget.item as DestinasiWisataModel).id_kategoridestinasi);
-    setState(() {
-      _kategoriNama = name;
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _kategoriNama = name;
+        _isLoading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    String imageName;
-    String title;
-    String location;
-    int id;
-
-    if (widget.item is DesaWisataModel) {
-      var desaWisata = widget.item as DesaWisataModel;
-      imageName = (desaWisata.gambar != null && desaWisata.gambar.isNotEmpty)
-          ? '${ApiConfig.baseUrl}/resource/desawisata/${desaWisata.gambar}'
-          : 'assets/images/DefaultImage.jpg';
-      title = desaWisata.nama;
-      location = desaWisata.alamat;
-      id = desaWisata.id;
-    } else if (widget.item is DestinasiWisataModel) {
-      var destinasiWisata = widget.item as DestinasiWisataModel;
-      imageName = (destinasiWisata.gambar != null &&
-              destinasiWisata.gambar.isNotEmpty)
-          ? '${ApiConfig.baseUrl}/resource/destinasiwisata/${destinasiWisata.gambar}'
-          : 'assets/images/DefaultImage.jpg';
-      title = destinasiWisata
-          .nama; // Ensure title is also set for DestinasiWisataModel
-      location = _isLoading ? 'Loading...' : (_kategoriNama ?? 'Unknown');
-      id = destinasiWisata.id;
-    } else {
-      throw Exception('Unsupported model type');
-    }
-
-    return Center(
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailScreen(id: id),
-            ),
-          );
-        },
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Container(
-                width: 160,
-                height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  image: DecorationImage(
-                    image: AssetImage(imageName),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Container(
-                width: 160,
-                height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0XFF00000000).withOpacity(0),
-                      Color(0XFF00000000).withOpacity(0.7),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 12, left: 8, right: 8, bottom: 18),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    transitionDuration:
-                                        Duration(milliseconds: 500),
-                                    pageBuilder: (context, animation,
-                                            secondaryAnimation) =>
-                                        DetailScreen(id: id),
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
-                                      var begin = Offset(1.0, 0.0);
-                                      var end = Offset.zero;
-                                      var curve = Curves.ease;
-
-                                      var tween = Tween(begin: begin, end: end)
-                                          .chain(CurveTween(curve: curve));
-
-                                      return FadeTransition(
-                                        opacity: animation,
-                                        child: child,
-                                      );
-                                    },
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                color: Colors.transparent,
-                                height: 80,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.topRight,
-                            width: 24,
-                            height: 24,
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _isFavorite = !_isFavorite;
-                                });
-                              },
-                              child: _isFavorite
-                                  ? SvgPicture.asset(
-                                      'assets/icons/ic_favorite_active.svg')
-                                  : SvgPicture.asset(
-                                      'assets/icons/ic_favorite_nonactive.svg'),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: const TextStyle(
-                              fontFamily: "Montserrat",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                              height: 15 / 12,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                          Text(
-                            location,
-                            style: const TextStyle(
-                              fontFamily: "Montserrat",
-                              fontSize: 8,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white,
-                              height: 10 / 8,
-                            ),
-                            textAlign: TextAlign.left,
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    // Implement your build logic here
+    return Container();
   }
 }

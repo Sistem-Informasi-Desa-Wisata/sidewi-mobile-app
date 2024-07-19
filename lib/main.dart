@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sidewi_mobile_app/viewmodels/destinasiwisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/views/screens/kelolaakun_screen.dart';
 import 'package:sidewi_mobile_app/views/screens/list_desa_screen.dart';
 import 'views/screens/favorite_screen.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DesaWisataViewModel()),
-        ChangeNotifierProvider(create: (_) => DesaWisataViewModel()),
+        ChangeNotifierProvider(create: (_) => DestinasiWisataViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProxyProvider<AuthViewModel, UserViewModel>(
           create: (_) =>
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<AuthViewModel>(
         builder: (context, authViewModel, child) {
           return MaterialApp(
+            // home: FavoriteScreen(),
             home: authViewModel.user != null ? MainScreen() : LoginScreen(),
             routes: {
               '/login_screen': (context) => LoginScreen(),
