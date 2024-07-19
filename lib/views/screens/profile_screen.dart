@@ -132,18 +132,21 @@ class ProfileScreen extends StatelessWidget {
                     title: Text('Bantuan'),
                     trailing: Icon(Icons.chevron_right),
                     onTap: () async {
-                      const email = 'pradasantika04@gmail.com';
                       final Uri emailLaunchUri = Uri(
                         scheme: 'mailto',
-                        path: email,
+                        path: 'pradasantika04@gmail.com',
+                        query: encodeQueryParameters(
+                            <String, String>{'subject': 'Bantuan'}),
                       );
+
                       if (await canLaunchUrl(emailLaunchUri)) {
                         await launchUrl(emailLaunchUri);
                       } else {
-                        // Fallback or error handling
                         print('Could not launch $emailLaunchUri');
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('No email client available')),
+                          SnackBar(
+                              content: Text(
+                                  'No email client available or could not launch email client')),
                         );
                       }
                     },
@@ -199,4 +202,11 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+String? encodeQueryParameters(Map<String, String> params) {
+  return params.entries
+      .map((e) =>
+          '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+      .join('&');
 }

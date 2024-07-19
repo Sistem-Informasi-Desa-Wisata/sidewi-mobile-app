@@ -44,10 +44,11 @@ class _UploadFotoRegisState extends State<UploadFotoRegis> {
   }
 
   Future<void> _submit() async {
-    final authModel = Provider.of<AuthViewModel>(context, listen: false);
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
 
     try {
-      await authModel.register(widget.userData, _selectedImage);
+      
+      await authViewModel.register(widget.userData, _selectedImage);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registration successful')),
       );
@@ -62,7 +63,7 @@ class _UploadFotoRegisState extends State<UploadFotoRegis> {
 
   @override
   Widget build(BuildContext context) {
-    final authModel = Provider.of<AuthViewModel>(context, listen: false);
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
 
     return Scaffold(
       body: Stack(
@@ -165,8 +166,8 @@ class _UploadFotoRegisState extends State<UploadFotoRegis> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      if (authModel.loading) CircularProgressIndicator(),
-                      if (!authModel.loading)
+                      if (authViewModel.loading) CircularProgressIndicator(),
+                      if (!authViewModel.loading)
                         ButtonMainWidget(
                           onPressed: _submit,
                           label: "Lewati",

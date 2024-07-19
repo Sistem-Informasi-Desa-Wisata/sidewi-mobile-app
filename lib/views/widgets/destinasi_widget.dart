@@ -26,7 +26,9 @@ class _DestinasiWidgetListHorizontalState
     super.initState();
     // Gunakan WidgetsBinding untuk memanggil fetchDesa setelah build selesai
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Provider.of<DesaWisataViewModel>(context, listen: false).fetchDesaWisata().then((_) {
+      Provider.of<DesaWisataViewModel>(context, listen: false)
+          .fetchDesaWisata()
+          .then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -48,7 +50,8 @@ class _DestinasiWidgetListHorizontalState
           scrollDirection: Axis.horizontal,
           itemCount: desaWisataViewModel.desaWisataList.length,
           itemBuilder: (context, index) {
-            DesaWisataModel desaWisata = desaWisataViewModel.desaWisataList[index];
+            DesaWisataModel desaWisata =
+                desaWisataViewModel.desaWisataList[index];
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 6),
               child: DestinasiItemsWidget(desaWisata: desaWisata),
@@ -75,9 +78,6 @@ class _DestinasiItemsWidgetState extends State<DestinasiItemsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print('Nama Desa: ${widget.desaWisata.nama}');
-    print('Kabupaten: ${widget.desaWisata.kabupaten}');
-    print('Gambar: ${widget.desaWisata.gambar}');
     return Stack(
       children: [
         Container(
@@ -131,7 +131,7 @@ class _DestinasiItemsWidgetState extends State<DestinasiItemsWidget> {
                                   Duration(milliseconds: 500), // Durasi animasi
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                      DetailScreen(),
+                                      DetailScreen(id:widget.desaWisata.id),
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
                                 var begin = Offset(1.0, 0.0);
@@ -229,7 +229,9 @@ class _DestinasiWidgetListVerticalState
     super.initState();
     // Gunakan WidgetsBinding untuk memanggil fetchDesa setelah build selesai
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Provider.of<DesaWisataViewModel>(context, listen: false).fetchDesaWisata().then((_) {
+      Provider.of<DesaWisataViewModel>(context, listen: false)
+          .fetchDesaWisata()
+          .then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -253,7 +255,8 @@ class _DestinasiWidgetListVerticalState
           scrollDirection: Axis.vertical,
           itemCount: min(desaWisataViewModel.desaWisataList.length, 10),
           itemBuilder: (context, index) {
-            DesaWisataModel desaWisata = desaWisataViewModel.desaWisataList[index];
+            DesaWisataModel desaWisata =
+                desaWisataViewModel.desaWisataList[index];
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: DestinasiItemsWidgetVertical(desaWisata: desaWisata),
@@ -285,7 +288,7 @@ class _DestinasiItemsWidgetVerticalState
           PageRouteBuilder(
             transitionDuration: Duration(milliseconds: 500), // Durasi animasi
             pageBuilder: (context, animation, secondaryAnimation) =>
-                DetailScreen(),
+                DetailScreen(id:widget.desaWisata.id),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               var begin = Offset(1.0, 0.0);
@@ -365,8 +368,7 @@ class _DestinasiItemsWidgetVerticalState
                   Padding(
                       padding: const EdgeInsets.only(top: 79),
                       child: Text(
-                        // "Tenganan Pegringsingan",
-                        widget.desaWisata.kabupaten,
+                        widget.desaWisata.nama,
                         style: const TextStyle(
                           fontFamily: "Montserrat",
                           fontSize: 12,
@@ -377,7 +379,6 @@ class _DestinasiItemsWidgetVerticalState
                         textAlign: TextAlign.left,
                       )),
                   Text(
-                    // "Kabupaten Karangasem",
                     widget.desaWisata.kabupaten,
                     style: const TextStyle(
                       fontFamily: "Montserrat",

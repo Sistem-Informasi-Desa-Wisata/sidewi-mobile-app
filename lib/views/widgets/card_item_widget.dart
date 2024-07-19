@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:sidewi_mobile_app/models/berita_model.dart';
+import 'package:sidewi_mobile_app/services/api_config.dart';
+import 'package:intl/intl.dart';
 
 class CardItemWidget extends StatelessWidget {
-  const CardItemWidget({super.key, this.onTap});
+  final BeritaModel berita;
+  const CardItemWidget({super.key, this.onTap, required this.berita});
 
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final imageProvider = (berita.gambar != null && berita.gambar.isNotEmpty)
+        ? NetworkImage('${ApiConfig.baseUrl}/resource/berita/${berita.gambar}')
+        : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
     return GestureDetector(
       onTap: onTap,
       child: Padding(
@@ -16,9 +23,7 @@ class CardItemWidget extends StatelessWidget {
             height: 200,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              image: DecorationImage(
-                  image: AssetImage('assets/images/foto_berita.png'),
-                  fit: BoxFit.cover),
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
             ),
           ),
           Container(
@@ -53,7 +58,7 @@ class CardItemWidget extends StatelessWidget {
                         children: [
                           Expanded(child: SizedBox()),
                           Text(
-                            "25 Januari 2024",
+                            DateFormat('yyyy-MM-dd').format(berita.createdAt),
                             style: const TextStyle(
                               fontFamily: "Montserrat",
                               fontSize: 10,
@@ -64,7 +69,7 @@ class CardItemWidget extends StatelessWidget {
                             textAlign: TextAlign.left,
                           ),
                           Text(
-                            "Festival Budaya Sangeh",
+                            berita.judul,
                             style: const TextStyle(
                               fontFamily: "Montserrat",
                               fontSize: 12,
@@ -76,7 +81,7 @@ class CardItemWidget extends StatelessWidget {
                           ),
                           Container(
                             child: Text(
-                              "Festival Budaya Sangeh merupakan sebuah acara tahunan yang diadakan di Desa Sangeh, Kabupaten Badung, Bali. Festival ini bertujuan untuk melestarikan...",
+                              berita.isiBerita,
                               style: const TextStyle(
                                 fontFamily: "Montserrat",
                                 fontSize: 10,
@@ -84,6 +89,8 @@ class CardItemWidget extends StatelessWidget {
                                 color: Colors.white,
                               ),
                               textAlign: TextAlign.left,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           )
                         ],

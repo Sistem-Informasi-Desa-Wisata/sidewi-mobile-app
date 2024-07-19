@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sidewi_mobile_app/views/screens/detail_screen.dart';
+import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
+import 'package:sidewi_mobile_app/viewmodels/destinasiwisata_viewmodel.dart';
+import 'package:sidewi_mobile_app/models/desawisata_model.dart';
+import 'package:sidewi_mobile_app/models/destinasiwisata_model.dart';
+import 'package:sidewi_mobile_app/services/api_config.dart';
 
 class FavoriteScreen extends StatelessWidget {
   const FavoriteScreen({super.key});
@@ -29,6 +35,9 @@ class _DetailPageState extends State<DetailPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    Provider.of<DesaWisataViewModel>(context, listen: false).fetchDesaWisata();
+    Provider.of<DestinasiWisataViewModel>(context, listen: false)
+        .fetchDestinasiWisataList();
   }
 
   @override
@@ -123,19 +132,24 @@ class _DetailPageState extends State<DetailPage>
 class Desa extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListWidget();
+    var desaWisataList =
+        Provider.of<DesaWisataViewModel>(context).desaWisataList;
+    return ListWidget<DesaWisataModel>(items: desaWisataList);
   }
 }
 
 class Wisata extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListWidget();
+    var destinasiWisataList =
+        Provider.of<DestinasiWisataViewModel>(context).destinasiwisataList;
+    return ListWidget<DestinasiWisataModel>(items: destinasiWisataList);
   }
 }
 
-class ListWidget extends StatelessWidget {
-  const ListWidget({super.key});
+class ListWidget<T> extends StatelessWidget {
+  final List<T> items;
+  const ListWidget({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -149,28 +163,87 @@ class ListWidget extends StatelessWidget {
         childAspectRatio: 0.90,
       ),
       itemBuilder: (context, index) {
-        return ItemWidget();
+        return ItemWidget<T>(item: items[index]);
       },
     );
   }
 }
 
-class ItemWidget extends StatefulWidget {
-  const ItemWidget({super.key});
+class ItemWidget<T> extends StatefulWidget {
+  final T item;
+
+  ItemWidget({required this.item});
 
   @override
-  State<ItemWidget> createState() => _ItemWidgetState();
+  State<ItemWidget> createState() => _ItemWidgetState<T>();
 }
 
-class _ItemWidgetState extends State<ItemWidget> {
-  bool _isFavorite = true;
+class _ItemWidgetState<T> extends State<ItemWidget<T>> {
+  bool _isFavorite = false;
+  String? _kategoriNama;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.item is DestinasiWisataModel) {
+      fetchCategoryName();
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> fetchCategoryName() async {
+    final viewModel =
+        Provider.of<DestinasiWisataViewModel>(context, listen: false);
+    String? name = await viewModel.getCategoryName(
+        (widget.item as DestinasiWisataModel).id_kategoridestinasi);
+    setState(() {
+      _kategoriNama = name;
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    String imageName;
+    String title;
+    String location;
+    int id;
+
+    if (widget.item is DesaWisataModel) {
+      var desaWisata = widget.item as DesaWisataModel;
+      imageName = (desaWisata.gambar != null && desaWisata.gambar.isNotEmpty)
+          ? '${ApiConfig.baseUrl}/resource/desawisata/${desaWisata.gambar}'
+          : 'assets/images/DefaultImage.jpg';
+      title = desaWisata.nama;
+      location = desaWisata.alamat;
+      id = desaWisata.id;
+    } else if (widget.item is DestinasiWisataModel) {
+      var destinasiWisata = widget.item as DestinasiWisataModel;
+      imageName = (destinasiWisata.gambar != null &&
+              destinasiWisata.gambar.isNotEmpty)
+          ? '${ApiConfig.baseUrl}/resource/destinasiwisata/${destinasiWisata.gambar}'
+          : 'assets/images/DefaultImage.jpg';
+      title = destinasiWisata
+          .nama; // Ensure title is also set for DestinasiWisataModel
+      location = _isLoading ? 'Loading...' : (_kategoriNama ?? 'Unknown');
+      id = destinasiWisata.id;
+    } else {
+      throw Exception('Unsupported model type');
+    }
+
     return Center(
       child: GestureDetector(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DetailScreen()));
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailScreen(id: id),
+            ),
+          );
         },
         child: Stack(
           children: [
@@ -182,7 +255,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
-                    image: AssetImage('assets/images/foto_berita.png'),
+                    image: AssetImage(imageName),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -220,11 +293,11 @@ class _ItemWidgetState extends State<ItemWidget> {
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(
-                                    transitionDuration: Duration(
-                                        milliseconds: 500), // Durasi animasi
+                                    transitionDuration:
+                                        Duration(milliseconds: 500),
                                     pageBuilder: (context, animation,
                                             secondaryAnimation) =>
-                                        DetailScreen(),
+                                        DetailScreen(id: id),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
                                       var begin = Offset(1.0, 0.0);
@@ -253,17 +326,17 @@ class _ItemWidgetState extends State<ItemWidget> {
                             width: 24,
                             height: 24,
                             child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _isFavorite =
-                                        !_isFavorite; // Toggle nilai _isFavorite
-                                  });
-                                },
-                                child: _isFavorite == true
-                                    ? SvgPicture.asset(
-                                        'assets/icons/ic_favorite_active.svg')
-                                    : SvgPicture.asset(
-                                        'assets/icons/ic_favorite_nonactive.svg')),
+                              onTap: () {
+                                setState(() {
+                                  _isFavorite = !_isFavorite;
+                                });
+                              },
+                              child: _isFavorite
+                                  ? SvgPicture.asset(
+                                      'assets/icons/ic_favorite_active.svg')
+                                  : SvgPicture.asset(
+                                      'assets/icons/ic_favorite_nonactive.svg'),
+                            ),
                           ),
                         ],
                       ),
@@ -271,8 +344,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Sangeh",
-                            // widget.desaWisata.nama,
+                            title,
                             style: const TextStyle(
                               fontFamily: "Montserrat",
                               fontSize: 12,
@@ -283,7 +355,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                             textAlign: TextAlign.left,
                           ),
                           Text(
-                            "Kabupaten Badung",
+                            location,
                             style: const TextStyle(
                               fontFamily: "Montserrat",
                               fontSize: 8,

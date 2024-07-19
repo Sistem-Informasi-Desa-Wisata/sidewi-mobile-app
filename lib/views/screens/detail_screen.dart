@@ -5,59 +5,85 @@ import 'package:sidewi_mobile_app/views/widgets/berita_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/detail_desa_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/produk_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/wisata_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
+import 'package:sidewi_mobile_app/models/desawisata_model.dart';
+import 'package:sidewi_mobile_app/services/api_config.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key});
+  final int id;
+  const DetailScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          BackgroundDetail(),
-          SingleChildScrollView(
-            child: Container(
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.topCenter,
-                    height: 376,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 60, horizontal: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: SvgPicture.asset(
-                                  'assets/icons/ic_back_white.svg')),
-                          IconButton(
-                              onPressed: null,
-                              icon:
-                                  SvgPicture.asset('assets/icons/ic_share.svg'))
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(16),
-                        topRight: Radius.circular(16),
-                      ),
-                    ),
-                    height: 800,
-                    child: DetailPage(),
-                  )
-                ],
-              ),
+    return ChangeNotifierProvider(
+      create: (context) =>
+          DesaWisataViewModel()..fetchDetailDesaWisata(id),
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Consumer<DesaWisataViewModel>(
+              builder: (context, viewModel, child) {
+                if (viewModel == null || viewModel.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (viewModel.errorMessage != null) {
+                  return Center(child: Text(viewModel.errorMessage!));
+                }
+
+                final detail = viewModel.desaWisataDetail;
+                if (detail == null) {
+                  return const Center(child: Text('No data available'));
+                }
+
+                return BackgroundDetail(detail: detail);
+              },
             ),
-          )
-        ],
+            SingleChildScrollView(
+              child: Container(
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.topCenter,
+                      height: 376,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 60, horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: SvgPicture.asset(
+                                    'assets/icons/ic_back_white.svg')),
+                            IconButton(
+                                onPressed: null,
+                                icon: SvgPicture.asset(
+                                    'assets/icons/ic_share.svg'))
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                          topRight: Radius.circular(16),
+                        ),
+                      ),
+                      height: 800,
+                      child: const DetailPage(),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -90,145 +116,172 @@ class _DetailPageState extends State<DetailPage>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          // Heading tab pagination section
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0x0D000000),
-                  offset: Offset(0, 1),
-                  blurRadius: 24,
-                  spreadRadius: 4,
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Sangeh",
-                            style: const TextStyle(
-                              fontFamily: "Montserrat",
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff000000),
-                              height: 29 / 24,
-                            ),
+    return Consumer<DesaWisataViewModel>(
+      builder: (context, viewModel, child) {
+        if (viewModel.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (viewModel.errorMessage != null) {
+          return Center(child: Text(viewModel.errorMessage!));
+        }
+
+        final detail = viewModel.desaWisataDetail;
+
+        return detail == null
+            ? const Center(child: Text('No data available'))
+            : Container(
+                child: Column(
+                  children: [
+                    // Heading tab pagination section
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                          topRight: Radius.circular(16),
+                        ),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x0D000000),
+                            offset: Offset(0, 1),
+                            blurRadius: 24,
+                            spreadRadius: 4,
                           ),
-                          Text(
-                            "Kabupaten Badung",
-                            style: const TextStyle(
-                              fontFamily: "Montserrat",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff000000),
-                              height: 15 / 12,
-                            ),
-                          )
                         ],
                       ),
-                      Container(
-                        width: 24,
-                        height: 24,
-                        child: Center(
-                          child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _isFavorite = !_isFavorite;
-                                });
-                              },
-                              child: _isFavorite == true
-                                  ? SvgPicture.asset(
-                                      'assets/icons/ic_full_love.svg')
-                                  : SvgPicture.asset(
-                                      'assets/icons/ic_bottom_love_nonactive.svg')),
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(left: 24, right: 24, top: 24),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      detail.nama,
+                                      style: const TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff000000),
+                                        height: 29 / 24,
+                                      ),
+                                    ),
+                                    Text(
+                                      detail.kabupaten,
+                                      style: const TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xff000000),
+                                        height: 15 / 12,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Container(
+                                  width: 24,
+                                  height: 24,
+                                  child: Center(
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _isFavorite = !_isFavorite;
+                                          });
+                                        },
+                                        child: _isFavorite
+                                            ? SvgPicture.asset(
+                                                'assets/icons/ic_full_love.svg')
+                                            : SvgPicture.asset(
+                                                'assets/icons/ic_bottom_love_nonactive.svg')),
+                                  ),
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 32,
+                            ),
+                            // Tab Bar Section
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 18),
+                              child: Container(
+                                height: 25,
+                                child: TabBar(
+                                  indicatorColor: Colors.black,
+                                  indicatorSize: TabBarIndicatorSize.label,
+                                  indicatorWeight: 0.1,
+                                  dividerColor: Colors.white,
+                                  indicatorPadding:
+                                      const EdgeInsets.symmetric(vertical: 0.1),
+                                  controller: _tabController,
+                                  labelColor: Colors.black,
+                                  unselectedLabelColor: Colors.grey,
+                                  tabs: const [
+                                    Tab(
+                                      text: 'Detail',
+                                    ),
+                                    Tab(text: 'Berita'),
+                                    Tab(text: 'Wisata'),
+                                    Tab(text: 'Produk'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 32,
-                  ),
-                  // Tab Bar Section
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 18),
-                    child: Container(
-                      height: 25,
-                      child: TabBar(
-                        indicatorColor: Colors.black,
-                        indicatorSize: TabBarIndicatorSize.label,
-                        indicatorWeight: 0.1,
-                        dividerColor: Colors.white,
-                        indicatorPadding: EdgeInsets.symmetric(vertical: 0.1),
+                      ),
+                    ),
+                    // Tab Bar View Section
+                    Expanded(
+                      child: TabBarView(
                         controller: _tabController,
-                        labelColor: Colors.black,
-                        unselectedLabelColor: Colors.grey,
-                        tabs: [
-                          Tab(
-                            text: 'Detail',
-                          ),
-                          Tab(text: 'Berita'),
-                          Tab(text: 'Wisata'),
-                          Tab(text: 'Produk'),
+                        children: [
+                          DetailTab(detail:detail),
+                          BeritaTab(id:detail.id, desa: detail.nama),
+                          WisataTab(id:detail.id, desa: detail.nama),
+                          ProdukTab(),
                         ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Tab Bar View Section
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                DetailTab(),
-                BeritaTab(),
-                WisataTab(),
-                ProdukTab(),
-              ],
-            ),
-          ),
-        ],
-      ),
+                  ],
+                ),
+              );
+      },
     );
   }
 }
 
 class DetailTab extends StatelessWidget {
+  final DesaWisataModel detail;
+  const DetailTab({super.key, required this.detail});
+
   @override
   Widget build(BuildContext context) {
-    return DetailDesaWidget();
+    return DetailDesaWidget(detail:detail);
   }
 }
 
 class BeritaTab extends StatelessWidget {
+  final int id;
+  final String desa;
+  const BeritaTab({super.key, required this.id, required this.desa});
   @override
   Widget build(BuildContext context) {
-    return ListBeritaWidget();
+    return ListBeritaWidget(id:id, desa:desa);
   }
 }
 
 class WisataTab extends StatelessWidget {
+  final int id;
+  final String desa;
+  const WisataTab({super.key, required this.id, required this.desa});
   @override
   Widget build(BuildContext context) {
-    return ListWisataWidget();
+    return ListWisataWidget(id:id, desa:desa);
   }
 }
 
@@ -240,17 +293,24 @@ class ProdukTab extends StatelessWidget {
 }
 
 class BackgroundDetail extends StatelessWidget {
-  const BackgroundDetail({super.key});
+  final DesaWisataModel detail;
+  const BackgroundDetail({super.key, required this.detail});
 
   @override
   Widget build(BuildContext context) {
+    // Determine if the image URL is valid or not
+    final imageProvider = (detail.gambar != null && detail.gambar.isNotEmpty)
+        ? NetworkImage('${ApiConfig.baseUrl}/resource/desawisata/${detail.gambar}')
+        : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
+
     return Container(
       alignment: Alignment.topLeft,
       height: 400,
       decoration: BoxDecoration(
         image: DecorationImage(
-            image: AssetImage('assets/images/detail_foto.png'),
-            fit: BoxFit.cover),
+          image: imageProvider,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

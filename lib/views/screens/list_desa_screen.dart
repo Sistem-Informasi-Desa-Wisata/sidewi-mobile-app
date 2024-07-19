@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:sidewi_mobile_app/models/desawisata_model.dart';
+import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/views/screens/detail_screen.dart';
 
@@ -19,16 +22,24 @@ class DetailPage extends StatefulWidget {
   _DetailPageState createState() => _DetailPageState();
 }
 
-class _DetailPageState extends State<DetailPage>
-    with SingleTickerProviderStateMixin {
+class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
-  bool _isFavorite = true;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Provider.of<DesaWisataViewModel>(context, listen: false)
+          .fetchDesaWisata()
+          .then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    });
   }
 
   @override
@@ -39,6 +50,12 @@ class _DetailPageState extends State<DetailPage>
 
   @override
   Widget build(BuildContext context) {
+    final desaWisataViewModel = Provider.of<DesaWisataViewModel>(context);
+
+    if (desaWisataViewModel.isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+
     return Container(
       child: Column(
         children: [
@@ -73,9 +90,7 @@ class _DetailPageState extends State<DetailPage>
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  SizedBox(
-                    height: 32,
-                  ),
+                  SizedBox(height: 32),
                   // Tab Bar Section
                   Padding(
                     padding: const EdgeInsets.only(bottom: 18),
@@ -92,9 +107,7 @@ class _DetailPageState extends State<DetailPage>
                         labelColor: Colors.black,
                         unselectedLabelColor: Colors.grey,
                         tabs: [
-                          Tab(
-                            text: 'Rintisan',
-                          ),
+                          Tab(text: 'Rintisan'),
                           Tab(text: 'Berkembang'),
                           Tab(text: 'Maju'),
                           Tab(text: 'Mandiri'),
@@ -157,9 +170,12 @@ class ListDesaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final desaWisataViewModel = Provider.of<DesaWisataViewModel>(context);
+    final desaWisataList = desaWisataViewModel.desaWisataList;
+
     return GridView.builder(
       padding: EdgeInsets.only(left: 24, right: 24, top: 24),
-      itemCount: 10,
+      itemCount: desaWisataList.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 0,
@@ -167,28 +183,50 @@ class ListDesaWidget extends StatelessWidget {
         childAspectRatio: 0.90,
       ),
       itemBuilder: (context, index) {
-        return DesaItemWidget();
+        DesaWisataModel desaWisata = desaWisataList[index];
+        return DesaItemWidget(desaWisata: desaWisata);
       },
     );
   }
 }
 
 class DesaItemWidget extends StatefulWidget {
-  const DesaItemWidget({super.key});
+  final DesaWisataModel desaWisata;
+
+  const DesaItemWidget({super.key, required this.desaWisata});
 
   @override
-  State<DesaItemWidget> createState() => _DesaItemWidgetState();
+  _DesaItemWidgetState createState() => _DesaItemWidgetState();
 }
 
 class _DesaItemWidgetState extends State<DesaItemWidget> {
-  bool _isFavorite = true;
+  late bool _isFavorite;
+
+  @override
+  void initState() {
+    super.initState();
+    // _isFavorite = widget.desaWisata.isFavorite; // Assuming `isFavorite` field
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DetailScreen()));
+            context,
+            PageRouteBuilder(
+              transitionDuration: Duration(milliseconds: 500), // Transition duration
+              pageBuilder: (context, animation, secondaryAnimation) => DetailScreen(id: widget.desaWisata.id),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                var fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.ease,
+                ));
+                return FadeTransition(opacity: fadeAnimation, child: child);
+              },
+            ),
+          );
         },
         child: Stack(
           children: [
@@ -200,7 +238,7 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
-                    image: AssetImage('assets/images/foto_berita.png'),
+                    image: AssetImage('assets/images/foto_berita.png'), // Update with actual image URL if needed
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -223,8 +261,7 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 12, left: 8, right: 8, bottom: 18),
+                  padding: const EdgeInsets.only(top: 12, left: 8, right: 8, bottom: 18),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -238,24 +275,14 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(
-                                    transitionDuration: Duration(
-                                        milliseconds: 500), // Durasi animasi
-                                    pageBuilder: (context, animation,
-                                            secondaryAnimation) =>
-                                        DetailScreen(),
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
-                                      var begin = Offset(1.0, 0.0);
-                                      var end = Offset.zero;
-                                      var curve = Curves.ease;
-
-                                      var tween = Tween(begin: begin, end: end)
-                                          .chain(CurveTween(curve: curve));
-
-                                      return FadeTransition(
-                                        opacity: animation,
-                                        child: child,
-                                      );
+                                    transitionDuration: Duration(milliseconds: 500), // Transition duration
+                                    pageBuilder: (context, animation, secondaryAnimation) => DetailScreen(id: widget.desaWisata.id),
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      var fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                                        parent: animation,
+                                        curve: Curves.ease,
+                                      ));
+                                      return FadeTransition(opacity: fadeAnimation, child: child);
                                     },
                                   ),
                                 );
@@ -271,17 +298,16 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                             width: 24,
                             height: 24,
                             child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _isFavorite =
-                                        !_isFavorite; // Toggle nilai _isFavorite
-                                  });
-                                },
-                                child: _isFavorite == true
-                                    ? SvgPicture.asset(
-                                        'assets/icons/ic_favorite_active.svg')
-                                    : SvgPicture.asset(
-                                        'assets/icons/ic_favorite_nonactive.svg')),
+                              onTap: () {
+                                setState(() {
+                                  _isFavorite = !_isFavorite; // Toggle favorite status
+                                });
+                                // Optionally, update favorite status in the ViewModel or API
+                              },
+                              child: _isFavorite
+                                  ? SvgPicture.asset('assets/icons/ic_favorite_active.svg')
+                                  : SvgPicture.asset('assets/icons/ic_favorite_nonactive.svg'),
+                            ),
                           ),
                         ],
                       ),
@@ -289,8 +315,7 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Sangeh",
-                            // widget.desaWisata.nama,
+                            widget.desaWisata.nama,
                             style: const TextStyle(
                               fontFamily: "Montserrat",
                               fontSize: 12,
@@ -301,7 +326,7 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                             textAlign: TextAlign.left,
                           ),
                           Text(
-                            "Kabupaten Badung",
+                            widget.desaWisata.alamat, // Assuming there's a location field
                             style: const TextStyle(
                               fontFamily: "Montserrat",
                               fontSize: 8,
@@ -310,9 +335,9 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                               height: 10 / 8,
                             ),
                             textAlign: TextAlign.left,
-                          )
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
