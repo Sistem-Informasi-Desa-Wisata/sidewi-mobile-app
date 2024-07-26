@@ -169,7 +169,7 @@ class ProfileScreen extends StatelessWidget {
                           onConfirm: () async {
                             try {
                               authViewModel.logout();
-                              // Navigator.pushNamedAndRemoveUntil(context, '/login_screen', (route) => false);
+                              Navigator.pushNamedAndRemoveUntil(context, '/login_screen', (route) => false);
                             } catch (e) {
                               print('Logout failed: $e');
                               // Handle logout failure

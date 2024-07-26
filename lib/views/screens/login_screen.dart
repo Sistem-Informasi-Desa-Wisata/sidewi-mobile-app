@@ -175,7 +175,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 ),
                                               );
                                             }
-                                            if (authModel.isSuccess) {
+                                            if (authModel.isAuthenticated) {
+                                              print("a");
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

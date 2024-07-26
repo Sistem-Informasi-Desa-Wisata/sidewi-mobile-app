@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:sidewi_mobile_app/colors.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
-import 'package:sidewi_mobile_app/views/screens/detail_screen.dart';
+import 'package:sidewi_mobile_app/views/screens/detail_desa_screen.dart';
 
 class DestinasiWidgetListHorizontal extends StatefulWidget {
   const DestinasiWidgetListHorizontal({super.key});

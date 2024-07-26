@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/colors.dart';
-import 'package:sidewi_mobile_app/views/screens/review_screen.dart';
+import 'package:sidewi_mobile_app/views/screens/main_screen.dart';
 // import 'package:sidewi_mobile_app/ui/widgets/ReviewCardWidget.dart';
 
 class DetailProdukScreen extends StatelessWidget {
@@ -158,7 +158,7 @@ class DetailProdukScreen extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ReviewScreen()));
+                            builder: (context) => MainScreen()));
                   },
                   child: Container(
                     width: 260,

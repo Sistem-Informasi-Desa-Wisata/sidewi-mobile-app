@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:sidewi_mobile_app/views/screens/login_screen.dart';
+import 'package:sidewi_mobile_app/views/screens/main_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -13,10 +13,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(Duration(seconds: 10), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) => MainScreen()),
       );
     });
   }
@@ -29,11 +29,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           child: SizedBox(
             width: 300,
             height: 300,
-            child: Lottie.network(
-              'https://raw.githubusercontent.com/xvrh/lottie-flutter/master/example/assets/Mobilo/A.json',
+            child: Lottie.asset(
+              'assets/lotties/animate.json', 
             ),
-
-            // Lottie.asset('assets/LottieLogo1.json'),
           ),
         ),
       ),

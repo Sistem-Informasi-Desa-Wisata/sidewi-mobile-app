@@ -14,8 +14,10 @@ import 'views/screens/profile_screen.dart';
 import 'views/screens/register_screen.dart';
 import 'views/screens/upload_foto_register.dart';
 import 'viewmodels/auth_viewmodel.dart';
+import 'viewmodels/review_viewmodel.dart';
 import 'viewmodels/user_viewmodel.dart';
 import 'viewmodels/desawisata_viewmodel.dart';
+import 'viewmodels/informasidesawisata_viewmodel.dart';
 import 'views/screens/main_screen.dart';
 
 void main() {
@@ -28,7 +30,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DesaWisataViewModel()),
+        ChangeNotifierProvider(create: (_) => InformasiDesaWisataViewModel()),
         ChangeNotifierProvider(create: (_) => DestinasiWisataViewModel()),
+        ChangeNotifierProvider(create: (_) => ReviewViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProxyProvider<AuthViewModel, UserViewModel>(
           create: (_) =>
@@ -40,9 +44,15 @@ class MyApp extends StatelessWidget {
       child: Consumer<AuthViewModel>(
         builder: (context, authViewModel, child) {
           return MaterialApp(
+<<<<<<< HEAD
             home: DetailScreen(id: 1),
             // home: authViewModel.user != null ? MainScreen() : LoginScreen(),
+=======
+            // home: WelcomeScreen(),
+            home: authViewModel.isAuthenticated ? MainScreen() : WelcomeScreen(),
+>>>>>>> df76beb4cd76b0708f3696db6e0bd3a79db305df
             routes: {
+              '/main': (context) => MainScreen(),
               '/login_screen': (context) => LoginScreen(),
               '/register-screen': (context) => RegisterScreen(),
               '/finalregister-screen': (context) => FinalRegisScreen(),

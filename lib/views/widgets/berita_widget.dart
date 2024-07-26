@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sidewi_mobile_app/viewmodels/berita_viewmodel.dart';
-import 'package:sidewi_mobile_app/views/screens/detail_berita.dart';
-import 'package:sidewi_mobile_app/views/widgets/card_item_widget.dart';
+import 'package:sidewi_mobile_app/views/screens/detail_berita_screen.dart';
+import 'package:sidewi_mobile_app/views/widgets/card_item_berita_widget.dart';
 
 class ListBeritaWidget extends StatelessWidget {
   final int id;
@@ -34,7 +34,7 @@ class ListBeritaWidget extends StatelessWidget {
                 final berita = viewModel.beritaByDesaList[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 6),
-                  child: CardItemWidget(
+                  child: CardItemBeritaWidget(
                     onTap: () {
                       Navigator.push(
                         context,

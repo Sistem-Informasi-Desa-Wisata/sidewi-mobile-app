@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sidewi_mobile_app/views/widgets/webView_map_wdiget.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
+import 'package:sidewi_mobile_app/models/informasidesawisata_model.dart';
 
 class DetailDesaWidget extends StatelessWidget {
   final DesaWisataModel detail;
-  const DetailDesaWidget({super.key, required this.detail});
+  final InformasiDesaWisataModel informasi;
+  const DetailDesaWidget({super.key, required this.detail, required this.informasi});
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -30,7 +32,7 @@ class DetailDesaWidget extends StatelessWidget {
             height: 24,
           ),
           Text(
-            "Lokasi",
+            "Lokasi : ${detail.alamat}",
             style: const TextStyle(
               fontFamily: "Montserrat",
               fontSize: 16,
@@ -53,13 +55,27 @@ class DetailDesaWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: MapPage()),
+                child: MapPage(maps:detail.maps)),
           ),
           SizedBox(
             height: 24,
           ),
           Text(
-            "Kontak",
+            "No telp : ${informasi.no_telp}",
+            style: const TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff000000),
+              height: 20 / 16,
+            ),
+            textAlign: TextAlign.left,
+          ),
+          SizedBox(
+            height: 12,
+          ),
+          Text(
+            "Whatsapp : ${informasi.no_wa}",
             style: const TextStyle(
               fontFamily: "Montserrat",
               fontSize: 16,
@@ -76,7 +92,7 @@ class DetailDesaWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Facebook",
+                "Facebook : ${informasi.facebook}",
                 style: const TextStyle(
                   fontFamily: "Montserrat",
                   fontSize: 12,
@@ -87,7 +103,7 @@ class DetailDesaWidget extends StatelessWidget {
                 textAlign: TextAlign.left,
               ),
               Text(
-                "Instagram",
+                "Instagram : ${informasi.email}",
                 style: const TextStyle(
                   fontFamily: "Montserrat",
                   fontSize: 12,
@@ -98,7 +114,7 @@ class DetailDesaWidget extends StatelessWidget {
                 textAlign: TextAlign.left,
               ),
               Text(
-                "Website",
+                "Website ${informasi.website}",
                 style: const TextStyle(
                   fontFamily: "Montserrat",
                   fontSize: 12,

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:sidewi_mobile_app/models/informasi_desawisata_model.dart';
 import '../models/desawisata_model.dart';
+import '../models/informasidesawisata_model.dart';
 import '../services/desawisata_service.dart';
 
 class DesaWisataViewModel extends ChangeNotifier {
   final DesaWisataService _desaWisataService = DesaWisataService();
   List<DesaWisataModel> _desaWisataList = [];
   DesaWisataModel? _desaWisataDetail;
+  InformasiDesaWisataModel? _informasiDesaWisata;
   bool _isLoading = false;
   String? _errorMessage;
 
   DesaWisataModel? get desaWisataDetail => _desaWisataDetail;
+  InformasiDesaWisataModel? get informasiDesaWisata => _informasiDesaWisata;
   List<DesaWisataModel> get desaWisataList => _desaWisataList;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
@@ -43,20 +46,24 @@ class DesaWisataViewModel extends ChangeNotifier {
   Future<void> fetchDetailDesaWisata(int id) async {
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
-
     try {
       print("vm: processing");
+<<<<<<< HEAD
       _desaWisataDetail = await DesaWisataService.fetchDetailDesaWisata(id);
+=======
+      _desaWisataDetail = await _desaWisataService.fetchDetailDesaWisata(id);
+      _informasiDesaWisata = await _desaWisataService.fetchInformasiDesaWisata(id);
+      print("vm: ${_desaWisataDetail}");
+>>>>>>> df76beb4cd76b0708f3696db6e0bd3a79db305df
     } catch (e) {
       _errorMessage = 'Failed to load data';
       print("error fetching informasi: $e");
     } finally {
       _isLoading = false;
-      notifyListeners();
     }
   }
 
+<<<<<<< HEAD
   Future<void> fetchInformasiDesaWisata(int id) async {
     _isLoadingInformasi = true;
     _errorMessageInformasi = null;
@@ -74,4 +81,7 @@ class DesaWisataViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+=======
+
+>>>>>>> df76beb4cd76b0708f3696db6e0bd3a79db305df
 }
