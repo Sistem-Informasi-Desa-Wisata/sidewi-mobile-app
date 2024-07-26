@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sidewi_mobile_app/viewmodels/destinasiwisata_viewmodel.dart';
-import 'package:sidewi_mobile_app/views/screens/detail_screen.dart';
+import 'package:sidewi_mobile_app/views/screens/detail_desa_screen.dart';
 import 'package:sidewi_mobile_app/views/screens/kelolaakun_screen.dart';
 import 'package:sidewi_mobile_app/views/screens/list_desa_screen.dart';
 import 'package:sidewi_mobile_app/views/screens/welcome_screen.dart';

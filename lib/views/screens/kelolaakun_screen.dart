@@ -38,7 +38,7 @@ class _KelolaAkunScreenState extends State<KelolaAkunScreen> {
     });
   }
 
-  Future<void> _updateUser() async {
+  Future<void>  _updateUser() async {
     print("1");
     final userViewModel = Provider.of<UserViewModel>(context, listen: false);
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
