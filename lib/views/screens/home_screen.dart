@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/colors.dart';
-import 'package:sidewi_mobile_app/views/screens/detail_berita.dart';
+import 'package:sidewi_mobile_app/views/screens/detail_berita_screen.dart';
 import 'package:sidewi_mobile_app/views/screens/list_desa_screen.dart';
 import 'package:sidewi_mobile_app/views/widgets/category_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/header_widget.dart';

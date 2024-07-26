@@ -42,10 +42,6 @@ class UserViewModel extends ChangeNotifier {
     String? fotoPath,
   }) async {
     try {
-      print("++++++++++++++++++++++++++++++++++++");
-      print(password);
-      print(email);
-      print("++++++++++++++++++++++++++++++++++++");
       await _userService.updateUser(
           id: id,
           nama: nama,

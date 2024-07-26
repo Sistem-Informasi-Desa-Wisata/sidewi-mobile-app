@@ -39,6 +39,7 @@ class _KelolaAkunScreenState extends State<KelolaAkunScreen> {
   }
 
   Future<void> _updateUser() async {
+    print("1");
     final userViewModel = Provider.of<UserViewModel>(context, listen: false);
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
 
@@ -51,7 +52,9 @@ class _KelolaAkunScreenState extends State<KelolaAkunScreen> {
     String? fotoPath = _imageFile?.path;
 
     try {
-      if (authViewModel.user != null) {
+      if (authViewModel.isAuthenticated) {
+        print("2");
+
         await userViewModel.updateUser(
           id: authViewModel.user!.id,
           nama: nama,
@@ -69,9 +72,12 @@ class _KelolaAkunScreenState extends State<KelolaAkunScreen> {
 
         Navigator.of(context).pop();
       } else {
+        print("3");
         throw Exception('User data is null');
       }
     } catch (e) {
+      print("4");
+
       // Show error message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Failed to update user: $e'),
@@ -210,7 +216,7 @@ class _KelolaAkunScreenState extends State<KelolaAkunScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: GestureDetector(
                           onTap: () {
-                            _updateUser;
+                            _updateUser();
                           },
                           child: Container(
                             decoration: BoxDecoration(

@@ -2,11 +2,36 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:sidewi_mobile_app/viewmodels/review_viewmodel.dart';
+import 'package:sidewi_mobile_app/models/review_model.dart';
 import 'package:sidewi_mobile_app/views/screens/review_screen.dart';
 import 'package:sidewi_mobile_app/views/widgets/rating_widget.dart';
+import 'package:sidewi_mobile_app/viewmodels/auth_viewmodel.dart';
+import 'package:sidewi_mobile_app/services/api_config.dart';
 
-class ListReviewScreen extends StatelessWidget {
-  const ListReviewScreen({super.key});
+class ListReviewScreen extends StatefulWidget {
+  final int id;
+
+  const ListReviewScreen({super.key, required this.id});
+
+  @override
+  _ListReviewScreenState createState() => _ListReviewScreenState();
+}
+
+class _ListReviewScreenState extends State<ListReviewScreen> {
+  late ReviewViewModel reviewViewModel;
+  late AuthViewModel authViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    final reviewViewModel =
+        Provider.of<ReviewViewModel>(context, listen: false);
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    reviewViewModel.fetchReviewByIdDestinasi(
+        widget.id, authViewModel.accessToken);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,31 +104,47 @@ class ListReviewScreen extends StatelessWidget {
   }
 }
 
-class ListReview extends StatelessWidget {
+class ListReview extends StatefulWidget {
   const ListReview({super.key});
 
   @override
+  _ListReviewState createState() => _ListReviewState();
+}
+
+class _ListReviewState extends State<ListReview> {
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: ListView.builder(
-          shrinkWrap:
-              true, // Set true agar ListView hanya mengambil ruang yang diperlukan
+    return Consumer<ReviewViewModel>(
+      builder: (context, reviewViewModel, child) {
+        if (reviewViewModel.reviewList.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        return ListView.builder(
+          shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           padding: EdgeInsets.only(top: 6),
           scrollDirection: Axis.vertical,
-          itemCount: 10,
+          itemCount: reviewViewModel.reviewList.length,
           itemBuilder: (context, index) {
-            return ReviewItemWidget();
-          }),
+            final review = reviewViewModel.reviewList[index];
+            return ReviewItemWidget(review: review);
+          },
+        );
+      },
     );
   }
 }
 
 class ReviewItemWidget extends StatelessWidget {
-  const ReviewItemWidget({super.key});
+  final ReviewModel review;
+  const ReviewItemWidget({super.key, required this.review});
 
   @override
   Widget build(BuildContext context) {
+    final imageProvider = (review.foto != null)
+        ? NetworkImage('${ApiConfig.baseUrl}/resource/akun/${review.foto}')
+        : AssetImage('assets/images/DefaultProfile.jpg') as ImageProvider;
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Container(
@@ -120,8 +161,8 @@ class ReviewItemWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: AssetImage('assets/images/user3.png'),
-                      fit: BoxFit.cover, // Mengisi seluruh area container
+                      image:imageProvider,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -140,7 +181,8 @@ class ReviewItemWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Visca",
+                                review.userName ??
+                                    "User", // Replace with actual username
                                 style: const TextStyle(
                                   fontFamily: "Montserrat",
                                   fontSize: 16,
@@ -151,7 +193,7 @@ class ReviewItemWidget extends StatelessWidget {
                                 textAlign: TextAlign.left,
                               ),
                               Text(
-                                "20 Feb 2024",
+                                "${review.createdAt.day} ${review.createdAt.month}, ${review.createdAt.year}", // Replace with actual date
                                 style: const TextStyle(
                                   fontFamily: "Montserrat",
                                   fontSize: 10,
@@ -165,7 +207,8 @@ class ReviewItemWidget extends StatelessWidget {
                           ),
                           Container(
                             child: StarRating(
-                              rating: 3,
+                              rating:
+                                  review.rating, // Replace with actual rating
                               starCount: 5,
                               size: 12,
                             ),
@@ -173,13 +216,11 @@ class ReviewItemWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 4,
-                    ),
+                    SizedBox(height: 4),
                     Container(
                       width: 268,
                       child: Text(
-                        "Taman Mumbul merupakan tempat suci bagi umat Hindu di Bali, dan sering digunakan untuk upacara Melasti",
+                        review.review, // Replace with actual comment
                         style: const TextStyle(
                           fontFamily: "Montserrat",
                           fontSize: 12,

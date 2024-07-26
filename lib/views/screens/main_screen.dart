@@ -4,6 +4,9 @@ import 'package:sidewi_mobile_app/views/screens/favorite_screen.dart';
 import 'package:sidewi_mobile_app/views/screens/home_screen.dart';
 import 'package:sidewi_mobile_app/views/screens/notification_screen.dart';
 import 'package:sidewi_mobile_app/views/screens/profile_screen.dart';
+import 'package:sidewi_mobile_app/views/screens/login_screen.dart';
+import 'package:sidewi_mobile_app/viewmodels/auth_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -12,6 +15,23 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreen extends State<MainScreen> {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAuthentication();
+  }
+
+  void _checkAuthentication() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+      if (!authViewModel.isAuthenticated) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+        );
+      }
+    });
+  }
 
   void _onTap(int nomor) {
     setState(() {

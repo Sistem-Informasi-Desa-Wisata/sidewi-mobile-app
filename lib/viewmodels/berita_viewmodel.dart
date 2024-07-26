@@ -39,7 +39,6 @@ class BeritaViewModel extends ChangeNotifier {
     } catch (e) {
       _errorMessage = e.toString();
     } finally {
-      print(_errorMessage);
       _isLoading = false;
       notifyListeners();
     }

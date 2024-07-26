@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sidewi_mobile_app/views/screens/detail_wisata.dart';
-import 'package:sidewi_mobile_app/views/widgets/caard_item_wisata_widget.dart';
+import 'package:sidewi_mobile_app/views/screens/detail_wisata_screen.dart';
+import 'package:sidewi_mobile_app/views/widgets/card_item_wisata_widget.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sidewi_mobile_app/viewmodels/destinasiwisata_viewmodel.dart';
-import 'package:sidewi_mobile_app/views/screens/detail_berita.dart';
-import 'package:sidewi_mobile_app/views/widgets/card_item_widget.dart';
+import 'package:sidewi_mobile_app/views/screens/detail_berita_screen.dart';
+import 'package:sidewi_mobile_app/views/widgets/card_item_berita_widget.dart';
 
 class ListWisataWidget extends StatelessWidget {
   final int id;
@@ -28,7 +28,8 @@ class ListWisataWidget extends StatelessWidget {
           }
 
           if (viewModel.errorMessage.isNotEmpty) {
-            return Center(child: Text('Error a: $id ${viewModel.errorMessage}'));
+            return Center(
+                child: Text('Error a: $id ${viewModel.errorMessage}'));
           }
           return SizedBox(
             child: ListView.builder(

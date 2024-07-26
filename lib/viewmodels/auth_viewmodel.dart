@@ -12,7 +12,6 @@ class AuthViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? _accessToken;
   String? _successMessage;
-  bool _isSuccess = false;
   List<UserModel> _allUsers = [];
 
   UserModel? get user => _user;
@@ -21,7 +20,7 @@ class AuthViewModel extends ChangeNotifier {
   String? get accessToken => _accessToken;
   String? get successMessage => _successMessage;
   List<UserModel> get allUsers => _allUsers;
-  bool get isSuccess => _isSuccess;
+  bool get isAuthenticated => _user != null && _accessToken != null;
 
   
   Future<bool> isEmailRegistered(String email) async {

@@ -5,7 +5,7 @@ import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/viewmodels/destinasiwisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/models/destinasiwisata_model.dart';
-import 'package:sidewi_mobile_app/views/screens/detail_screen.dart';
+import 'package:sidewi_mobile_app/views/screens/detail_desa_screen.dart';
 import 'package:sidewi_mobile_app/services/api_config.dart';
 
 class FavoriteScreen extends StatefulWidget {
