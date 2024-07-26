@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:sidewi_mobile_app/models/informasi_desawisata_model.dart';
 import 'dart:convert';
 import '../models/desawisata_model.dart';
 import '../services/api_config.dart';
@@ -25,6 +26,18 @@ class DesaWisataService {
     if (response.statusCode == 200) {
       Map<String, dynamic> body = json.decode(response.body);
       return DesaWisataModel.fromJson(body);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<InformasiDesaWisataModel> fetchInformasiDesaWisata(int id) async {
+    final response =
+        await http.get(Uri.parse('${ApiConfig.baseUrl}/informasi/desa/$id'));
+    print("response InformasiDesaWisataModel: ${response.body}");
+    if (response.statusCode == 200) {
+      Map<String, dynamic> body = json.decode(response.body);
+      return InformasiDesaWisataModel.fromJson(body);
     } else {
       throw Exception('Failed to load data');
     }

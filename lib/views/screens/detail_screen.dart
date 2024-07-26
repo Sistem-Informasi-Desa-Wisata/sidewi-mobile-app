@@ -10,20 +10,38 @@ import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/services/api_config.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final int id;
   const DetailScreen({super.key, required this.id});
 
   @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  late DesaWisataViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = DesaWisataViewModel();
+    _viewModel.fetchDetailDesaWisata(widget.id);
+    _viewModel.fetchInformasiDesaWisata(widget.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) =>
-          DesaWisataViewModel()..fetchDetailDesaWisata(id),
+    return ChangeNotifierProvider<DesaWisataViewModel>.value(
+      value: _viewModel,
       child: Scaffold(
         body: Stack(
           children: [
             Consumer<DesaWisataViewModel>(
               builder: (context, viewModel, child) {
+                print(
+                    "data desaWisataDetail (view): ${viewModel.desaWisataDetail}");
+                print(
+                    "data informasiDesaWisata (view): ${viewModel.informasiDesaWisata}");
                 if (viewModel == null || viewModel.isLoading) {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -240,9 +258,9 @@ class _DetailPageState extends State<DetailPage>
                       child: TabBarView(
                         controller: _tabController,
                         children: [
-                          DetailTab(detail:detail),
-                          BeritaTab(id:detail.id, desa: detail.nama),
-                          WisataTab(id:detail.id, desa: detail.nama),
+                          DetailTab(detail: detail),
+                          BeritaTab(id: detail.id, desa: detail.nama),
+                          WisataTab(id: detail.id, desa: detail.nama),
                           ProdukTab(),
                         ],
                       ),
@@ -261,7 +279,7 @@ class DetailTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DetailDesaWidget(detail:detail);
+    return DetailDesaWidget(detail: detail);
   }
 }
 
@@ -271,7 +289,7 @@ class BeritaTab extends StatelessWidget {
   const BeritaTab({super.key, required this.id, required this.desa});
   @override
   Widget build(BuildContext context) {
-    return ListBeritaWidget(id:id, desa:desa);
+    return ListBeritaWidget(id: id, desa: desa);
   }
 }
 
@@ -281,7 +299,7 @@ class WisataTab extends StatelessWidget {
   const WisataTab({super.key, required this.id, required this.desa});
   @override
   Widget build(BuildContext context) {
-    return ListWisataWidget(id:id, desa:desa);
+    return ListWisataWidget(id: id, desa: desa);
   }
 }
 
@@ -300,7 +318,8 @@ class BackgroundDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     // Determine if the image URL is valid or not
     final imageProvider = (detail.gambar != null && detail.gambar.isNotEmpty)
-        ? NetworkImage('${ApiConfig.baseUrl}/resource/desawisata/${detail.gambar}')
+        ? NetworkImage(
+            '${ApiConfig.baseUrl}/resource/desawisata/${detail.gambar}')
         : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
 
     return Container(
