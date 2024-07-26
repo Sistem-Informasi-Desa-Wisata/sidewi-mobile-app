@@ -8,7 +8,8 @@ import 'package:sidewi_mobile_app/models/informasidesawisata_model.dart';
 class DetailDesaWidget extends StatelessWidget {
   final DesaWisataModel detail;
   final InformasiDesaWisataModel informasi;
-  const DetailDesaWidget({super.key, required this.detail, required this.informasi});
+  const DetailDesaWidget(
+      {super.key, required this.detail, required this.informasi});
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -55,7 +56,7 @@ class DetailDesaWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: MapPage(maps:detail.maps)),
+                child: MapPage(maps: detail.maps)),
           ),
           SizedBox(
             height: 24,

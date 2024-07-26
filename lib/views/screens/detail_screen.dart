@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sidewi_mobile_app/models/informasidesawisata_model.dart';
 import 'package:sidewi_mobile_app/views/widgets/berita_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/detail_desa_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/produk_widget.dart';
@@ -31,8 +32,9 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<DesaWisataViewModel>.value(
-      value: _viewModel,
+    return ChangeNotifierProvider(
+      create: (context) =>
+          DesaWisataViewModel()..fetchDetailDesaWisata(widget.id),
       child: Scaffold(
         body: Stack(
           children: [
@@ -145,6 +147,7 @@ class _DetailPageState extends State<DetailPage>
         }
 
         final detail = viewModel.desaWisataDetail;
+        final informasi = viewModel.informasiDesaWisata;
 
         return detail == null
             ? const Center(child: Text('No data available'))
@@ -258,7 +261,10 @@ class _DetailPageState extends State<DetailPage>
                       child: TabBarView(
                         controller: _tabController,
                         children: [
-                          DetailTab(detail: detail),
+                          DetailTab(
+                            detail: detail,
+                            informasi: informasi,
+                          ),
                           BeritaTab(id: detail.id, desa: detail.nama),
                           WisataTab(id: detail.id, desa: detail.nama),
                           ProdukTab(),
@@ -275,11 +281,15 @@ class _DetailPageState extends State<DetailPage>
 
 class DetailTab extends StatelessWidget {
   final DesaWisataModel detail;
-  const DetailTab({super.key, required this.detail});
+  final InformasiDesaWisataModel informasi;
+  const DetailTab({super.key, required this.detail, required this.informasi});
 
   @override
   Widget build(BuildContext context) {
-    return DetailDesaWidget(detail: detail);
+    return DetailDesaWidget(
+      detail: detail,
+      informasi: informasi,
+    );
   }
 }
 

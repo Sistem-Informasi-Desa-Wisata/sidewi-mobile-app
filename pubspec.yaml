@@ -41,7 +41,6 @@ dependencies:
   intl: ^0.18.0
   lottie: ^3.0.0
 
-
 dev_dependencies:
   flutter_launcher_icons: ^0.9.2
   flutter_test:
