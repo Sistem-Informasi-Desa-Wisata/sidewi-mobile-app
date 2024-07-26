@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sidewi_mobile_app/models/informasi_desawisata_model.dart';
-import '../models/desawisata_model.dart';
-import '../models/informasidesawisata_model.dart';
-import '../services/desawisata_service.dart';
+import 'package:sidewi_mobile_app/models/informasidesawisata_model.dart';
+import 'package:sidewi_mobile_app/services/desawisata_service.dart';
+import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 
 class DesaWisataViewModel extends ChangeNotifier {
   final DesaWisataService _desaWisataService = DesaWisataService();
@@ -17,17 +16,6 @@ class DesaWisataViewModel extends ChangeNotifier {
   List<DesaWisataModel> get desaWisataList => _desaWisataList;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
-
-  final DesaWisataService _informasiDesaWisataService = DesaWisataService();
-  List<InformasiDesaWisataModel> _informasidesaWisataList = [];
-  InformasiDesaWisataModel? _informasiDesaWisata;
-  bool _isLoadingInformasi = false;
-  String? _errorMessageInformasi;
-
-  InformasiDesaWisataModel? get informasiDesaWisata => _informasiDesaWisata;
-  List<DesaWisataModel> get informasiDesaWisataList => informasiDesaWisataList;
-  bool get isLoadingInformasi => _isLoadingInformasi;
-  String? get errorMessageInformasi => _errorMessageInformasi;
 
   Future<void> fetchDesaWisata() async {
     _isLoading = true;
@@ -48,13 +36,9 @@ class DesaWisataViewModel extends ChangeNotifier {
     _errorMessage = null;
     try {
       print("vm: processing");
-<<<<<<< HEAD
-      _desaWisataDetail = await DesaWisataService.fetchDetailDesaWisata(id);
-=======
       _desaWisataDetail = await _desaWisataService.fetchDetailDesaWisata(id);
       _informasiDesaWisata = await _desaWisataService.fetchInformasiDesaWisata(id);
       print("vm: ${_desaWisataDetail}");
->>>>>>> df76beb4cd76b0708f3696db6e0bd3a79db305df
     } catch (e) {
       _errorMessage = 'Failed to load data';
       print("error fetching informasi: $e");
@@ -63,25 +47,4 @@ class DesaWisataViewModel extends ChangeNotifier {
     }
   }
 
-<<<<<<< HEAD
-  Future<void> fetchInformasiDesaWisata(int id) async {
-    _isLoadingInformasi = true;
-    _errorMessageInformasi = null;
-    notifyListeners();
-    try {
-      print("vm: processing");
-      _informasiDesaWisata =
-          await _informasiDesaWisataService.fetchInformasiDesaWisata(id);
-      print("vm ${_informasiDesaWisata}");
-    } catch (e) {
-      _errorMessageInformasi = 'Failed to load data';
-      print("error fetching informasi: $e");
-    } finally {
-      _isLoadingInformasi = false;
-      notifyListeners();
-    }
-  }
-=======
-
->>>>>>> df76beb4cd76b0708f3696db6e0bd3a79db305df
 }

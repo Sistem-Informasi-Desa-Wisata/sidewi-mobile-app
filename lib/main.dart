@@ -44,13 +44,10 @@ class MyApp extends StatelessWidget {
       child: Consumer<AuthViewModel>(
         builder: (context, authViewModel, child) {
           return MaterialApp(
-<<<<<<< HEAD
-            home: DetailScreen(id: 1),
+            // home: DetailScreen(id: 1),
             // home: authViewModel.user != null ? MainScreen() : LoginScreen(),
-=======
             // home: WelcomeScreen(),
             home: authViewModel.isAuthenticated ? MainScreen() : WelcomeScreen(),
->>>>>>> df76beb4cd76b0708f3696db6e0bd3a79db305df
             routes: {
               '/main': (context) => MainScreen(),
               '/login_screen': (context) => LoginScreen(),

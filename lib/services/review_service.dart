@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:sidewi_mobile_app/models/review_model.dart';
-import 'package:sidewi_mobile_app/models/user_model.dart';
 import 'package:sidewi_mobile_app/services/api_config.dart'; // Update with your actual path
 
 class ReviewService {

@@ -6,7 +6,7 @@ class InformasiDesaWisataModel {
   final String instagram;
   final String website;
   final String email;
-  final String id_desawisata;
+  final int id_desawisata;
   final String createdAt;
   final String updatedAt;
 
