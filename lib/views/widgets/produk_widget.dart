@@ -1,42 +1,85 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sidewi_mobile_app/models/produk_model.dart';
+import 'package:sidewi_mobile_app/viewmodels/produk_viewmodel.dart';
 import 'package:sidewi_mobile_app/views/screens/detail_produk_screen.dart';
 import 'package:sidewi_mobile_app/views/screens/review_screen.dart';
+import 'package:sidewi_mobile_app/services/api_config.dart';
+import 'package:intl/intl.dart';
 
-class ListProdukWidget extends StatelessWidget {
-  const ListProdukWidget({super.key});
+
+class ListProdukWidget extends StatefulWidget {
+  final int id;
+  const ListProdukWidget({super.key, required this.id});
 
   @override
+  State<ListProdukWidget> createState() => _ListProdukWidgetState();
+}
+
+class _ListProdukWidgetState extends State<ListProdukWidget> {
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: GridView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 0),
-        itemCount: 10,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 0,
-          mainAxisSpacing: 0,
-          childAspectRatio: 0.75,
-        ),
-        itemBuilder: (context, index) {
-          return ProdukItemWidget();
+    return ChangeNotifierProvider(
+      create: (context) => ProdukViewModel()..fetchProdukByIdDesa(widget.id),
+      child: Consumer<ProdukViewModel>(
+        builder: (context, viewModel, child) {
+          if (viewModel.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (viewModel.errorMessage.isNotEmpty) {
+            return Center(child: Text('Error: ${viewModel.errorMessage}'));
+          }
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: GridView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: viewModel.produkByDesaList.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: 0,
+                childAspectRatio: 0.75,
+              ),
+              itemBuilder: (context, index) {
+                final produk = viewModel.produkByDesaList[index];
+                return ProdukItemWidget(produk: produk);
+              },
+            ),
+          );
         },
       ),
     );
   }
 }
 
-class ProdukItemWidget extends StatelessWidget {
-  const ProdukItemWidget({super.key});
+String formatRupiah(int number) {
+  final formatCurrency =
+      NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+  return formatCurrency.format(number);
+}
+
+class ProdukItemWidget extends StatefulWidget {
+  final ProdukModel produk;
+  const ProdukItemWidget({super.key, required this.produk});
 
   @override
+  State<ProdukItemWidget> createState() => _ProdukItemWidgetState();
+}
+
+class _ProdukItemWidgetState extends State<ProdukItemWidget> {
+  @override
   Widget build(BuildContext context) {
+    final imageProvider = (widget.produk.gambar.isNotEmpty)
+        ? NetworkImage(
+            '${ApiConfig.baseUrl}/resource/produk/${widget.produk.gambar}')
+        : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
     return Center(
       child: GestureDetector(
         onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => DetailProdukScreen()));
+              MaterialPageRoute(builder: (context) => DetailProdukScreen(produk: widget.produk)));
         },
         child: Stack(
           children: [
@@ -47,7 +90,7 @@ class ProdukItemWidget extends StatelessWidget {
                 color: Colors.amber,
                 borderRadius: BorderRadius.circular(8),
                 image: DecorationImage(
-                  image: AssetImage('assets/images/foto_berita.png'),
+                  image: imageProvider,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -75,7 +118,7 @@ class ProdukItemWidget extends StatelessWidget {
                     Container(
                       width: 90,
                       child: Text(
-                        "Beras Merah Cendana",
+                        widget.produk.nama,
                         style: const TextStyle(
                           fontFamily: "Montserrat",
                           fontSize: 12,
@@ -91,7 +134,7 @@ class ProdukItemWidget extends StatelessWidget {
                     Container(
                       width: 50,
                       child: Text(
-                        "Rp 40.000",
+                        formatRupiah(widget.produk.harga),
                         style: const TextStyle(
                           fontFamily: "Montserrat",
                           fontSize: 8,

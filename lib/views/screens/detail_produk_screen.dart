@@ -2,13 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/colors.dart';
 import 'package:sidewi_mobile_app/views/screens/main_screen.dart';
+import 'package:sidewi_mobile_app/models/produk_model.dart';
+import 'package:sidewi_mobile_app/services/api_config.dart';
+import 'package:intl/intl.dart';
+
 // import 'package:sidewi_mobile_app/ui/widgets/ReviewCardWidget.dart';
+String formatRupiah(int number) {
+  final formatCurrency =
+      NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+  return formatCurrency.format(number);
+}
 
 class DetailProdukScreen extends StatelessWidget {
-  const DetailProdukScreen({super.key});
+  final ProdukModel produk;
+  const DetailProdukScreen({super.key, required this.produk});
 
   @override
   Widget build(BuildContext context) {
+    final imageProvider = (produk.gambar.isNotEmpty)
+        ? NetworkImage('${ApiConfig.baseUrl}/resource/produk/${produk.gambar}')
+        : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
     return Scaffold(
       body: Stack(children: [
         CustomScrollView(slivers: [
@@ -78,7 +91,7 @@ class DetailProdukScreen extends StatelessWidget {
                     children: [
                       // tittle
                       Text(
-                        "Beras Merah Cendana",
+                        produk.nama,
                         style: const TextStyle(
                           fontFamily: "Montserrat",
                           fontSize: 16,
@@ -89,7 +102,7 @@ class DetailProdukScreen extends StatelessWidget {
                         textAlign: TextAlign.left,
                       ),
                       Text(
-                        "Rp 40.000",
+                        formatRupiah(produk.harga),
                         style: const TextStyle(
                           fontFamily: "Montserrat",
                           fontSize: 12,
@@ -108,9 +121,7 @@ class DetailProdukScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             image: DecorationImage(
-                                image:
-                                    AssetImage('assets/images/foto_dummy.jpg'),
-                                fit: BoxFit.cover),
+                                image: imageProvider, fit: BoxFit.cover),
                           ),
                           // child: Image.asset(
                           //   'assets/images/foto_dummy.jpg',
@@ -119,11 +130,7 @@ class DetailProdukScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "Desa Sangeh, Terletak sekitar 35 km dari Bandara Internasional I Gusti Ngurah Rai, dapat ditempuh dalam waktu 1 jam. Daerah ini terletak di Desa Sangeh, Kecamatan Abiansemal, Kabupaten Badung.\n\n"
-                        "Hutan Sangeh atau kadang-kadang disebut sebagai Hutan Pala dikenal dengan hutan seluas 13 hektar yang didominasi oleh pohon pala dan mayoritas penghuninya adalah kera abu-abu berekor panjang (Macaca fascicularis).\n\n"
-                        "Berdasarkan pada mitologi, nama Sangeh terdiri dari dua kata, yaitu 'Sang' yang berarti 'manusia' dan 'Ngeh' yang berarti 'Lihat'. Jadi Sangeh dapat ditafsirkan sebagai orang yang 'Lihat'. Menurut legenda, hutan yang sekarang disebut Sangeh terjadi ketika seorang putri para Dewa dari Gunung Agung ingin pindah ke Mengwi. Di malam hari hutan pala juga berjalan untuk menemani Dewi. Namun, dalam perjalanan mereka, ada orang-orang yang melihat gerakan mereka, lalu hutan berhenti di sana hingga saat ini. Sang Dewi kemudian disebut sebagai memiliki kuilnya di Bukit Sari Temple, kuil di tengah Hutan Sangeh sementara prajuritnya dikutuk ke dalam monyet yang tetap setia untuk menemani Dewi di hutan.\n\n"
-                        "Memasuki daerah ini, di Candi Bentar (gerbang), ada patung besar seorang kesatria raksasa, yaitu, kumbakarna diserang oleh puluhan kera. Patung itu menggambarkan kisah boneka Ramayana yang sangat terkenal di Bali. Sekitar Status Kumbakarna ada dua patung singa. Ada sebuah kuil kecil yang disebut Candi Melanting di tengah kawasan hutan dan kuil besar yang disebut Candi Pucak Sari. Di ujung jalan menuju jalan keluar, ada pohon pala suci yang sangat besar.\n\n"
-                        "Pohon-pohon ini memiliki keunikan dan mereka disebut sebagai pohon Lanang dan Wadon (pohon jantan-betina). Ini bertiga dinamai demikian, karena pohon pala berbentuk seperti alat kelamin laki-laki dan perempuan yang saling berdampingan. Keajaiban pohon-pohon itu merupakan keunikan yang menarik di kawasan wisata sangeh",
+                        produk.deskripsi,
                         style: const TextStyle(
                           fontFamily: "Montserrat",
                           fontSize: 16,
@@ -155,10 +162,8 @@ class DetailProdukScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 28),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MainScreen()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MainScreen()));
                   },
                   child: Container(
                     width: 260,

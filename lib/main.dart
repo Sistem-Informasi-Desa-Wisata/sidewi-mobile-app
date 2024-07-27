@@ -16,6 +16,7 @@ import 'views/screens/upload_foto_register.dart';
 import 'viewmodels/auth_viewmodel.dart';
 import 'viewmodels/review_viewmodel.dart';
 import 'viewmodels/user_viewmodel.dart';
+import 'viewmodels/produk_viewmodel.dart';
 import 'viewmodels/desawisata_viewmodel.dart';
 import 'views/screens/main_screen.dart';
 
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DesaWisataViewModel()),
         ChangeNotifierProvider(create: (_) => DestinasiWisataViewModel()),
         ChangeNotifierProvider(create: (_) => ReviewViewModel()),
+        ChangeNotifierProvider(create: (_) => ProdukViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProxyProvider<AuthViewModel, UserViewModel>(
           create: (_) =>

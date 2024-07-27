@@ -265,7 +265,7 @@ class _DetailPageState extends State<DetailPage>
                           ),
                           BeritaTab(id: detail.id, desa: detail.nama),
                           WisataTab(id: detail.id, desa: detail.nama),
-                          ProdukTab(),
+                          ProdukTab(id: detail.id),
                         ],
                       ),
                     ),
@@ -329,6 +329,9 @@ class _WisataTabState extends State<WisataTab> {
 }
 
 class ProdukTab extends StatefulWidget {
+  final int id;
+  const ProdukTab({super.key, required this.id});
+
   @override
   State<ProdukTab> createState() => _ProdukTabState();
 }
@@ -336,7 +339,7 @@ class ProdukTab extends StatefulWidget {
 class _ProdukTabState extends State<ProdukTab> {
   @override
   Widget build(BuildContext context) {
-    return ListProdukWidget();
+    return ListProdukWidget(id: widget.id);
   }
 }
 
