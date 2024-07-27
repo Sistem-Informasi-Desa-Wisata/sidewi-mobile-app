@@ -88,8 +88,9 @@ class DestinasiWisataViewModel extends ChangeNotifier {
     }
   }
 
-  Future<double> fetchAndCalculateAverageRating(int destinasiId) async {
-    print("masuk");
+  Future<double?> fetchAndCalculateAverageRating(int destinasiId) async {
+    print(
+        "fetchAndCalculateAverageRating called with destinasiId: $destinasiId");
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -97,16 +98,19 @@ class DestinasiWisataViewModel extends ChangeNotifier {
       List<ReviewModel> reviews =
           await _reviewService.fetchReviewByIdDestinasi(destinasiId);
       if (reviews.isEmpty) {
-        return 0.0;
+        print("No reviews found for destinasiId: $destinasiId");
+        return null; // Return null if no reviews are found
       } else {
         int totalRating = reviews.fold(0, (sum, review) => sum + review.rating);
-        print("total rating: $totalRating");
+        print("Total rating: $totalRating for destinasiId: $destinasiId");
         double averageRating = totalRating / reviews.length;
-        _averageRating = averageRating;
-        print("total rating: $_averageRating");
-        return averageRating;
+        double roundedAverageRating = double.parse(averageRating.toStringAsFixed(2));
+        print("Average rating: $averageRating for destinasiId: $destinasiId");
+        _averageRating = roundedAverageRating;
+        return roundedAverageRating;
       }
     } catch (e) {
+      print("Error in fetchAndCalculateAverageRating: $e");
       _errorMessage = 'Failed to calculate average rating: $e';
       throw Exception('Failed to calculate average rating: $e');
     } finally {

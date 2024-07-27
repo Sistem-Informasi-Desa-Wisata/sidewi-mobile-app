@@ -32,10 +32,16 @@ class _ListWisataWidgetState extends State<ListWisataWidget> {
             return Center(child: CircularProgressIndicator());
           }
 
-          if (viewModel.errorMessage!.isNotEmpty) {
+          if (viewModel.errorMessage != null &&
+              viewModel.errorMessage!.isNotEmpty) {
             return Center(
                 child: Text('Error a: ${widget.id} ${viewModel.errorMessage}'));
           }
+
+          if (viewModel.destinasiwisataByDesaList.isEmpty) {
+            return Center(child: Text('No data available.'));
+          }
+
           return SizedBox(
             child: ListView.builder(
                 // shrinkWrap: true,

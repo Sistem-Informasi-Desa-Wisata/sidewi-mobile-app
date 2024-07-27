@@ -22,8 +22,8 @@ class CardItemWisataWidget extends StatefulWidget {
 class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
   bool _isFavorite = true;
   String? kategoriNama;
-  double? rating;
-  bool isLoading = true;
+  double? rating = 0.0;
+  // bool isLoading = true;
 
   @override
   void initState() {
@@ -50,13 +50,7 @@ class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
       }
     } catch (e) {
       print("error fetchCategoryName : $e");
-    } finally {
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
-    }
+    } 
   }
 
   Future<void> fetchRating() async {
@@ -74,13 +68,7 @@ class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
       }
     } catch (e) {
       print("error fetchRating : $e");
-    } finally {
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
-    }
+    } 
   }
 
   @override
@@ -135,8 +123,7 @@ class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
                                 width: 16, height: 16),
                             SizedBox(width: 4),
                             Text(
-                              "0.0",
-                              // rating != null ? rating.toString() : '0.0',
+                              rating != null ? rating.toString() : '0.0',
                               style: const TextStyle(
                                 fontFamily: "Montserrat",
                                 fontSize: 14,
