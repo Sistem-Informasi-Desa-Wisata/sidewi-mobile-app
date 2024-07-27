@@ -48,7 +48,8 @@ class DestinasiWisataService {
   }
 
   Future<KategoriDestinasiModel> getCategoryName(int id) async {
-    final response = await http.get(Uri.parse('$baseUrl/kategoridestinasi/$id'));
+    final response =
+        await http.get(Uri.parse('$baseUrl/kategoridestinasi/$id'));
     if (response.statusCode == 200) {
       final body = json.decode(response.body);
       return KategoriDestinasiModel.fromJson(body);

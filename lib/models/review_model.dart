@@ -2,7 +2,7 @@ class ReviewModel {
   final int id;
   final int id_akun;
   final int id_destinasiwisata;
-  final int rating;
+  int _rating;
   final String review;
   final int setujui;
   final DateTime createdAt;
@@ -14,21 +14,30 @@ class ReviewModel {
     required this.id,
     required this.id_akun,
     required this.id_destinasiwisata,
-    required this.rating,
+    required int rating,
     required this.review,
     required this.setujui,
     required this.createdAt,
     required this.updatedAt,
     this.userName,
     this.foto,
-  });
+  }) : _rating = (rating < 1)
+            ? 1
+            : (rating > 5)
+                ? 5
+                : rating;
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) {
+    int rating = json['rating'];
     return ReviewModel(
       id: json['id'],
       id_akun: json['id_akun'],
       id_destinasiwisata: json['id_destinasiwisata'],
-      rating: json['rating'],
+      rating: (rating < 1)
+          ? 1
+          : (rating > 5)
+              ? 5
+              : rating,
       review: json['review'],
       setujui: json['setujui'],
       createdAt: DateTime.parse(json['createdAt']),
@@ -43,7 +52,7 @@ class ReviewModel {
       'id': id,
       'id_akun': id_akun,
       'id_destinasiwisata': id_destinasiwisata,
-      'rating': rating,
+      'rating': _rating,
       'review': review,
       'setujui': setujui,
       'createdAt': createdAt.toIso8601String(),
@@ -53,8 +62,20 @@ class ReviewModel {
     };
   }
 
+  int get rating => _rating;
+
+  set rating(int newRating) {
+    if (newRating < 1) {
+      _rating = 1;
+    } else if (newRating > 5) {
+      _rating = 5;
+    } else {
+      _rating = newRating;
+    }
+  }
+
   @override
   String toString() {
-    return 'ReviewModel(id: $id, id_akun: $id_akun,id_destinasiwisata:$id_destinasiwisata, review: $review,setujui:$setujui, rating: $rating, createdAt: $createdAt,username:$userName,foto:$foto)';
+    return 'ReviewModel(id: $id, id_akun: $id_akun, id_destinasiwisata: $id_destinasiwisata, review: $review, setujui: $setujui, rating: $_rating, createdAt: $createdAt, updatedAt: $updatedAt, userName: $userName, foto: $foto)';
   }
 }

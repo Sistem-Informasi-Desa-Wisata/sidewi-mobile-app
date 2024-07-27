@@ -38,7 +38,6 @@ class ReviewService {
         List<ReviewModel> reviewList = filteredBody
             .map((dynamic item) => ReviewModel.fromJson(item))
             .toList();
-        reviewList.forEach((review) => print(review.toString()));
         return reviewList;
       } else {
         throw Exception('Failed to load reviews');

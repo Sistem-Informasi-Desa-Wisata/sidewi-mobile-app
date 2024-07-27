@@ -27,7 +27,6 @@ class _DetailScreenState extends State<DetailScreen> {
     super.initState();
     _viewModel = DesaWisataViewModel();
     _viewModel.fetchDetailDesaWisata(widget.id);
-    // _viewModel.fetchInformasiDesaWisata(widget.id);
   }
 
   @override

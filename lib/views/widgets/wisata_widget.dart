@@ -32,7 +32,7 @@ class _ListWisataWidgetState extends State<ListWisataWidget> {
             return Center(child: CircularProgressIndicator());
           }
 
-          if (viewModel.errorMessage.isNotEmpty) {
+          if (viewModel.errorMessage!.isNotEmpty) {
             return Center(
                 child: Text('Error a: ${widget.id} ${viewModel.errorMessage}'));
           }

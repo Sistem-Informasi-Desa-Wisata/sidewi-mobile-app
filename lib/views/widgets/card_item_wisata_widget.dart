@@ -22,27 +22,71 @@ class CardItemWisataWidget extends StatefulWidget {
 class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
   bool _isFavorite = true;
   String? kategoriNama;
+  double? rating;
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    fetchCategoryName();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fetchCategoryName();
+      fetchRating();
+    });
   }
 
   Future<void> fetchCategoryName() async {
     final viewModel =
         Provider.of<DestinasiWisataViewModel>(context, listen: false);
-    String? name = await viewModel
-        .getCategoryName(widget.destinasiwisata.id_kategoridestinasi);
-    setState(() {
-      kategoriNama = name;
-      isLoading = false;
-    });
+    try {
+      String? name = await viewModel
+          .getCategoryName(widget.destinasiwisata.id_kategoridestinasi);
+      print("result fetchCategoryName: $name");
+
+      if (mounted) {
+        setState(() {
+          kategoriNama = name;
+          print("setState fetchCategoryName: $kategoriNama");
+        });
+      }
+    } catch (e) {
+      print("error fetchCategoryName : $e");
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> fetchRating() async {
+    final viewModel =
+        Provider.of<DestinasiWisataViewModel>(context, listen: false);
+    try {
+      double? result = await viewModel
+          .fetchAndCalculateAverageRating(widget.destinasiwisata.id);
+      print("result fetchRating: $result");
+      if (mounted) {
+        setState(() {
+          rating = result;
+          print("setState fetchRating: $rating");
+        });
+      }
+    } catch (e) {
+      print("error fetchRating : $e");
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    print("widget categoryname: $kategoriNama");
+    print("widget rating: $rating");
     final imageProvider = (widget.destinasiwisata.gambar != null &&
             widget.destinasiwisata.gambar.isNotEmpty)
         ? NetworkImage(
@@ -91,7 +135,8 @@ class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
                                 width: 16, height: 16),
                             SizedBox(width: 4),
                             Text(
-                              "4.3",
+                              "0.0",
+                              // rating != null ? rating.toString() : '0.0',
                               style: const TextStyle(
                                 fontFamily: "Montserrat",
                                 fontSize: 14,

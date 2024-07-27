@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:sidewi_mobile_app/models/destinasiwisata_model.dart';
 import 'package:sidewi_mobile_app/models/kategoridestinasi_model.dart';
+import 'package:sidewi_mobile_app/models/review_model.dart';
 import 'package:sidewi_mobile_app/services/destinasiwisata_service.dart'; // Update with your actual path
+import 'package:sidewi_mobile_app/services/review_service.dart'; // Update with your actual path
 
 class DestinasiWisataViewModel extends ChangeNotifier {
   final DestinasiWisataService _destinasiwisataService =
       DestinasiWisataService();
+  final ReviewService _reviewService = ReviewService();
+
   List<DestinasiWisataModel> _destinasiwisataList = [];
   List<DestinasiWisataModel> _destinasiwisataByDesaList = [];
   DestinasiWisataModel? _selectedDestinasiWisata;
   KategoriDestinasiModel? _kategori;
   bool _isLoading = true;
-  String _errorMessage = '';
+  String? _errorMessage = '';
+  double? _averageRating = 0.0;
 
   List<DestinasiWisataModel> get destinasiwisataList => _destinasiwisataList;
   List<DestinasiWisataModel> get destinasiwisataByDesaList =>
@@ -19,7 +24,8 @@ class DestinasiWisataViewModel extends ChangeNotifier {
   DestinasiWisataModel? get selectedDestinasiWisata => _selectedDestinasiWisata;
   KategoriDestinasiModel? get kategori => _kategori;
   bool get isLoading => _isLoading;
-  String get errorMessage => _errorMessage;
+  String? get errorMessage => _errorMessage;
+  double? get averageRating => _averageRating;
 
   Future<void> fetchDestinasiWisataList() async {
     _isLoading = true;
@@ -76,6 +82,33 @@ class DestinasiWisataViewModel extends ChangeNotifier {
     } catch (e) {
       _errorMessage = e.toString();
       return null;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<double> fetchAndCalculateAverageRating(int destinasiId) async {
+    print("masuk");
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      List<ReviewModel> reviews =
+          await _reviewService.fetchReviewByIdDestinasi(destinasiId);
+      if (reviews.isEmpty) {
+        return 0.0;
+      } else {
+        int totalRating = reviews.fold(0, (sum, review) => sum + review.rating);
+        print("total rating: $totalRating");
+        double averageRating = totalRating / reviews.length;
+        _averageRating = averageRating;
+        print("total rating: $_averageRating");
+        return averageRating;
+      }
+    } catch (e) {
+      _errorMessage = 'Failed to calculate average rating: $e';
+      throw Exception('Failed to calculate average rating: $e');
     } finally {
       _isLoading = false;
       notifyListeners();

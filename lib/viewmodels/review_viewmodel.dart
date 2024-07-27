@@ -57,7 +57,6 @@ class ReviewViewModel extends ChangeNotifier {
     } catch (e) {
       _errorMessage = e.toString();
     } finally {
-      print("huh");
       _isLoading = false;
       notifyListeners();
     }
@@ -82,7 +81,6 @@ class ReviewViewModel extends ChangeNotifier {
     } catch (e) {
       _errorMessage = e.toString();
     } finally {
-      print("huh");
       _isLoading = false;
       notifyListeners();
     }

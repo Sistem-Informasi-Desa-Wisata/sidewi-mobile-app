@@ -36,8 +36,7 @@ class _DetailWisataScreenState extends State<DetailWisataScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final imageProvider = (widget.destinasiwisata.gambar != null &&
-            widget.destinasiwisata.gambar.isNotEmpty)
+    final imageProvider = (widget.destinasiwisata.gambar.isNotEmpty)
         ? NetworkImage(
             '${ApiConfig.baseUrl}/resource/destinasiwisata/${widget.destinasiwisata.gambar}')
         : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
