@@ -10,17 +10,22 @@ import 'package:sidewi_mobile_app/viewmodels/destinasiwisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/views/screens/detail_berita_screen.dart';
 import 'package:sidewi_mobile_app/views/widgets/card_item_berita_widget.dart';
 
-class ListWisataWidget extends StatelessWidget {
+class ListWisataWidget extends StatefulWidget {
   final int id;
   final String desa;
 
   const ListWisataWidget({super.key, required this.id, required this.desa});
 
   @override
+  State<ListWisataWidget> createState() => _ListWisataWidgetState();
+}
+
+class _ListWisataWidgetState extends State<ListWisataWidget> {
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) =>
-          DestinasiWisataViewModel()..fetchDestinasiWisataByIdDesa(id),
+          DestinasiWisataViewModel()..fetchDestinasiWisataByIdDesa(widget.id),
       child: Consumer<DestinasiWisataViewModel>(
         builder: (context, viewModel, child) {
           if (viewModel.isLoading) {
@@ -29,7 +34,7 @@ class ListWisataWidget extends StatelessWidget {
 
           if (viewModel.errorMessage.isNotEmpty) {
             return Center(
-                child: Text('Error a: $id ${viewModel.errorMessage}'));
+                child: Text('Error a: ${widget.id} ${viewModel.errorMessage}'));
           }
           return SizedBox(
             child: ListView.builder(
@@ -50,7 +55,7 @@ class ListWisataWidget extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => DetailWisataScreen(
                                     destinasiwisata: destinasiwisata,
-                                    desa: desa)));
+                                    desa: widget.desa)));
                       },
                       destinasiwisata: destinasiwisata,
                     ),

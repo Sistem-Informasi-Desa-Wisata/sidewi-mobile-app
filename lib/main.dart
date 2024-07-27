@@ -17,7 +17,6 @@ import 'viewmodels/auth_viewmodel.dart';
 import 'viewmodels/review_viewmodel.dart';
 import 'viewmodels/user_viewmodel.dart';
 import 'viewmodels/desawisata_viewmodel.dart';
-import 'viewmodels/informasidesawisata_viewmodel.dart';
 import 'views/screens/main_screen.dart';
 
 void main() {
@@ -30,7 +29,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DesaWisataViewModel()),
-        ChangeNotifierProvider(create: (_) => InformasiDesaWisataViewModel()),
         ChangeNotifierProvider(create: (_) => DestinasiWisataViewModel()),
         ChangeNotifierProvider(create: (_) => ReviewViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
@@ -44,8 +42,8 @@ class MyApp extends StatelessWidget {
       child: Consumer<AuthViewModel>(
         builder: (context, authViewModel, child) {
           return MaterialApp(
-            home: DetailScreen(id: 1),
-            // home: authViewModel.user != null ? MainScreen() : LoginScreen(),
+            // home: DetailScreen(id: 1),
+            home: authViewModel.user != null ? MainScreen() : WelcomeScreen(),
             routes: {
               '/main': (context) => MainScreen(),
               '/login_screen': (context) => LoginScreen(),
