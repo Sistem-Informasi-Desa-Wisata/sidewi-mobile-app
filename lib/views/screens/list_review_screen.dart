@@ -26,11 +26,13 @@ class _ListReviewScreenState extends State<ListReviewScreen> {
   @override
   void initState() {
     super.initState();
-    final reviewViewModel =
-        Provider.of<ReviewViewModel>(context, listen: false);
-    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    reviewViewModel.fetchReviewByIdDestinasi(
-        widget.id, authViewModel.accessToken);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final reviewViewModel =
+          Provider.of<ReviewViewModel>(context, listen: false);
+      final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+      reviewViewModel.fetchReviewByIdDestinasi(
+          widget.id, authViewModel.accessToken);
+    });
   }
 
   @override
@@ -138,104 +140,110 @@ class _ListReviewState extends State<ListReview> {
 
 class ReviewItemWidget extends StatelessWidget {
   final ReviewModel review;
-  const ReviewItemWidget({super.key, required this.review});
+  const ReviewItemWidget({required this.review, super.key});
 
   @override
   Widget build(BuildContext context) {
     final imageProvider = (review.foto != null)
         ? NetworkImage('${ApiConfig.baseUrl}/resource/akun/${review.foto}')
         : AssetImage('assets/images/DefaultProfile.jpg') as ImageProvider;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: Container(
-        height: 100,
-        child: Row(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image:imageProvider,
-                      fit: BoxFit.cover,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover, // Mengisi seluruh area container
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                review.userName ??
-                                    "User", // Replace with actual username
-                                style: const TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff000000),
-                                  height: 20 / 16,
+              Expanded(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  // review.id_akun.toString(),
+                                  review.userName ?? "User",
+                                  style: const TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff000000),
+                                    height: 20 / 16,
+                                  ),
+                                  textAlign: TextAlign.left,
                                 ),
-                                textAlign: TextAlign.left,
-                              ),
-                              Text(
-                                "${review.createdAt.day} ${review.createdAt.month}, ${review.createdAt.year}", // Replace with actual date
-                                style: const TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff9fa5a9),
-                                  height: 12 / 10,
-                                ),
-                                textAlign: TextAlign.right,
-                              )
-                            ],
-                          ),
-                          Container(
-                            child: StarRating(
-                              rating:
-                                  review.rating, // Replace with actual rating
-                              starCount: 5,
-                              size: 12,
+                                Text(
+                                  "${review.createdAt.day} ${review.createdAt.month}, ${review.createdAt.year}",
+                                  style: const TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff9fa5a9),
+                                    height: 12 / 10,
+                                  ),
+                                  textAlign: TextAlign.right,
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Container(
-                      width: 268,
-                      child: Text(
-                        review.review, // Replace with actual comment
-                        style: const TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff000000),
+                            Container(
+                              child: StarRating(
+                                rating: review.rating,
+                                starCount: 5,
+                                size: 12,
+                              ),
+                            )
+                          ],
                         ),
-                        textAlign: TextAlign.left,
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 4,
+                      ),
+                    ],
+                  ),
                 ),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 6,
+          ),
+          Container(
+            width: 300,
+            child: Text(
+              review.review,
+              style: const TextStyle(
+                fontFamily: "Montserrat",
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: Color(0xff000000),
               ),
-            )
-          ],
-        ),
+              textAlign: TextAlign.justify,
+            ),
+          )
+        ],
       ),
     );
   }

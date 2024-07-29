@@ -22,7 +22,8 @@ class DetailPage extends StatefulWidget {
   _DetailPageState createState() => _DetailPageState();
 }
 
-class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateMixin {
+class _DetailPageState extends State<DetailPage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool _isLoading = true;
 
@@ -200,7 +201,7 @@ class DesaItemWidget extends StatefulWidget {
 }
 
 class _DesaItemWidgetState extends State<DesaItemWidget> {
-  late bool _isFavorite;
+  late bool _isFavorite = true;
 
   @override
   void initState() {
@@ -216,10 +217,14 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
           Navigator.push(
             context,
             PageRouteBuilder(
-              transitionDuration: Duration(milliseconds: 500), // Transition duration
-              pageBuilder: (context, animation, secondaryAnimation) => DetailScreen(id: widget.desaWisata.id),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                var fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+              transitionDuration:
+                  Duration(milliseconds: 500), // Transition duration
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  DetailScreen(id: widget.desaWisata.id),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                var fadeAnimation =
+                    Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
                   parent: animation,
                   curve: Curves.ease,
                 ));
@@ -238,7 +243,8 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
-                    image: AssetImage('assets/images/foto_berita.png'), // Update with actual image URL if needed
+                    image: AssetImage(
+                        'assets/images/foto_berita.png'), // Update with actual image URL if needed
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -261,7 +267,8 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 12, left: 8, right: 8, bottom: 18),
+                  padding: const EdgeInsets.only(
+                      top: 12, left: 8, right: 8, bottom: 18),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -275,14 +282,22 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(
-                                    transitionDuration: Duration(milliseconds: 500), // Transition duration
-                                    pageBuilder: (context, animation, secondaryAnimation) => DetailScreen(id: widget.desaWisata.id),
-                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                      var fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                                    transitionDuration: Duration(
+                                        milliseconds:
+                                            500), // Transition duration
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        DetailScreen(id: widget.desaWisata.id),
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      var fadeAnimation =
+                                          Tween(begin: 0.0, end: 1.0)
+                                              .animate(CurvedAnimation(
                                         parent: animation,
                                         curve: Curves.ease,
                                       ));
-                                      return FadeTransition(opacity: fadeAnimation, child: child);
+                                      return FadeTransition(
+                                          opacity: fadeAnimation, child: child);
                                     },
                                   ),
                                 );
@@ -300,13 +315,16 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                             child: GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  _isFavorite = !_isFavorite; // Toggle favorite status
+                                  _isFavorite =
+                                      !_isFavorite; // Toggle favorite status
                                 });
                                 // Optionally, update favorite status in the ViewModel or API
                               },
                               child: _isFavorite
-                                  ? SvgPicture.asset('assets/icons/ic_favorite_active.svg')
-                                  : SvgPicture.asset('assets/icons/ic_favorite_nonactive.svg'),
+                                  ? SvgPicture.asset(
+                                      'assets/icons/ic_favorite_active.svg')
+                                  : SvgPicture.asset(
+                                      'assets/icons/ic_favorite_nonactive.svg'),
                             ),
                           ),
                         ],
@@ -326,7 +344,8 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                             textAlign: TextAlign.left,
                           ),
                           Text(
-                            widget.desaWisata.alamat, // Assuming there's a location field
+                            widget.desaWisata
+                                .alamat, // Assuming there's a location field
                             style: const TextStyle(
                               fontFamily: "Montserrat",
                               fontSize: 8,

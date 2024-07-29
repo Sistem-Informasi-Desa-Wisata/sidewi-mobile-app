@@ -99,7 +99,10 @@ class HomeScreen extends StatelessWidget {
                           Container(
                             width: 32,
                             height: 32,
-                            color: MyColors.mainGrey,
+                            decoration: BoxDecoration(
+                              color: MyColors.mainGrey,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                             child: IconButton(
                               icon: Transform.scale(
                                   scale: 1.5,

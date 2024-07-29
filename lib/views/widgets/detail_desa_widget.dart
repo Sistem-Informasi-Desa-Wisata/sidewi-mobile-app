@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/views/widgets/webView_map_wdiget.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/models/informasidesawisata_model.dart';
@@ -62,7 +63,7 @@ class DetailDesaWidget extends StatelessWidget {
             height: 24,
           ),
           Text(
-            "No telp : ${informasi.no_telp}",
+            "Kontak",
             style: const TextStyle(
               fontFamily: "Montserrat",
               fontSize: 16,
@@ -75,23 +76,61 @@ class DetailDesaWidget extends StatelessWidget {
           SizedBox(
             height: 12,
           ),
-          Text(
-            "Whatsapp : ${informasi.no_wa}",
-            style: const TextStyle(
-              fontFamily: "Montserrat",
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xff000000),
-              height: 20 / 16,
-            ),
-            textAlign: TextAlign.left,
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: [
+              Container(
+                // color: Colors.amber,
+                height: 20,
+                width: 20,
+                child: SvgPicture.asset('assets/icons/ic_phone.svg'),
+              ),
+              SizedBox(width: 10),
+              Text(
+                "No Telepon : ${informasi.no_telp}",
+                style: const TextStyle(
+                  fontFamily: "Montserrat",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff000000),
+                  height: 15 / 12,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ],
+          ),
+          SizedBox(height: 6),
+          Row(
+            children: [
+              Container(
+                // color: Colors.amber,
+                height: 20,
+                width: 20,
+                child: SvgPicture.asset('assets/icons/ic_whatsapp.svg'),
+              ),
+              SizedBox(width: 10),
+              Text(
+                "Whatsapp : ${informasi.no_wa}",
+                style: const TextStyle(
+                  fontFamily: "Montserrat",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff000000),
+                  height: 15 / 12,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ],
+          ),
+          SizedBox(height: 6),
+          Row(
+            children: [
+              Container(
+                // color: Colors.amber,
+                height: 20,
+                width: 20,
+                child: SvgPicture.asset('assets/icons/ic_facebook.svg'),
+              ),
+              SizedBox(width: 10),
               Text(
                 "Facebook : ${informasi.facebook}",
                 style: const TextStyle(
@@ -103,6 +142,18 @@ class DetailDesaWidget extends StatelessWidget {
                 ),
                 textAlign: TextAlign.left,
               ),
+            ],
+          ),
+          SizedBox(height: 6),
+          Row(
+            children: [
+              Container(
+                // color: Colors.amber,
+                height: 20,
+                width: 20,
+                child: SvgPicture.asset('assets/icons/ic_instagram.svg'),
+              ),
+              SizedBox(width: 10),
               Text(
                 "Instagram : ${informasi.email}",
                 style: const TextStyle(
@@ -114,8 +165,19 @@ class DetailDesaWidget extends StatelessWidget {
                 ),
                 textAlign: TextAlign.left,
               ),
+            ],
+          ),
+          SizedBox(height: 6),
+          Row(
+            children: [
+              Container(
+                height: 20,
+                width: 20,
+                child: SvgPicture.asset('assets/icons/ic_web.svg'),
+              ),
+              SizedBox(width: 10),
               Text(
-                "Website ${informasi.website}",
+                "Website : ${informasi.website}",
                 style: const TextStyle(
                   fontFamily: "Montserrat",
                   fontSize: 12,
@@ -124,8 +186,25 @@ class DetailDesaWidget extends StatelessWidget {
                   height: 15 / 12,
                 ),
                 textAlign: TextAlign.left,
-              )
+              ),
+              SizedBox(
+                height: 24,
+              ),
             ],
+          ),
+          Text(
+            "Gallery",
+            style: const TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff000000),
+              height: 20 / 16,
+            ),
+            textAlign: TextAlign.left,
+          ),
+          SizedBox(
+            height: 30,
           )
         ],
       ),
