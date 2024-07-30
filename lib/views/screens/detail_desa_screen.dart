@@ -180,14 +180,17 @@ class _DetailPageState extends State<DetailPage>
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      detail.nama,
-                                      style: const TextStyle(
-                                        fontFamily: "Montserrat",
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w600,
-                                        color: Color(0xff000000),
-                                        height: 29 / 24,
+                                    Container(
+                                      width: 300,
+                                      child: Text(
+                                        detail.nama,
+                                        style: const TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xff000000),
+                                          height: 29 / 24,
+                                        ),
                                       ),
                                     ),
                                     Text(

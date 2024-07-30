@@ -25,13 +25,16 @@ class _DetailWisataScreenState extends State<DetailWisataScreen> {
   @override
   void initState() {
     super.initState();
-    final reviewViewModel =
-        Provider.of<ReviewViewModel>(context, listen: false);
-    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    reviewViewModel.fetchLimitedReviewByIdDestinasi(
-        widget.destinasiwisata.id, authViewModel.accessToken,
-        limit: 3);
-    reviewViewModel.countReview(widget.destinasiwisata.id, limit: 3);
+    // perubahan ini menggunakan addPostFrameCallback
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final reviewViewModel =
+          Provider.of<ReviewViewModel>(context, listen: false);
+      final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+      reviewViewModel.fetchLimitedReviewByIdDestinasi(
+          widget.destinasiwisata.id, authViewModel.accessToken,
+          limit: 3);
+      reviewViewModel.countReview(widget.destinasiwisata.id, limit: 3);
+    });
   }
 
   @override
@@ -112,30 +115,33 @@ class _DetailWisataScreenState extends State<DetailWisataScreen> {
                       Row(
                         children: [
                           // tittle Section
-                          RichText(
-                            text: TextSpan(children: [
-                              TextSpan(
-                                text: widget.destinasiwisata.nama,
-                                style: const TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff000000),
-                                  height: 20 / 16,
+                          Container(
+                            width: 300,
+                            child: RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                  text: widget.destinasiwisata.nama,
+                                  style: const TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff000000),
+                                    height: 20 / 16,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: " - ${widget.desa}",
-                                style: const TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color(0xFF9FA5A9),
-                                  height: 20 / 16,
-                                ),
-                              )
-                            ]),
-                            textAlign: TextAlign.left,
+                                TextSpan(
+                                  text: " - ${widget.desa}",
+                                  style: const TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                    color: Color(0xFF9FA5A9),
+                                    height: 20 / 16,
+                                  ),
+                                )
+                              ]),
+                              textAlign: TextAlign.left,
+                            ),
                           ),
                         ],
                       ),
@@ -166,7 +172,7 @@ class _DetailWisataScreenState extends State<DetailWisataScreen> {
                           height:
                               1.0, // Sesuaikan dengan jenis font dan ukuran yang digunakan
                         ),
-                        textAlign: TextAlign.left,
+                        textAlign: TextAlign.justify,
                       ),
 
                       Padding(

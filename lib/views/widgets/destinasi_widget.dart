@@ -126,26 +126,9 @@ class _DestinasiItemsWidgetState extends State<DestinasiItemsWidget> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            PageRouteBuilder(
-                              transitionDuration:
-                                  Duration(milliseconds: 500), // Durasi animasi
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) =>
-                                      DetailScreen(id:widget.desaWisata.id),
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                var begin = Offset(1.0, 0.0);
-                                var end = Offset.zero;
-                                var curve = Curves.ease;
-
-                                var tween = Tween(begin: begin, end: end)
-                                    .chain(CurveTween(curve: curve));
-
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailScreen(id: widget.desaWisata.id),
                             ),
                           );
                         },
@@ -288,7 +271,7 @@ class _DestinasiItemsWidgetVerticalState
           PageRouteBuilder(
             transitionDuration: Duration(milliseconds: 500), // Durasi animasi
             pageBuilder: (context, animation, secondaryAnimation) =>
-                DetailScreen(id:widget.desaWisata.id),
+                DetailScreen(id: widget.desaWisata.id),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               var begin = Offset(1.0, 0.0);
@@ -343,41 +326,55 @@ class _DestinasiItemsWidgetVerticalState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Container(
-                          alignment: Alignment.topRight,
-                          width: 24,
-                          height: 24,
-                          child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _isFavorite =
-                                      !_isFavorite; // Toggle nilai _isFavorite
-                                });
-                              },
-                              child: _isFavorite == true
-                                  ? SvgPicture.asset(
-                                      'assets/icons/ic_favorite_active.svg')
-                                  : SvgPicture.asset(
-                                      'assets/icons/ic_favorite_nonactive.svg')),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailScreen(id: widget.desaWisata.id),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            height: 95,
+                          ),
                         ),
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        width: 24,
+                        height: 24,
+                        child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _isFavorite =
+                                    !_isFavorite; // Toggle nilai _isFavorite
+                              });
+                            },
+                            child: _isFavorite == true
+                                ? SvgPicture.asset(
+                                    'assets/icons/ic_favorite_active.svg')
+                                : SvgPicture.asset(
+                                    'assets/icons/ic_favorite_nonactive.svg')),
                       ),
                     ],
                   ),
-                  Padding(
-                      padding: const EdgeInsets.only(top: 79),
-                      child: Text(
-                        widget.desaWisata.nama,
-                        style: const TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                          height: 15 / 12,
-                        ),
-                        textAlign: TextAlign.left,
-                      )),
+                  Text(
+                    widget.desaWisata.nama,
+                    style: const TextStyle(
+                      fontFamily: "Montserrat",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                      height: 15 / 12,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
                   Text(
                     widget.desaWisata.kabupaten,
                     style: const TextStyle(

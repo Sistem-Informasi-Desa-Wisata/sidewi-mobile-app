@@ -52,18 +52,16 @@ class ContainerReviewWidget extends StatelessWidget {
                 SizedBox(
                   height: 24,
                 ),
-                SizedBox(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.only(top: 6),
-                      scrollDirection: Axis.vertical,
-                      itemCount: reviewViewModel.limitedReviewList.length,
-                      itemBuilder: (context, index) {
-                        final review = reviewViewModel.limitedReviewList[index];
-                        return ReviewItemWidget(review: review);
-                      }),
-                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(top: 6),
+                    scrollDirection: Axis.vertical,
+                    itemCount: reviewViewModel.limitedReviewList.length,
+                    itemBuilder: (context, index) {
+                      final review = reviewViewModel.limitedReviewList[index];
+                      return ReviewItemWidget(review: review);
+                    }),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24),
                   child: GestureDetector(
@@ -71,7 +69,9 @@ class ContainerReviewWidget extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ListReviewScreen(id: id,)));
+                              builder: (context) => ListReviewScreen(
+                                    id: id,
+                                  )));
                     },
                     child: Container(
                       width: 300,
@@ -115,102 +115,105 @@ class ReviewItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageProvider = (review.foto != null)
-        ? NetworkImage(
-            '${ApiConfig.baseUrl}/resource/akun/${review.foto}')
+        ? NetworkImage('${ApiConfig.baseUrl}/resource/akun/${review.foto}')
         : AssetImage('assets/images/DefaultProfile.jpg') as ImageProvider;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: Container(
-        height: 100,
-        child: Row(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover, // Mengisi seluruh area container
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover, // Mengisi seluruh area container
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                // review.id_akun.toString(),
-                                review.userName ?? "User",
-                                style: const TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff000000),
-                                  height: 20 / 16,
+              Expanded(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  // review.id_akun.toString(),
+                                  review.userName ?? "User",
+                                  style: const TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff000000),
+                                    height: 20 / 16,
+                                  ),
+                                  textAlign: TextAlign.left,
                                 ),
-                                textAlign: TextAlign.left,
-                              ),
-                              Text(
-                                "${review.createdAt.day} ${review.createdAt.month}, ${review.createdAt.year}",
-                                style: const TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff9fa5a9),
-                                  height: 12 / 10,
-                                ),
-                                textAlign: TextAlign.right,
-                              )
-                            ],
-                          ),
-                          Container(
-                            child: StarRating(
-                              rating: review.rating,
-                              starCount: 5,
-                              size: 12,
+                                Text(
+                                  "${review.createdAt.day} ${review.createdAt.month}, ${review.createdAt.year}",
+                                  style: const TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff9fa5a9),
+                                    height: 12 / 10,
+                                  ),
+                                  textAlign: TextAlign.right,
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      width: 268,
-                      child: Text(
-                        review.review,
-                        style: const TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff000000),
+                            Container(
+                              child: StarRating(
+                                rating: review.rating,
+                                starCount: 5,
+                                size: 12,
+                              ),
+                            )
+                          ],
                         ),
-                        textAlign: TextAlign.left,
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 4,
+                      ),
+                    ],
+                  ),
                 ),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 6,
+          ),
+          Container(
+            width: 300,
+            child: Text(
+              review.review,
+              style: const TextStyle(
+                fontFamily: "Montserrat",
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: Color(0xff000000),
               ),
-            )
-          ],
-        ),
+              textAlign: TextAlign.justify,
+            ),
+          )
+        ],
       ),
     );
   }

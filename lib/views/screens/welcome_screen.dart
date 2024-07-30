@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sidewi_mobile_app/views/screens/login_screen.dart';
 import 'package:sidewi_mobile_app/views/screens/main_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     Future.delayed(Duration(seconds: 10), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MainScreen()),
+        MaterialPageRoute(builder: (context) => LoginScreen()),
       );
     });
   }
@@ -30,7 +31,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             width: 300,
             height: 300,
             child: Lottie.asset(
-              'assets/lotties/animate.json', 
+              'assets/lotties/animate.json',
             ),
           ),
         ),
