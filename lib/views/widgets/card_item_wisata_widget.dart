@@ -23,7 +23,7 @@ class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
   bool _isFavorite = true;
   String? kategoriNama;
   double? rating = 0.0;
-  // bool isLoading = true;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
       }
     } catch (e) {
       print("error fetchCategoryName : $e");
-    }
+    } 
   }
 
   Future<void> fetchRating() async {
@@ -68,7 +68,7 @@ class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
       }
     } catch (e) {
       print("error fetchRating : $e");
-    }
+    } 
   }
 
   @override
