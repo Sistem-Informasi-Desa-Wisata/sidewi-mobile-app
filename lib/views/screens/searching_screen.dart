@@ -70,7 +70,12 @@ class SearchingScreen extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    SearchWidget()
+                    SearchWidget(
+                      onSearchChanged: (searchQuery) {
+                        Provider.of<DesaWisataViewModel>(context, listen: false)
+                            .fetchDesaWisataBySearch(searchQuery);
+                      },
+                    )
                   ],
                 ),
               ),
@@ -128,9 +133,10 @@ class _DestinasiWidgetListVerticalState
   @override
   void initState() {
     super.initState();
-    // Gunakan WidgetsBinding untuk memanggil fetchDesa setelah build selesai
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Provider.of<DesaWisataViewModel>(context, listen: false).fetchDesaWisata().then((_) {
+      Provider.of<DesaWisataViewModel>(context, listen: false)
+          .fetchDesaWisataBySearch("")
+          .then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -152,9 +158,9 @@ class _DestinasiWidgetListVerticalState
           physics: NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
           scrollDirection: Axis.vertical,
-          itemCount: desaProvider.desaWisataList.length,
+          itemCount: desaProvider.desaWisataSearchList.length,
           itemBuilder: (context, index) {
-            DesaWisataModel desaWisata = desaProvider.desaWisataList[index];
+            DesaWisataModel desaWisata = desaProvider.desaWisataSearchList[index];
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: DestinasiItemsWidgetVertical(desaWisata: desaWisata),
