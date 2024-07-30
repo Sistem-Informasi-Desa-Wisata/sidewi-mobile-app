@@ -8,10 +8,10 @@ import 'package:sidewi_mobile_app/views/widgets/produk_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/wisata_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
+import 'package:sidewi_mobile_app/viewmodels/auth_viewmodel.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/models/informasidesawisata_model.dart';
 import 'package:sidewi_mobile_app/services/api_config.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DetailScreen extends StatefulWidget {
   final int id;
@@ -28,7 +28,8 @@ class _DetailScreenState extends State<DetailScreen> {
   void initState() {
     super.initState();
     _viewModel = DesaWisataViewModel();
-    _viewModel.fetchDetailDesaWisata(widget.id);
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    _viewModel.fetchDetailDesaWisata(widget.id, authViewModel.user!.id);
   }
 
   @override
@@ -123,8 +124,6 @@ class _DetailPageState extends State<DetailPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  bool _isFavorite = true;
-
   @override
   void initState() {
     super.initState();
@@ -139,6 +138,7 @@ class _DetailPageState extends State<DetailPage>
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return Consumer<DesaWisataViewModel>(
       builder: (context, viewModel, child) {
         if (viewModel.isLoading) {
@@ -216,11 +216,10 @@ class _DetailPageState extends State<DetailPage>
                                   child: Center(
                                     child: GestureDetector(
                                         onTap: () {
-                                          setState(() {
-                                            _isFavorite = !_isFavorite;
-                                          });
+                                          viewModel.toggleFavoriteStatus(
+                                              detail, authViewModel.user!.id);
                                         },
-                                        child: _isFavorite
+                                        child: detail.isFavorite
                                             ? SvgPicture.asset(
                                                 'assets/icons/ic_full_love.svg')
                                             : SvgPicture.asset(

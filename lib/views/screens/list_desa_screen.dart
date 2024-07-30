@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
+import 'package:sidewi_mobile_app/viewmodels/auth_viewmodel.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/views/screens/detail_desa_screen.dart';
 import 'package:sidewi_mobile_app/services/api_config.dart';
@@ -33,10 +34,11 @@ class _DetailPageState extends State<DetailPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Provider.of<DesaWisataViewModel>(context, listen: false)
-          .fetchDesaWisataByKategori()
+          .fetchDesaWisataByKategori(authViewModel.user!.id)
           .then((_) {
         setState(() {
           _isLoading = false;
@@ -247,8 +249,6 @@ class DesaItemWidget extends StatefulWidget {
 }
 
 class _DesaItemWidgetState extends State<DesaItemWidget> {
-  late bool _isFavorite = true;
-
   @override
   void initState() {
     super.initState();
@@ -257,6 +257,9 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final desaWisataViewModel = Provider.of<DesaWisataViewModel>(context);
+    final authViewModel = Provider.of<AuthViewModel>(context);
+
     final imageProvider = (widget.desaWisata.gambar.isNotEmpty)
         ? NetworkImage(
             '${ApiConfig.baseUrl}/resource/desawisata/${widget.desaWisata.gambar}')
@@ -364,13 +367,9 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                             height: 24,
                             child: GestureDetector(
                               onTap: () {
-                                setState(() {
-                                  _isFavorite =
-                                      !_isFavorite; // Toggle favorite status
-                                });
-                                // Optionally, update favorite status in the ViewModel or API
+                               desaWisataViewModel.toggleFavoriteStatus(widget.desaWisata, authViewModel.user!.id);
                               },
-                              child: _isFavorite
+                              child: widget.desaWisata.isFavorite
                                   ? SvgPicture.asset(
                                       'assets/icons/ic_favorite_active.svg')
                                   : SvgPicture.asset(

@@ -49,12 +49,13 @@ class DestinasiWisataViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchDestinasiWisataByIdDesa(int id) async {
+  Future<void> fetchDestinasiWisataByIdDesa(int id,int userId) async {
     _isLoading = true;
     notifyListeners();
     try {
       _destinasiwisataByDesaList =
           await _destinasiwisataService.fetchDestinasiWisataByIdDesa(id);
+      fetchIsFavoriter(userId, _destinasiwisataByDesaList, null);
       print(_destinasiwisataByDesaList);
     } catch (e) {
       _errorMessage = e.toString();
@@ -143,9 +144,84 @@ class DestinasiWisataViewModel extends ChangeNotifier {
         }
       }
       _favoritDestinasiList = destinasilist;
+      fetchIsFavoriter(userId, _favoritDestinasiList, null);
       notifyListeners();
     } catch (e) {
       print("Error fetching favorite DestinasiFavoritUser: $e");
+    }
+  }
+
+  Future<void> fetchIsFavoriter(int userId, List<DestinasiWisataModel>? list,
+      DestinasiWisataModel? destinasi) async {
+    try {
+      List<DestinasiFavoritModel> favoriteDestinasiIds =
+          await _destinasifavoritService.fetchDestinasiFavoritUser(userId);
+
+      Set<int> favoriteDestinasiIdSet =
+          favoriteDestinasiIds.map((fav) => fav.id_destinasiwisata).toSet();
+
+      updateFavorites(favoriteDestinasiIdSet, list, destinasi);
+
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching favorite destinasi: $e");
+    }
+  }
+
+  void updateFavorites(Set<int> favoriteDestinasiIdSet,
+      List<DestinasiWisataModel>? list, DestinasiWisataModel? destinasi) {
+    if (list != null) {
+      for (var item in list) {
+        if (favoriteDestinasiIdSet.contains(item.id)) {
+          item.isFavorite = true;
+        } else {
+          item.isFavorite = false;
+        }
+      }
+    }
+    if (destinasi != null) {
+      if (favoriteDestinasiIdSet.contains(destinasi.id)) {
+        destinasi.isFavorite = true;
+      } else {
+        destinasi.isFavorite = false;
+      }
+    }
+  }
+
+  Future<void> toggleFavoriteStatus(
+      DestinasiWisataModel destinasi, int userId) async {
+    try {
+      if (destinasi.isFavorite) {
+        List<DestinasiFavoritModel> favoriteDestinasiIds =
+            await _destinasifavoritService.fetchDestinasiFavoritUser(userId);
+        List<DestinasiWisataModel> destinasis = [];
+
+        for (var favorite in favoriteDestinasiIds) {
+          DestinasiWisataModel destinasi = await _destinasiwisataService
+              .fetchDestinasiWisataById(favorite.id_destinasiwisata);
+          destinasis.add(destinasi);
+        }
+        DestinasiFavoritModel? destinasiFavorit;
+        try {
+          destinasiFavorit = favoriteDestinasiIds.firstWhere(
+            (favorit) =>
+                favorit.id_destinasiwisata == destinasi.id &&
+                favorit.id_akun == userId,
+          );
+        } catch (e) {
+          destinasiFavorit = null;
+        }
+
+        if (destinasiFavorit != null) {
+          await _destinasifavoritService.removeFavorite(destinasiFavorit.id);
+        }
+      } else {
+        await _destinasifavoritService.addFavorite(userId, destinasi.id);
+      }
+      await fetchIsFavoriter(userId, null, destinasi);
+      notifyListeners();
+    } catch (e) {
+      print("Error toggling favorite status: $e");
     }
   }
 }

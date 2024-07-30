@@ -8,6 +8,7 @@ class DestinasiWisataModel {
   final int id_desawisata;
   final DateTime createdAt;
   final DateTime updatedAt;
+  bool isFavorite;
 
   DestinasiWisataModel({
     required this.id,
@@ -19,6 +20,7 @@ class DestinasiWisataModel {
     required this.id_desawisata,
     required this.createdAt,
     required this.updatedAt,
+    this.isFavorite = false,
   });
 
   factory DestinasiWisataModel.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,7 @@ class DestinasiWisataModel {
       id_desawisata: json['id_desawisata'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
+      isFavorite: json['isFavorite'] ?? false,
     );
   }
 
@@ -46,6 +49,7 @@ class DestinasiWisataModel {
       'id_desawisata': id_desawisata,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
+      'isFavorite': isFavorite,
     };
   }
 }

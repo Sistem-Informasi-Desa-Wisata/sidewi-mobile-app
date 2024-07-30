@@ -210,14 +210,13 @@ class ItemWidget<T> extends StatefulWidget {
 }
 
 class _ItemWidgetState<T> extends State<ItemWidget<T>> {
-  bool _isFavorite = false;
-
   String? _kategoriNama;
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    final viewModel = Provider.of<DesaWisataViewModel>(context, listen: false);
     if (widget.item is DestinasiWisataModel) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         await fetchCategoryName();
@@ -247,6 +246,7 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
     String itemName;
     String itemDesc;
     int itemId;
+    bool isFavorite;
     ImageProvider imageProvider;
 
     if (widget.tab == "desa") {
@@ -254,6 +254,9 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
       itemName = item.nama;
       itemDesc = item.alamat;
       itemId = item.id;
+      isFavorite = item.isFavorite;
+      print(itemId);
+      print(isFavorite);
 
       imageProvider = (item.gambar.isNotEmpty)
           ? NetworkImage(
@@ -264,11 +267,17 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
       itemName = item.nama;
       itemDesc = _kategoriNama!;
       itemId = item.id;
+      isFavorite = item.isFavorite;
+
       imageProvider = (item.gambar.isNotEmpty)
           ? NetworkImage(
               '${ApiConfig.baseUrl}/resource/destinasiwisata/${item.gambar}')
           : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
     }
+
+    final desaWisataViewModel = Provider.of<DesaWisataViewModel>(context);
+    final destinasiWisataViewModel = Provider.of<DestinasiWisataViewModel>(context);
+    final authViewModel = Provider.of<AuthViewModel>(context);
 
     return Container(
       child: Center(
@@ -303,8 +312,7 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
-                      image:
-                          imageProvider, 
+                      image: imageProvider,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -377,13 +385,18 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
                               height: 24,
                               child: GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    _isFavorite =
-                                        !_isFavorite; // Toggle favorite status
-                                  });
-                                  // Optionally, update favorite status in the ViewModel or API
+                                  if (widget.tab == "desa") {
+                                    desaWisataViewModel.toggleFavoriteStatus(
+                                        widget.item as DesaWisataModel,
+                                        authViewModel.user!.id);
+                                  } else {
+                                    destinasiWisataViewModel
+                                        .toggleFavoriteStatus(
+                                            widget.item as DestinasiWisataModel,
+                                            authViewModel.user!.id);
+                                  }
                                 },
-                                child: _isFavorite
+                                child: isFavorite
                                     ? SvgPicture.asset(
                                         'assets/icons/ic_favorite_active.svg')
                                     : SvgPicture.asset(

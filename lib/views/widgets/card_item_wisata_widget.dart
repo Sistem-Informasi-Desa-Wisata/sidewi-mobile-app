@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sidewi_mobile_app/models/destinasiwisata_model.dart';
 import 'package:sidewi_mobile_app/viewmodels/destinasiwisata_viewmodel.dart';
+import 'package:sidewi_mobile_app/viewmodels/auth_viewmodel.dart';
 import 'package:sidewi_mobile_app/services/api_config.dart';
 
 class CardItemWisataWidget extends StatefulWidget {
@@ -20,7 +21,6 @@ class CardItemWisataWidget extends StatefulWidget {
 }
 
 class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
-  bool _isFavorite = true;
   String? kategoriNama;
   double? rating = 0.0;
   bool isLoading = true;
@@ -50,7 +50,7 @@ class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
       }
     } catch (e) {
       print("error fetchCategoryName : $e");
-    } 
+    }
   }
 
   Future<void> fetchRating() async {
@@ -68,7 +68,7 @@ class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
       }
     } catch (e) {
       print("error fetchRating : $e");
-    } 
+    }
   }
 
   @override
@@ -80,6 +80,9 @@ class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
         ? NetworkImage(
             '${ApiConfig.baseUrl}/resource/destinasiwisata/${widget.destinasiwisata.gambar}')
         : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
+
+    final destinasiWisataViewModel = Provider.of<DestinasiWisataViewModel>(context);
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return GestureDetector(
       onTap: widget.onTap,
       child: Padding(
@@ -135,12 +138,11 @@ class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            setState(() {
-                              _isFavorite = !_isFavorite;
-                            });
+                            destinasiWisataViewModel.toggleFavoriteStatus(
+                                widget.destinasiwisata, authViewModel.user!.id);
                           },
                           child: SvgPicture.asset(
-                            _isFavorite
+                            widget.destinasiwisata.isFavorite
                                 ? 'assets/icons/ic_favorite_active.svg'
                                 : 'assets/icons/ic_favorite_nonactive.svg',
                             width: 32,

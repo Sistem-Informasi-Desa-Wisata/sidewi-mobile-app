@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
+import 'package:sidewi_mobile_app/viewmodels/auth_viewmodel.dart';
 import 'package:sidewi_mobile_app/views/widgets/destinasi_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/search_widget.dart';
 
@@ -14,6 +15,8 @@ class SearchingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+
     return Scaffold(
       body: CustomScrollView(slivers: [
         SliverPersistentHeader(
@@ -73,7 +76,8 @@ class SearchingScreen extends StatelessWidget {
                     SearchWidget(
                       onSearchChanged: (searchQuery) {
                         Provider.of<DesaWisataViewModel>(context, listen: false)
-                            .fetchDesaWisataBySearch(searchQuery);
+                            .fetchDesaWisataBySearch(
+                                searchQuery, authViewModel.user!.id);
                       },
                     )
                   ],
@@ -133,9 +137,12 @@ class _DestinasiWidgetListVerticalState
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance!.addPostFrameCallback((_) {
+      final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+
       Provider.of<DesaWisataViewModel>(context, listen: false)
-          .fetchDesaWisataBySearch("")
+          .fetchDesaWisataBySearch("", authViewModel.user!.id)
           .then((_) {
         setState(() {
           _isLoading = false;
@@ -160,7 +167,8 @@ class _DestinasiWidgetListVerticalState
           scrollDirection: Axis.vertical,
           itemCount: desaProvider.desaWisataSearchList.length,
           itemBuilder: (context, index) {
-            DesaWisataModel desaWisata = desaProvider.desaWisataSearchList[index];
+            DesaWisataModel desaWisata =
+                desaProvider.desaWisataSearchList[index];
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: DestinasiItemsWidgetVertical(desaWisata: desaWisata),

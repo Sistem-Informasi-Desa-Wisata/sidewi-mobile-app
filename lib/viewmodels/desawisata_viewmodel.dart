@@ -37,12 +37,13 @@ class DesaWisataViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
-  Future<void> fetchDesaWisata() async {
+  Future<void> fetchDesaWisata(int userId) async {
     _isLoading = true;
     notifyListeners();
 
     try {
       _desaWisataList = await _desaWisataService.fetchDesaWisata();
+      await fetchIsFavoriter(userId, _desaWisataList, null);
     } catch (e) {
       print('Error fetching data: $e');
     } finally {
@@ -51,7 +52,7 @@ class DesaWisataViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchDesaWisataBySearch(String search) async {
+  Future<void> fetchDesaWisataBySearch(String search, int userId) async {
     _isLoading = true;
     notifyListeners();
 
@@ -70,6 +71,7 @@ class DesaWisataViewModel extends ChangeNotifier {
       } else {
         _desaWisataSearchList = allDesaWisata;
       }
+      await fetchIsFavoriter(userId, _desaWisataSearchList, null);
     } catch (e) {
       print('Error fetching data: $e');
     } finally {
@@ -78,7 +80,7 @@ class DesaWisataViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchRandomDesaWisata() async {
+  Future<void> fetchRandomDesaWisata(int userId) async {
     _isLoading = true;
     notifyListeners();
 
@@ -87,6 +89,7 @@ class DesaWisataViewModel extends ChangeNotifier {
           await _desaWisataService.fetchDesaWisata();
       allDesaWisata.shuffle();
       _desaWisataRandomList = allDesaWisata;
+      await fetchIsFavoriter(userId, _desaWisataRandomList, null);
     } catch (e) {
       print('Error fetching data: $e');
     } finally {
@@ -95,7 +98,7 @@ class DesaWisataViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchDesaWisataByKategori() async {
+  Future<void> fetchDesaWisataByKategori(int userId) async {
     _isLoading = true;
     notifyListeners();
 
@@ -120,10 +123,10 @@ class DesaWisataViewModel extends ChangeNotifier {
           _desaWisataMandiriList.add(desa);
         }
       }
-      print(_desaWisataRintisanList);
-      print(_desaWisataBerkembangList);
-      print(_desaWisataMajuList);
-      print(_desaWisataMandiriList);
+      await fetchIsFavoriter(userId, _desaWisataRintisanList, null);
+      await fetchIsFavoriter(userId, _desaWisataBerkembangList, null);
+      await fetchIsFavoriter(userId, _desaWisataMajuList, null);
+      await fetchIsFavoriter(userId, _desaWisataMandiriList, null);
     } catch (e) {
       print('Error fetching data: $e');
     } finally {
@@ -132,7 +135,7 @@ class DesaWisataViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchDetailDesaWisata(int id) async {
+  Future<void> fetchDetailDesaWisata(int id, int userId) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -141,6 +144,8 @@ class DesaWisataViewModel extends ChangeNotifier {
       _desaWisataDetail = await _desaWisataService.fetchDetailDesaWisata(id);
       _informasiDesaWisata =
           await _desaWisataService.fetchInformasiDesaWisata(id);
+      await fetchIsFavoriter(userId, null, _desaWisataDetail);
+
       print("vm: ${_desaWisataDetail}");
     } catch (e) {
       _errorMessage = 'Failed to load data';
@@ -162,9 +167,82 @@ class DesaWisataViewModel extends ChangeNotifier {
         desas.add(desa);
       }
       _favoritDesaList = desas;
+      await fetchIsFavoriter(userId, _favoritDesaList, null);
       notifyListeners();
     } catch (e) {
       print("Error fetching favorite Desas: $e");
+    }
+  }
+
+  Future<void> fetchIsFavoriter(
+      int userId, List<DesaWisataModel>? list, DesaWisataModel? desa) async {
+    try {
+      List<DesaFavoritModel> favoriteDesaIds =
+          await _desaFavoritService.fetchDesaFavoritUser(userId);
+
+      Set<int> favoriteDesaIdSet =
+          favoriteDesaIds.map((fav) => fav.id_desawisata).toSet();
+
+      updateFavorites(favoriteDesaIdSet, list, desa);
+
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching favorite Desas: $e");
+    }
+  }
+
+  void updateFavorites(Set<int> favoriteDesaIdSet, List<DesaWisataModel>? list,
+      DesaWisataModel? desa) {
+    if (list != null) {
+      for (var item in list) {
+        if (favoriteDesaIdSet.contains(item.id)) {
+          item.isFavorite = true;
+        } else {
+          item.isFavorite = false;
+        }
+      }
+    }
+    if (desa != null) {
+      if (favoriteDesaIdSet.contains(desa.id)) {
+        desa.isFavorite = true;
+      } else {
+        desa.isFavorite = false;
+      }
+    }
+  }
+
+  Future<void> toggleFavoriteStatus(DesaWisataModel desa, int userId) async {
+    try {
+      if (desa.isFavorite) {
+        List<DesaFavoritModel> favoriteDesaIds =
+            await _desaFavoritService.fetchDesaFavoritUser(userId);
+        List<DesaWisataModel> desas = [];
+
+        for (var favorite in favoriteDesaIds) {
+          DesaWisataModel desa = await _desaWisataService
+              .fetchDetailDesaWisata(favorite.id_desawisata);
+          desas.add(desa);
+        }
+        DesaFavoritModel? desaFavorit;
+        try {
+          desaFavorit = favoriteDesaIds.firstWhere(
+            (favorit) =>
+                favorit.id_desawisata == desa.id && favorit.id_akun == userId,
+          );
+        } catch (e) {
+          desaFavorit = null;
+        }
+
+        if (desaFavorit != null) {
+          await _desaFavoritService.removeFavorite(desaFavorit.id);
+        }
+      } else {
+        await _desaFavoritService.addFavorite(userId, desa.id);
+      }
+      await fetchIsFavoriter(userId, null, desa);
+      notifyListeners();
+    } catch (e) {
+      print("Error toggling favorite status: $e");
     }
   }
 }

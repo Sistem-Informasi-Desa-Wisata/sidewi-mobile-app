@@ -8,6 +8,7 @@ import 'package:sidewi_mobile_app/services/api_config.dart';
 import 'package:sidewi_mobile_app/colors.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
+import 'package:sidewi_mobile_app/viewmodels/auth_viewmodel.dart';
 import 'package:sidewi_mobile_app/views/screens/detail_desa_screen.dart';
 
 class DestinasiWidgetListHorizontal extends StatefulWidget {
@@ -32,10 +33,13 @@ class _DestinasiWidgetListHorizontalState
   @override
   void initState() {
     super.initState();
+
     // Gunakan WidgetsBinding untuk memanggil fetchDesa setelah build selesai
     WidgetsBinding.instance!.addPostFrameCallback((_) {
+      final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+
       Provider.of<DesaWisataViewModel>(context, listen: false)
-          .fetchDesaWisataByKategori()
+          .fetchDesaWisataByKategori(authViewModel.user!.id)
           .then((_) {
         if (mounted) {
           setState(() {
@@ -115,10 +119,10 @@ class DestinasiItemsWidget extends StatefulWidget {
 }
 
 class _DestinasiItemsWidgetState extends State<DestinasiItemsWidget> {
-  bool _isFavorite = true;
-
   @override
   Widget build(BuildContext context) {
+    final desaWisataViewModel = Provider.of<DesaWisataViewModel>(context);
+    final authViewModel = Provider.of<AuthViewModel>(context);
     final imageProvider = (widget.desaWisata.gambar.isNotEmpty)
         ? NetworkImage(
             '${ApiConfig.baseUrl}/resource/desawisata/${widget.desaWisata.gambar}')
@@ -183,12 +187,10 @@ class _DestinasiItemsWidgetState extends State<DestinasiItemsWidget> {
                       height: 24,
                       child: GestureDetector(
                           onTap: () {
-                            setState(() {
-                              _isFavorite =
-                                  !_isFavorite; // Toggle nilai _isFavorite
-                            });
+                            desaWisataViewModel.toggleFavoriteStatus(
+                                widget.desaWisata, authViewModel.user!.id);
                           },
-                          child: _isFavorite == true
+                          child: widget.desaWisata.isFavorite == true
                               ? SvgPicture.asset(
                                   'assets/icons/ic_favorite_active.svg')
                               : SvgPicture.asset(
@@ -249,10 +251,12 @@ class _DestinasiWidgetListVerticalState
   @override
   void initState() {
     super.initState();
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+
     // Gunakan WidgetsBinding untuk memanggil fetchDesa setelah build selesai
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Provider.of<DesaWisataViewModel>(context, listen: false)
-          .fetchRandomDesaWisata()
+          .fetchRandomDesaWisata(authViewModel.user!.id)
           .then((_) {
         if (mounted) {
           setState(() {
@@ -307,9 +311,10 @@ class DestinasiItemsWidgetVertical extends StatefulWidget {
 
 class _DestinasiItemsWidgetVerticalState
     extends State<DestinasiItemsWidgetVertical> {
-  bool _isFavorite = true;
   @override
   Widget build(BuildContext context) {
+    final desaWisataViewModel = Provider.of<DesaWisataViewModel>(context);
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -397,12 +402,10 @@ class _DestinasiItemsWidgetVerticalState
                         height: 24,
                         child: GestureDetector(
                             onTap: () {
-                              setState(() {
-                                _isFavorite =
-                                    !_isFavorite; // Toggle nilai _isFavorite
-                              });
+                              desaWisataViewModel.toggleFavoriteStatus(
+                                  widget.desaWisata, authViewModel.user!.id);
                             },
-                            child: _isFavorite == true
+                            child: widget.desaWisata.isFavorite == true
                                 ? SvgPicture.asset(
                                     'assets/icons/ic_favorite_active.svg')
                                 : SvgPicture.asset(
