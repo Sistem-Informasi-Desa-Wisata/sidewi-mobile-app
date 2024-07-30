@@ -11,6 +11,10 @@ import 'package:url_launcher/url_launcher.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key});
 
+  Future<void> sendEmail(String email) async {
+    await launch('mailto:$email');
+  }
+
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
@@ -132,24 +136,27 @@ class ProfileScreen extends StatelessWidget {
                     title: Text('Bantuan'),
                     trailing: Icon(Icons.chevron_right),
                     onTap: () async {
-                      final Uri emailLaunchUri = Uri(
-                        scheme: 'mailto',
-                        path: 'pradasantika04@gmail.com',
-                        query: encodeQueryParameters(
-                            <String, String>{'subject': 'Bantuan'}),
-                      );
-
-                      if (await canLaunchUrl(emailLaunchUri)) {
-                        await launchUrl(emailLaunchUri);
-                      } else {
-                        print('Could not launch $emailLaunchUri');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  'No email client available or could not launch email client')),
-                        );
-                      }
+                      await sendEmail('bantuan@gmail.com');
                     },
+                    // onTap: () async {
+                    //   final Uri emailLaunchUri = Uri(
+                    //     scheme: 'mailto',
+                    //     path: 'pradasantika04@gmail.com',
+                    //     query: encodeQueryParameters(
+                    //         <String, String>{'subject': 'Bantuan'}),
+                    //   );
+
+                    //   if (await canLaunchUrl(emailLaunchUri)) {
+                    //     await launchUrl(emailLaunchUri);
+                    //   } else {
+                    //     print('Could not launch $emailLaunchUri');
+                    //     ScaffoldMessenger.of(context).showSnackBar(
+                    //       SnackBar(
+                    //           content: Text(
+                    //               'No email client available or could not launch email client')),
+                    //     );
+                    //   }
+                    // },
                     contentPadding: EdgeInsets.zero,
                   ),
                 ],
@@ -169,7 +176,8 @@ class ProfileScreen extends StatelessWidget {
                           onConfirm: () async {
                             try {
                               authViewModel.logout();
-                              Navigator.pushNamedAndRemoveUntil(context, '/login_screen', (route) => false);
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, '/login_screen', (route) => false);
                             } catch (e) {
                               print('Logout failed: $e');
                               // Handle logout failure
