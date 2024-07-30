@@ -247,17 +247,27 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
     String itemName;
     String itemDesc;
     int itemId;
+    ImageProvider imageProvider;
 
     if (widget.tab == "desa") {
       var item = widget.item as DesaWisataModel;
       itemName = item.nama;
       itemDesc = item.alamat;
       itemId = item.id;
+
+      imageProvider = (item.gambar.isNotEmpty)
+          ? NetworkImage(
+              '${ApiConfig.baseUrl}/resource/desawisata/${item.gambar}')
+          : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
     } else {
       var item = widget.item as DestinasiWisataModel;
       itemName = item.nama;
       itemDesc = _kategoriNama!;
       itemId = item.id;
+      imageProvider = (item.gambar.isNotEmpty)
+          ? NetworkImage(
+              '${ApiConfig.baseUrl}/resource/destinasiwisata/${item.gambar}')
+          : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
     }
 
     return Container(
@@ -293,8 +303,8 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
-                      image: AssetImage(
-                          'assets/images/foto_berita.png'), // Update with actual image URL if needed
+                      image:
+                          imageProvider, 
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -398,7 +408,6 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
                             ),
                             Text(
                               itemDesc,
-                              // widget.desaWisata.alamat, // Assuming there's a location field
                               style: const TextStyle(
                                 fontFamily: "Montserrat",
                                 fontSize: 8,

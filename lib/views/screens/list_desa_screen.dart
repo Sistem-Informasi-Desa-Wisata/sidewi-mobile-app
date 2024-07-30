@@ -5,6 +5,7 @@ import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/views/screens/detail_desa_screen.dart';
+import 'package:sidewi_mobile_app/services/api_config.dart';
 
 class ListDesaScreen extends StatelessWidget {
   const ListDesaScreen({super.key});
@@ -34,7 +35,7 @@ class _DetailPageState extends State<DetailPage>
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Provider.of<DesaWisataViewModel>(context, listen: false)
-          .fetchDesaWisata()
+          .fetchDesaWisataByKategori()
           .then((_) {
         setState(() {
           _isLoading = false;
@@ -125,10 +126,10 @@ class _DetailPageState extends State<DetailPage>
             child: TabBarView(
               controller: _tabController,
               children: [
-                Rintisan(),
-                Berkembang(),
-                Maju(),
-                Mandiri(),
+                Rintisan(kategori: "Rintisan"),
+                Berkembang(kategori: "Berkembang"),
+                Maju(kategori: "Maju"),
+                Mandiri(kategori: "Mandiri"),
               ],
             ),
           ),
@@ -139,40 +140,67 @@ class _DetailPageState extends State<DetailPage>
 }
 
 class Rintisan extends StatelessWidget {
+  final String kategori;
+  const Rintisan({required this.kategori});
   @override
   Widget build(BuildContext context) {
-    return ListDesaWidget();
+    return ListDesaWidget(kategori: kategori);
   }
 }
 
 class Berkembang extends StatelessWidget {
+  final String kategori;
+  const Berkembang({required this.kategori});
   @override
   Widget build(BuildContext context) {
-    return ListDesaWidget();
+    return ListDesaWidget(kategori: kategori);
   }
 }
 
 class Maju extends StatelessWidget {
+  final String kategori;
+  const Maju({required this.kategori});
+
   @override
   Widget build(BuildContext context) {
-    return ListDesaWidget();
+    return ListDesaWidget(kategori: kategori);
   }
 }
 
 class Mandiri extends StatelessWidget {
+  final String kategori;
+  const Mandiri({required this.kategori});
   @override
   Widget build(BuildContext context) {
-    return ListDesaWidget();
+    return ListDesaWidget(kategori: kategori);
   }
 }
 
 class ListDesaWidget extends StatelessWidget {
-  const ListDesaWidget({super.key});
+  final String kategori;
+  const ListDesaWidget({super.key, required this.kategori});
 
   @override
   Widget build(BuildContext context) {
     final desaWisataViewModel = Provider.of<DesaWisataViewModel>(context);
-    final desaWisataList = desaWisataViewModel.desaWisataList;
+    List<DesaWisataModel> desaWisataList;
+
+    switch (kategori) {
+      case "Rintisan":
+        desaWisataList = desaWisataViewModel.desaWisataRintisanList;
+        break;
+      case "Berkembang":
+        desaWisataList = desaWisataViewModel.desaWisataBerkembangList;
+        break;
+      case "Maju":
+        desaWisataList = desaWisataViewModel.desaWisataMajuList;
+        break;
+      case "Mandiri":
+        desaWisataList = desaWisataViewModel.desaWisataMandiriList;
+        break;
+      default:
+        desaWisataList = [];
+    }
 
     return GridView.builder(
       padding: EdgeInsets.only(left: 24, right: 24, top: 24),
@@ -211,6 +239,10 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final imageProvider = (widget.desaWisata.gambar.isNotEmpty)
+        ? NetworkImage(
+            '${ApiConfig.baseUrl}/resource/desawisata/${widget.desaWisata.gambar}')
+        : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
     return Center(
       child: GestureDetector(
         onTap: () {
@@ -243,8 +275,7 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
-                    image: AssetImage(
-                        'assets/images/foto_berita.png'), // Update with actual image URL if needed
+                    image: imageProvider, // Update with actual image URL if needed
                     fit: BoxFit.cover,
                   ),
                 ),
