@@ -1,23 +1,23 @@
-class DesaFavoritModel {
+class DestinasiFavoritModel {
   final int id;
-  final int id_desawisata;
+  final int id_destinasiwisata;
   final int id_akun;
   final DateTime createdAt;
   final DateTime updatedAt;
 
 
-  DesaFavoritModel({
+  DestinasiFavoritModel({
     required this.id,
-    required this.id_desawisata,
+    required this.id_destinasiwisata,
     required this.id_akun,
     required this.createdAt,
     required this.updatedAt,
   });
 
-  factory DesaFavoritModel.fromJson(Map<String, dynamic> json) {
-    return DesaFavoritModel(
+  factory DestinasiFavoritModel.fromJson(Map<String, dynamic> json) {
+    return DestinasiFavoritModel(
       id: json['id'],
-      id_desawisata: json['id_desawisata'],
+      id_destinasiwisata: json['id_destinasiwisata'],
       id_akun: json['id_akun'],
       createdAt:  DateTime.parse(json['createdAt']),
       updatedAt:  DateTime.parse(json['updatedAt']),
@@ -27,7 +27,7 @@ class DesaFavoritModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'id_desawisata': id_desawisata,
+      'id_destinasiwisata': id_destinasiwisata,
       'id_akun': id_akun,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
