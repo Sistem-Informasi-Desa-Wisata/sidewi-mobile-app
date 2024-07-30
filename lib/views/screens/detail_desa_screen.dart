@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sidewi_mobile_app/views/widgets/berita_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/detail_desa_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/produk_widget.dart';
@@ -10,6 +11,7 @@ import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/models/informasidesawisata_model.dart';
 import 'package:sidewi_mobile_app/services/api_config.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailScreen extends StatefulWidget {
   final int id;
@@ -78,7 +80,10 @@ class _DetailScreenState extends State<DetailScreen> {
                                 icon: SvgPicture.asset(
                                     'assets/icons/ic_back_white.svg')),
                             IconButton(
-                                onPressed: null,
+                                onPressed: () {
+                                  Share.share(
+                                      'Check out this post: https://pub.dev/packages/share_plus');
+                                },
                                 icon: SvgPicture.asset(
                                     'assets/icons/ic_share.svg'))
                           ],

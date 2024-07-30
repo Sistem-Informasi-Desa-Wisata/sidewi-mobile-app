@@ -5,7 +5,7 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 0),
       child: Container(
           width: double.infinity,
           margin: EdgeInsets.only(bottom: 8),
@@ -42,7 +42,7 @@ class NotificationCard extends StatelessWidget {
                         textAlign: TextAlign.left,
                       ),
                       SizedBox(
-                        width: 12,
+                        width: 6,
                       ),
                       Text(
                         "00.00",
@@ -58,7 +58,7 @@ class NotificationCard extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 3,
                   ),
                   Text(
                     "Festival Budaya merupakan sebuah acara tahunan yang diadakan di Desa Jatiluwih, Kabupaten Badung, Bali. Festival ini bertujuan untuk melestarikan seni, adat, dan budaya Bali, khususnya yang ada di Desa Sangeh",

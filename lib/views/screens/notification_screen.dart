@@ -74,8 +74,7 @@ class NotificationScreen extends StatelessWidget {
                         fontFamily: "Montserrat",
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        // color: Color(0xff9fa5a9),
-                        color: Colors.black,
+                        color: Color(0xff9fa5a9),
                         height: 15 / 12,
                       ),
                       textAlign: TextAlign.left,
@@ -83,6 +82,9 @@ class NotificationScreen extends StatelessWidget {
                   ),
                   Container(
                     child: NotificationList(),
+                  ),
+                  SizedBox(
+                    height: 24,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
@@ -92,8 +94,7 @@ class NotificationScreen extends StatelessWidget {
                         fontFamily: "Montserrat",
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        // color: Color(0xff9fa5a9),
-                        color: Colors.black,
+                        color: Color(0xff9fa5a9),
                         height: 15 / 12,
                       ),
                       textAlign: TextAlign.left,
@@ -101,6 +102,9 @@ class NotificationScreen extends StatelessWidget {
                   ),
                   Container(
                     child: NotificationList(),
+                  ),
+                  SizedBox(
+                    height: 24,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
@@ -110,8 +114,7 @@ class NotificationScreen extends StatelessWidget {
                         fontFamily: "Montserrat",
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        // color: Color(0xff9fa5a9),
-                        color: Colors.black,
+                        color: Color(0xff9fa5a9),
                         height: 15 / 12,
                       ),
                       textAlign: TextAlign.left,
