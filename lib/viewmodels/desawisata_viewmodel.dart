@@ -10,6 +10,7 @@ class DesaWisataViewModel extends ChangeNotifier {
   final DesaFavoritService _desaFavoritService = DesaFavoritService();
 
   List<DesaWisataModel> _desaWisataList = [];
+  List<DesaWisataModel> _desaWisataSearchList = [];
   List<DesaWisataModel> _desaWisataRandomList = [];
   List<DesaWisataModel> _desaWisataRintisanList = [];
   List<DesaWisataModel> _desaWisataBerkembangList = [];
@@ -25,6 +26,7 @@ class DesaWisataViewModel extends ChangeNotifier {
   InformasiDesaWisataModel? get informasiDesaWisata => _informasiDesaWisata;
 
   List<DesaWisataModel> get desaWisataList => _desaWisataList;
+  List<DesaWisataModel> get desaWisataSearchList => _desaWisataSearchList;
   List<DesaWisataModel> get desaWisataRandomList => _desaWisataRandomList;
   List<DesaWisataModel> get desaWisataRintisanList => _desaWisataRintisanList;
   List<DesaWisataModel> get desaWisataBerkembangList =>
@@ -41,6 +43,33 @@ class DesaWisataViewModel extends ChangeNotifier {
 
     try {
       _desaWisataList = await _desaWisataService.fetchDesaWisata();
+    } catch (e) {
+      print('Error fetching data: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchDesaWisataBySearch(String search) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      List<DesaWisataModel> allDesaWisata =
+          await _desaWisataService.fetchDesaWisata();
+
+      if (search.isNotEmpty) {
+        _desaWisataSearchList = allDesaWisata.where((desa) {
+          final namaMatches =
+              desa.nama.toLowerCase().contains(search.toLowerCase());
+          final kabupatenMatches =
+              desa.kabupaten.toLowerCase().contains(search.toLowerCase());
+          return namaMatches || kabupatenMatches;
+        }).toList();
+      } else {
+        _desaWisataSearchList = allDesaWisata;
+      }
     } catch (e) {
       print('Error fetching data: $e');
     } finally {

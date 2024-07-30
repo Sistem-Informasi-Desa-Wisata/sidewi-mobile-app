@@ -4,6 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/colors.dart';
 
 class SearchWidget extends StatefulWidget {
+  final void Function(String) onSearchChanged;
+
+  SearchWidget({required this.onSearchChanged});
+
   @override
   _SearchWidgetState createState() => _SearchWidgetState();
 }
@@ -65,6 +69,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                   setState(() {
                     _searchQuery = value;
                   });
+                  widget.onSearchChanged(value);
                 },
               ),
             ),
