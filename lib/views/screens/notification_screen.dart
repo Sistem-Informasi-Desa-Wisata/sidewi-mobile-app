@@ -66,34 +66,60 @@ class NotificationScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Hari ini",
-                    style: const TextStyle(
-                      fontFamily: "Montserrat",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff9fa5a9),
-                      height: 15 / 12,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      "Hari ini",
+                      style: const TextStyle(
+                        fontFamily: "Montserrat",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        // color: Color(0xff9fa5a9),
+                        color: Colors.black,
+                        height: 15 / 12,
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                    textAlign: TextAlign.left,
                   ),
                   Container(
                     child: NotificationList(),
                   ),
-                  Text(
-                    "Kemarin",
-                    style: const TextStyle(
-                      fontFamily: "Montserrat",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff9fa5a9),
-                      height: 15 / 12,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      "Kemarin",
+                      style: const TextStyle(
+                        fontFamily: "Montserrat",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        // color: Color(0xff9fa5a9),
+                        color: Colors.black,
+                        height: 15 / 12,
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                    textAlign: TextAlign.left,
                   ),
                   Container(
                     child: NotificationList(),
-                  )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      "Lebih dari kemarin",
+                      style: const TextStyle(
+                        fontFamily: "Montserrat",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        // color: Color(0xff9fa5a9),
+                        color: Colors.black,
+                        height: 15 / 12,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  Container(
+                    child: NotificationList(),
+                  ),
                 ],
               ),
             ),
@@ -109,6 +135,7 @@ class NotificationList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       physics: NeverScrollableScrollPhysics(),
       itemCount: 2, // Mengatur jumlah item menjadi 2
       itemBuilder: (context, index) {

@@ -6,7 +6,6 @@ import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/services/api_config.dart';
 import 'package:intl/intl.dart';
 
-
 class DetailBeritaScreen extends StatelessWidget {
   final BeritaModel berita;
   final String desa;
@@ -16,8 +15,7 @@ class DetailBeritaScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     print(berita.gambar);
     final imageProvider = (berita.gambar != null && berita.gambar.isNotEmpty)
-        ? NetworkImage(
-            '${ApiConfig.baseUrl}/resource/berita/${berita.gambar}')
+        ? NetworkImage('${ApiConfig.baseUrl}/resource/berita/${berita.gambar}')
         : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
     return Scaffold(
       body: CustomScrollView(slivers: [
@@ -88,30 +86,33 @@ class DetailBeritaScreen extends StatelessWidget {
                     Row(
                       children: [
                         // tittle Section
-                        RichText(
-                          text: TextSpan(children: [
-                            TextSpan(
-                              text: berita.judul,
-                              style: const TextStyle(
-                                fontFamily: "Montserrat",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff000000),
-                                height: 20 / 16,
+                        Container(
+                          width: 300,
+                          child: RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                text: berita.judul,
+                                style: const TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff000000),
+                                  height: 20 / 16,
+                                ),
                               ),
-                            ),
-                            TextSpan(
-                              text: " - $desa",
-                              style: const TextStyle(
-                                fontFamily: "Montserrat",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300,
-                                color: Color(0xFF9FA5A9),
-                                height: 20 / 16,
-                              ),
-                            )
-                          ]),
-                          textAlign: TextAlign.left,
+                              TextSpan(
+                                text: " - $desa",
+                                style: const TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w300,
+                                  color: Color(0xFF9FA5A9),
+                                  height: 20 / 16,
+                                ),
+                              )
+                            ]),
+                            textAlign: TextAlign.left,
+                          ),
                         ),
                       ],
                     ),
@@ -134,8 +135,7 @@ class DetailBeritaScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover),
+                              image: imageProvider, fit: BoxFit.cover),
                         ),
                         // child: Image.asset(
                         //   'assets/images/foto_dummy.jpg',

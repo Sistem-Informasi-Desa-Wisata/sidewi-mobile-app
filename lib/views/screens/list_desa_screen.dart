@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -79,17 +80,34 @@ class _DetailPageState extends State<DetailPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    child: Text(
-                      "Desa Wisata",
-                      style: const TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff000000),
-                        height: 20 / 16,
-                      ),
-                      textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: SvgPicture.asset(
+                                'assets/icons/ic_back_black.svg')),
+                        Expanded(
+                          child: Center(
+                            child: Container(
+                              child: Text(
+                                "Desa Wisata",
+                                style: const TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff000000),
+                                  height: 20 / 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(height: 32),

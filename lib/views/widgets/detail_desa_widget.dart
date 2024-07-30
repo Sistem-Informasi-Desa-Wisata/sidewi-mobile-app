@@ -192,17 +192,17 @@ class DetailDesaWidget extends StatelessWidget {
               ),
             ],
           ),
-          Text(
-            "Gallery",
-            style: const TextStyle(
-              fontFamily: "Montserrat",
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xff000000),
-              height: 20 / 16,
-            ),
-            textAlign: TextAlign.left,
-          ),
+          // Text(
+          //   "Gallery",
+          //   style: const TextStyle(
+          //     fontFamily: "Montserrat",
+          //     fontSize: 16,
+          //     fontWeight: FontWeight.w600,
+          //     color: Color(0xff000000),
+          //     height: 20 / 16,
+          //   ),
+          //   textAlign: TextAlign.left,
+          // ),
           SizedBox(
             height: 30,
           )
