@@ -4,13 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:sidewi_mobile_app/services/api_config.dart';
 import 'package:sidewi_mobile_app/colors.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/views/screens/detail_desa_screen.dart';
 
 class DestinasiWidgetListHorizontal extends StatefulWidget {
-  const DestinasiWidgetListHorizontal({super.key});
+  final String kategori;
+  final ScrollController scrollController;
+
+  const DestinasiWidgetListHorizontal({
+    super.key,
+    required this.kategori,
+    required this.scrollController,
+  });
 
   @override
   State<DestinasiWidgetListHorizontal> createState() =>
@@ -27,31 +35,64 @@ class _DestinasiWidgetListHorizontalState
     // Gunakan WidgetsBinding untuk memanggil fetchDesa setelah build selesai
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Provider.of<DesaWisataViewModel>(context, listen: false)
-          .fetchDesaWisata()
+          .fetchDesaWisataByKategori()
           .then((_) {
-        setState(() {
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       });
     });
   }
 
   @override
+  void didUpdateWidget(covariant DestinasiWidgetListHorizontal oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.kategori != oldWidget.kategori) {
+      // Scroll ke posisi awal saat kategori berubah
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        if (widget.scrollController.hasClients) {
+          widget.scrollController.jumpTo(0.0);
+        }
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final desaWisataViewModel = Provider.of<DesaWisataViewModel>(context);
+    List<DesaWisataModel> desaWisataList;
 
     if (desaWisataViewModel.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
 
+    switch (widget.kategori) {
+      case "Rintisan":
+        desaWisataList = desaWisataViewModel.desaWisataRintisanList;
+        break;
+      case "Berkembang":
+        desaWisataList = desaWisataViewModel.desaWisataBerkembangList;
+        break;
+      case "Maju":
+        desaWisataList = desaWisataViewModel.desaWisataMajuList;
+        break;
+      case "Mandiri":
+        desaWisataList = desaWisataViewModel.desaWisataMandiriList;
+        break;
+      default:
+        desaWisataList = [];
+    }
+
     return Container(
       height: 160,
       child: ListView.builder(
+          controller: widget.scrollController,
           scrollDirection: Axis.horizontal,
-          itemCount: desaWisataViewModel.desaWisataList.length,
+          itemCount: min(desaWisataList.length, 8),
           itemBuilder: (context, index) {
-            DesaWisataModel desaWisata =
-                desaWisataViewModel.desaWisataList[index];
+            DesaWisataModel desaWisata = desaWisataList[index];
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 6),
               child: DestinasiItemsWidget(desaWisata: desaWisata),
@@ -78,6 +119,11 @@ class _DestinasiItemsWidgetState extends State<DestinasiItemsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final imageProvider = (widget.desaWisata.gambar.isNotEmpty)
+        ? NetworkImage(
+            '${ApiConfig.baseUrl}/resource/desawisata/${widget.desaWisata.gambar}')
+        : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
+
     return Stack(
       children: [
         Container(
@@ -85,14 +131,7 @@ class _DestinasiItemsWidgetState extends State<DestinasiItemsWidget> {
           height: 140,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
-            image: DecorationImage(
-                image: widget.desaWisata.gambar != null
-                    ? NetworkImage(
-                        'http://8.215.11.162:3000/resource/desawisata/${widget.desaWisata.gambar}')
-                    // ? AssetImage('assets/images/lokasi_foto.png')
-                    : AssetImage('assets/images/foto_berita.jpg')
-                        as ImageProvider,
-                fit: BoxFit.cover),
+            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
           ),
         ),
         Container(
@@ -213,13 +252,20 @@ class _DestinasiWidgetListVerticalState
     // Gunakan WidgetsBinding untuk memanggil fetchDesa setelah build selesai
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Provider.of<DesaWisataViewModel>(context, listen: false)
-          .fetchDesaWisata()
+          .fetchRandomDesaWisata()
           .then((_) {
-        setState(() {
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -236,10 +282,10 @@ class _DestinasiWidgetListVerticalState
           physics: NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
           scrollDirection: Axis.vertical,
-          itemCount: min(desaWisataViewModel.desaWisataList.length, 10),
+          itemCount: min(desaWisataViewModel.desaWisataRandomList.length, 10),
           itemBuilder: (context, index) {
             DesaWisataModel desaWisata =
-                desaWisataViewModel.desaWisataList[index];
+                desaWisataViewModel.desaWisataRandomList[index];
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: DestinasiItemsWidgetVertical(desaWisata: desaWisata),

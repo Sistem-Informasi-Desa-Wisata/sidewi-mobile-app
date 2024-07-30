@@ -14,6 +14,7 @@ class AuthService {
       request.fields[key] = value;
     });
 
+
     if (foto != null) {
       final mimeTypeData = lookupMimeType(foto.path)!.split('/');
       final file = await http.MultipartFile.fromPath(
@@ -21,6 +22,7 @@ class AuthService {
         foto.path,
         contentType: MediaType(mimeTypeData[0], mimeTypeData[1]),
       );
+      print(foto.path);
       request.files.add(file);
     }
 

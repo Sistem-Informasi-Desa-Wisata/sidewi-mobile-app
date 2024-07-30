@@ -293,7 +293,8 @@ class _DesaItemWidgetState extends State<DesaItemWidget> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
-                    image: imageProvider, // Update with actual image URL if needed
+                    image:
+                        imageProvider, // Update with actual image URL if needed
                     fit: BoxFit.cover,
                   ),
                 ),

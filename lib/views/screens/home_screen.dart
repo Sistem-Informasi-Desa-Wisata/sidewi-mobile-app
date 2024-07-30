@@ -11,11 +11,20 @@ import 'package:sidewi_mobile_app/views/widgets/search_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/destinasi_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/search_widget_statis.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String selectedCategory = 'Rintisan';
+  final ScrollController _scrollController = ScrollController();
+
+  @override
   Widget build(BuildContext context) {
+    print(selectedCategory);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -65,7 +74,15 @@ class HomeScreen extends StatelessWidget {
                       bottom: 12,
                     ),
                     child: Container(
-                        width: double.infinity, child: ListCategoryWidget()),
+                        width: double.infinity,
+                        child: ListCategoryWidget(
+                          onCategorySelected: (category) {
+                            setState(() {
+                              selectedCategory = category;
+                              _scrollController.jumpTo(0.0);
+                            });
+                          },
+                        )),
                   ),
 
                   // List Wisata
@@ -74,7 +91,10 @@ class HomeScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     child: Container(
                         width: double.infinity,
-                        child: DestinasiWidgetListHorizontal()),
+                        child: DestinasiWidgetListHorizontal(
+                          kategori: selectedCategory,
+                          scrollController: _scrollController,
+                        )),
                   ),
 
                   // Text

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sidewi_mobile_app/colors.dart';
 
 class ListCategoryWidget extends StatefulWidget {
-  ListCategoryWidget({Key? key});
+  final ValueChanged<String> onCategorySelected;
+  ListCategoryWidget({Key? key, required this.onCategorySelected});
 
   @override
   _ListCategoryWidgetState createState() => _ListCategoryWidgetState();
@@ -12,7 +13,7 @@ class ListCategoryWidget extends StatefulWidget {
 class _ListCategoryWidgetState extends State<ListCategoryWidget> {
   // List item yang akan ditampilkan
   final List<String> categories = ['Rintisan', 'Berkembang', 'Maju', 'Mandiri'];
-  int selectedIndex = -1;
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +33,7 @@ class _ListCategoryWidgetState extends State<ListCategoryWidget> {
                   onTap: () {
                     setState(() {
                       selectedIndex = index;
+                      widget.onCategorySelected(categories[index]);
                     });
                   },
                 );

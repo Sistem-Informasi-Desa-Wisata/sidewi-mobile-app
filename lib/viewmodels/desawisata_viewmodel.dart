@@ -49,11 +49,29 @@ class DesaWisataViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> fetchRandomDesaWisata() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      List<DesaWisataModel> allDesaWisata =
+          await _desaWisataService.fetchDesaWisata();
+      allDesaWisata.shuffle();
+      _desaWisataRandomList = allDesaWisata;
+    } catch (e) {
+      print('Error fetching data: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> fetchDesaWisataByKategori() async {
     _isLoading = true;
     notifyListeners();
 
     try {
+      print("fetching DesaWisataByKategori");
       List<DesaWisataModel> allDesaWisata =
           await _desaWisataService.fetchDesaWisata();
 
@@ -73,6 +91,10 @@ class DesaWisataViewModel extends ChangeNotifier {
           _desaWisataMandiriList.add(desa);
         }
       }
+      print(_desaWisataRintisanList);
+      print(_desaWisataBerkembangList);
+      print(_desaWisataMajuList);
+      print(_desaWisataMandiriList);
     } catch (e) {
       print('Error fetching data: $e');
     } finally {
