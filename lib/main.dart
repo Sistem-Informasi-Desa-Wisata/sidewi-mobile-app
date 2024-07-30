@@ -19,8 +19,16 @@ import 'viewmodels/user_viewmodel.dart';
 import 'viewmodels/produk_viewmodel.dart';
 import 'viewmodels/desawisata_viewmodel.dart';
 import 'views/screens/main_screen.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, // Hanya orientasi potret yang diperbolehkan
+    DeviceOrientation.portraitDown,
+  ]);
+
   runApp(MyApp());
 }
 
@@ -44,6 +52,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<AuthViewModel>(
         builder: (context, authViewModel, child) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             // home: DetailScreen(id: 1),
             home: authViewModel.user != null ? MainScreen() : WelcomeScreen(),
             routes: {

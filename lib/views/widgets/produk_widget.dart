@@ -8,7 +8,6 @@ import 'package:sidewi_mobile_app/views/screens/review_screen.dart';
 import 'package:sidewi_mobile_app/services/api_config.dart';
 import 'package:intl/intl.dart';
 
-
 class ListProdukWidget extends StatefulWidget {
   final int id;
   const ListProdukWidget({super.key, required this.id});
@@ -78,8 +77,11 @@ class _ProdukItemWidgetState extends State<ProdukItemWidget> {
     return Center(
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => DetailProdukScreen(produk: widget.produk)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      DetailProdukScreen(produk: widget.produk)));
         },
         child: Stack(
           children: [
@@ -87,7 +89,6 @@ class _ProdukItemWidgetState extends State<ProdukItemWidget> {
               width: 150,
               height: 200,
               decoration: BoxDecoration(
-                color: Colors.amber,
                 borderRadius: BorderRadius.circular(8),
                 image: DecorationImage(
                   image: imageProvider,

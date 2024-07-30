@@ -5,6 +5,7 @@ import 'package:sidewi_mobile_app/views/screens/main_screen.dart';
 import 'package:sidewi_mobile_app/models/produk_model.dart';
 import 'package:sidewi_mobile_app/services/api_config.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // import 'package:sidewi_mobile_app/ui/widgets/ReviewCardWidget.dart';
 String formatRupiah(int number) {
@@ -17,8 +18,20 @@ class DetailProdukScreen extends StatelessWidget {
   final ProdukModel produk;
   const DetailProdukScreen({super.key, required this.produk});
 
+  Future<void> _launchUrl(Uri url) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.inAppBrowserView,
+      browserConfiguration: const BrowserConfiguration(showTitle: true),
+    )) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Uri url =
+        Uri.parse('https://api.whatsapp.com/send/?phone=085737621057');
     final imageProvider = (produk.gambar.isNotEmpty)
         ? NetworkImage('${ApiConfig.baseUrl}/resource/produk/${produk.gambar}')
         : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
@@ -162,8 +175,7 @@ class DetailProdukScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 28),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MainScreen()));
+                    _launchUrl(url);
                   },
                   child: Container(
                     width: 260,
