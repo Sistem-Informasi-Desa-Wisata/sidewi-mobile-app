@@ -22,7 +22,7 @@ class DesaWisataService {
   Future<DesaWisataModel> fetchDetailDesaWisata(int id) async {
     final response =
         await http.get(Uri.parse('${ApiConfig.baseUrl}/desawisata/$id'));
-    print("response desawisata (service): ${response.body}");
+    // print("response desawisata (service): ${response.body}");
     if (response.statusCode == 200) {
       Map<String, dynamic> body = json.decode(response.body);
       return DesaWisataModel.fromJson(body);

@@ -10,6 +10,7 @@ class DesaWisataModel {
   final String slug;
   final String createdAt;
   final String updatedAt;
+  bool isFavorite;
 
   DesaWisataModel({
     required this.id,
@@ -23,6 +24,7 @@ class DesaWisataModel {
     required this.slug,
     required this.createdAt,
     required this.updatedAt,
+    this.isFavorite = false,
   });
 
   factory DesaWisataModel.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,7 @@ class DesaWisataModel {
       slug: json['slug'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
+      isFavorite: json['isFavorite'] ?? false,
     );
   }
 
@@ -54,6 +57,7 @@ class DesaWisataModel {
       'slug': slug,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'isFavorite': isFavorite,
     };
   }
 }

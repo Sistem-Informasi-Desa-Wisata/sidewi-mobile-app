@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sidewi_mobile_app/viewmodels/auth_viewmodel.dart';
 import 'package:sidewi_mobile_app/viewmodels/desawisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/viewmodels/destinasiwisata_viewmodel.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
@@ -36,13 +37,14 @@ class _DetailPageState extends State<DetailPage>
   @override
   void initState() {
     super.initState();
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     _tabController = TabController(length: 2, vsync: this);
     // Fetch data here
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<DesaWisataViewModel>(context, listen: false)
-          .fetchDesaWisata();
+          .fetchDesaFavoritUser(authViewModel.user!.id);
       Provider.of<DestinasiWisataViewModel>(context, listen: false)
-          .fetchDestinasiWisataList();
+          .fetchDestinasiFavoritUser(authViewModel.user!.id);
     });
   }
 
@@ -124,8 +126,8 @@ class _DetailPageState extends State<DetailPage>
             child: TabBarView(
               controller: _tabController,
               children: [
-                Desa(),
-                Wisata(),
+                Desa(tab: "desa"),
+                Wisata(tab: "destinasi"),
               ],
             ),
           ),
@@ -136,6 +138,8 @@ class _DetailPageState extends State<DetailPage>
 }
 
 class Desa extends StatefulWidget {
+  final String tab;
+  const Desa({required this.tab});
   @override
   State<Desa> createState() => _DesaState();
 }
@@ -143,13 +147,18 @@ class Desa extends StatefulWidget {
 class _DesaState extends State<Desa> {
   @override
   Widget build(BuildContext context) {
-    var desaWisataList =
-        Provider.of<DesaWisataViewModel>(context).desaWisataList;
-    return ListWidget<DesaWisataModel>(items: desaWisataList);
+    var favoritDesaList =
+        Provider.of<DesaWisataViewModel>(context).favoritDesaList;
+    return ListWidget<DesaWisataModel>(
+      items: favoritDesaList,
+      tab: widget.tab,
+    );
   }
 }
 
 class Wisata extends StatefulWidget {
+  final String tab;
+  const Wisata({required this.tab});
   @override
   State<Wisata> createState() => _WisataState();
 }
@@ -157,15 +166,17 @@ class Wisata extends StatefulWidget {
 class _WisataState extends State<Wisata> {
   @override
   Widget build(BuildContext context) {
-    var destinasiWisataList =
-        Provider.of<DestinasiWisataViewModel>(context).destinasiwisataList;
-    return ListWidget<DestinasiWisataModel>(items: destinasiWisataList);
+    var favoritDestinasiWisataList =
+        Provider.of<DestinasiWisataViewModel>(context).favoritDestinasiList;
+    return ListWidget<DestinasiWisataModel>(
+        items: favoritDestinasiWisataList, tab: widget.tab);
   }
 }
 
 class ListWidget<T> extends StatelessWidget {
   final List<T> items;
-  const ListWidget({super.key, required this.items});
+  final String tab;
+  const ListWidget({super.key, required this.items, required this.tab});
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +190,10 @@ class ListWidget<T> extends StatelessWidget {
         childAspectRatio: 0.90,
       ),
       itemBuilder: (context, index) {
-        return ItemWidget<T>(item: items[index]);
+        return ItemWidget<T>(
+          item: items[index],
+          tab: tab,
+        );
       },
     );
   }
@@ -187,8 +201,9 @@ class ListWidget<T> extends StatelessWidget {
 
 class ItemWidget<T> extends StatefulWidget {
   final T item;
+  final String tab;
 
-  ItemWidget({required this.item});
+  ItemWidget({required this.item, required this.tab});
 
   @override
   State<ItemWidget> createState() => _ItemWidgetState<T>();
@@ -196,6 +211,7 @@ class ItemWidget<T> extends StatefulWidget {
 
 class _ItemWidgetState<T> extends State<ItemWidget<T>> {
   bool _isFavorite = false;
+
   String? _kategoriNama;
   bool _isLoading = true;
 
@@ -228,7 +244,32 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
 
   @override
   Widget build(BuildContext context) {
-    // Implement your build logic here
+    String itemName;
+    String itemDesc;
+    int itemId;
+    ImageProvider imageProvider;
+
+    if (widget.tab == "desa") {
+      var item = widget.item as DesaWisataModel;
+      itemName = item.nama;
+      itemDesc = item.alamat;
+      itemId = item.id;
+
+      imageProvider = (item.gambar.isNotEmpty)
+          ? NetworkImage(
+              '${ApiConfig.baseUrl}/resource/desawisata/${item.gambar}')
+          : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
+    } else {
+      var item = widget.item as DestinasiWisataModel;
+      itemName = item.nama;
+      itemDesc = _kategoriNama!;
+      itemId = item.id;
+      imageProvider = (item.gambar.isNotEmpty)
+          ? NetworkImage(
+              '${ApiConfig.baseUrl}/resource/destinasiwisata/${item.gambar}')
+          : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
+    }
+
     return Container(
       child: Center(
         child: GestureDetector(
@@ -239,7 +280,7 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
                 transitionDuration:
                     Duration(milliseconds: 500), // Transition duration
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    DetailScreen(id: 1 /*widget.desaWisata.id*/),
+                    DetailScreen(id: itemId),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   var fadeAnimation =
@@ -262,8 +303,8 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
-                      image: AssetImage(
-                          'assets/images/foto_berita.png'), // Update with actual image URL if needed
+                      image:
+                          imageProvider, 
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -307,7 +348,7 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
                                       pageBuilder: (context, animation,
                                               secondaryAnimation) =>
                                           DetailScreen(
-                                        id: 1, /*id: widget.desaWisata.id*/
+                                        id: itemId,
                                       ),
                                       transitionsBuilder: (context, animation,
                                           secondaryAnimation, child) {
@@ -355,8 +396,7 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "nama desa wisata",
-                              // widget.desaWisata.nama,
+                              itemName,
                               style: const TextStyle(
                                 fontFamily: "Montserrat",
                                 fontSize: 12,
@@ -367,8 +407,7 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
                               textAlign: TextAlign.left,
                             ),
                             Text(
-                              "alamat desa wisata",
-                              // widget.desaWisata.alamat, // Assuming there's a location field
+                              itemDesc,
                               style: const TextStyle(
                                 fontFamily: "Montserrat",
                                 fontSize: 8,
