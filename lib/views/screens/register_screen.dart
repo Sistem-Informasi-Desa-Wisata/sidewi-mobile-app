@@ -171,11 +171,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 24),
                       child: InputTextWdiget(
+                        enabled: true,
                         desc: "Nama pengguna",
                         controller: _nameController,
                       ),
                     ),
                     InputTextWdiget(
+                      enabled: true,
                       desc: "Nomer Hp",
                       controller: _phoneController,
                     ),
@@ -219,7 +221,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ));
                                   } else if (_passwordController.text !=
                                       _confirmPasswordController.text) {
-
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(const SnackBar(
                                       content: Text('Password Tidak Falid'),

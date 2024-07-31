@@ -188,23 +188,27 @@ class _KelolaAkunScreenState extends State<KelolaAkunScreen> {
                             height: 12,
                           ),
                           InputTextWdiget(
+                            enabled: true,
                             desc: "Nama pengguna",
                             controller: _namaController,
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 12),
                             child: InputTextWdiget(
+                              enabled: true,
                               desc: "Nomer HP",
                               controller: _noHpController,
                             ),
                           ),
                           InputTextWdiget(
+                            enabled: false,
                             desc: "Email",
                             controller: _emailController,
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 12),
                             child: InputTextWdiget(
+                              enabled: true,
                               desc: "Password",
                               controller: _passwordController,
                             ),

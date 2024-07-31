@@ -9,10 +9,12 @@ class InputTextWdiget extends StatefulWidget {
     super.key,
     required this.desc,
     required this.controller,
+    required this.enabled,
   });
 
   final String desc;
   final TextEditingController controller;
+  final bool enabled;
 
 // State
   @override
@@ -55,6 +57,7 @@ class _InputTextWidgetState extends State<InputTextWdiget> {
             ),
             child: TextField(
               controller: widget.controller,
+              enabled: widget.enabled,
               onTap: () {
                 setState(() {
                   _isFocused = true;
