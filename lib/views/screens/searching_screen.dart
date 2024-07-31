@@ -173,7 +173,15 @@ class _DestinasiWidgetListVerticalState
 
     if (desaProvider.desaWisataSearchList.isEmpty &&
         widget.searchQuery.isNotEmpty) {
-      return Center(child: Text('Desa tidak ditemukan'));
+      return Padding(
+        padding: const EdgeInsets.only(top: 100),
+        child: Center(
+            child: Container(
+          width: 180,
+          height: 180,
+          child: SvgPicture.asset('assets/icons/ic_empty.svg'),
+        )),
+      );
     }
 
     return SizedBox(

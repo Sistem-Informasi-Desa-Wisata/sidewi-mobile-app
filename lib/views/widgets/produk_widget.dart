@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/models/produk_model.dart';
 import 'package:sidewi_mobile_app/viewmodels/produk_viewmodel.dart';
 import 'package:sidewi_mobile_app/views/screens/detail_produk_screen.dart';
@@ -27,7 +28,12 @@ class _ListProdukWidgetState extends State<ListProdukWidget> {
             return const Center(child: CircularProgressIndicator());
           }
           if (viewModel.produkByDesaList.isEmpty) {
-            return Center(child: Text('Data not found'));
+            return Center(
+                child: Container(
+              width: 180,
+              height: 180,
+              child: SvgPicture.asset('assets/icons/ic_empty.svg'),
+            ));
           }
 
           return Padding(

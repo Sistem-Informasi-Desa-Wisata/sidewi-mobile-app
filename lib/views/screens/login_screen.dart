@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   .showSnackBar(
                                                 SnackBar(
                                                   content: Text(
-                                                      authModel.errorMessage!),
+                                                      "Password atau Email Salah"),
                                                 ),
                                               );
                                             }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/views/screens/detail_wisata_screen.dart';
 import 'package:sidewi_mobile_app/views/widgets/card_item_wisata_widget.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +24,8 @@ class _ListWisataWidgetState extends State<ListWisataWidget> {
     final authViewModel = Provider.of<AuthViewModel>(context);
 
     return ChangeNotifierProvider(
-      create: (context) =>
-          DestinasiWisataViewModel()..fetchDestinasiWisataByIdDesa(widget.id, authViewModel.user!.id),
+      create: (context) => DestinasiWisataViewModel()
+        ..fetchDestinasiWisataByIdDesa(widget.id, authViewModel.user!.id),
       child: Consumer<DestinasiWisataViewModel>(
         builder: (context, viewModel, child) {
           if (viewModel.isLoading) {
@@ -37,7 +38,12 @@ class _ListWisataWidgetState extends State<ListWisataWidget> {
           }
 
           if (viewModel.destinasiwisataByDesaList.isEmpty) {
-            return Center(child: Text('No data available.'));
+            return Center(
+                child: Container(
+              width: 180,
+              height: 180,
+              child: SvgPicture.asset('assets/icons/ic_empty.svg'),
+            ));
           }
 
           return SizedBox(

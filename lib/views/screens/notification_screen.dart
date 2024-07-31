@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/views/widgets/notification_card_widget.dart';
 import 'package:sidewi_mobile_app/viewmodels/notifikasi_viewmodel.dart';
 import 'package:sidewi_mobile_app/models/notifikasi_model.dart';
@@ -108,7 +109,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         "Hari ini",
                         style: const TextStyle(
                           fontFamily: "Montserrat",
-                          fontSize: 12,
+                          fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Color(0xff9fa5a9),
                           height: 15 / 12,
@@ -175,20 +176,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       notifikasiViewModel.notifikasiKemarinList.isEmpty &&
                       notifikasiViewModel.notifikasiLebihLamaList.isEmpty)
                     Padding(
-                      padding: const EdgeInsets.only(top: 24.0),
+                      padding: const EdgeInsets.only(top: 200),
                       child: Center(
-                        child: Text(
-                          "Tidak ada notifikasi",
-                          style: const TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff9fa5a9),
-                            height: 20 / 16,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                          child: Container(
+                        width: 180,
+                        height: 180,
+                        child: SvgPicture.asset('assets/icons/ic_empty.svg'),
+                      )),
                     ),
                 ],
               ),

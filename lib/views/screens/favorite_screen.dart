@@ -182,9 +182,19 @@ class ListWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     if (items.isEmpty) {
       if (tab == "desa") {
-        return Center(child: Text('Anda tidak memiliki desa favorit'));
+        return Center(
+            child: Container(
+          width: 180,
+          height: 180,
+          child: SvgPicture.asset('assets/icons/ic_empty.svg'),
+        ));
       } else {
-        return Center(child: Text('Anda tidak memiliki destinasi favorit'));
+        return Center(
+            child: Container(
+          width: 180,
+          height: 180,
+          child: SvgPicture.asset('assets/icons/ic_empty.svg'),
+        ));
       }
     }
     return GridView.builder(

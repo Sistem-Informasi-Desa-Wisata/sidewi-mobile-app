@@ -81,7 +81,8 @@ class _CardItemWisataWidgetState extends State<CardItemWisataWidget> {
             '${ApiConfig.baseUrl}/resource/destinasiwisata/${widget.destinasiwisata.gambar}')
         : AssetImage('assets/images/DefaultImage.jpg') as ImageProvider;
 
-    final destinasiWisataViewModel = Provider.of<DestinasiWisataViewModel>(context);
+    final destinasiWisataViewModel =
+        Provider.of<DestinasiWisataViewModel>(context);
     final authViewModel = Provider.of<AuthViewModel>(context);
     return GestureDetector(
       onTap: widget.onTap,

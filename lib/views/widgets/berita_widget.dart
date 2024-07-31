@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sidewi_mobile_app/viewmodels/berita_viewmodel.dart';
 import 'package:sidewi_mobile_app/views/screens/detail_berita_screen.dart';
 import 'package:sidewi_mobile_app/views/widgets/card_item_berita_widget.dart';
@@ -22,7 +23,12 @@ class ListBeritaWidget extends StatelessWidget {
           }
 
           if (viewModel.beritaByDesaList.isEmpty) {
-            return Center(child: Text('Data not found'));
+            return Center(
+                child: Container(
+              width: 180,
+              height: 180,
+              child: SvgPicture.asset('assets/icons/ic_empty.svg'),
+            ));
           }
 
           return SizedBox(
