@@ -16,7 +16,6 @@ class DetailWisataScreen extends StatefulWidget {
   const DetailWisataScreen(
       {Key? key, required this.destinasiwisata, required this.desa})
       : super(key: key);
-
   @override
   _DetailWisataScreenState createState() => _DetailWisataScreenState();
 }
