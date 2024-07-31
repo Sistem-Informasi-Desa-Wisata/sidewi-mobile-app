@@ -180,6 +180,13 @@ class ListWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (items.isEmpty) {
+      if (tab == "desa") {
+        return Center(child: Text('Anda tidak memiliki desa favorit'));
+      } else {
+        return Center(child: Text('Anda tidak memiliki destinasi favorit'));
+      }
+    }
     return GridView.builder(
       padding: EdgeInsets.only(left: 24, right: 24, top: 24),
       itemCount: items.length, // Use items.length here
@@ -276,7 +283,8 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
     }
 
     final desaWisataViewModel = Provider.of<DesaWisataViewModel>(context);
-    final destinasiWisataViewModel = Provider.of<DestinasiWisataViewModel>(context);
+    final destinasiWisataViewModel =
+        Provider.of<DestinasiWisataViewModel>(context);
     final authViewModel = Provider.of<AuthViewModel>(context);
 
     return Container(

@@ -10,8 +10,15 @@ import 'package:sidewi_mobile_app/viewmodels/auth_viewmodel.dart';
 import 'package:sidewi_mobile_app/views/widgets/destinasi_widget.dart';
 import 'package:sidewi_mobile_app/views/widgets/search_widget.dart';
 
-class SearchingScreen extends StatelessWidget {
+class SearchingScreen extends StatefulWidget {
   const SearchingScreen({super.key});
+
+  @override
+  State<SearchingScreen> createState() => _SearchingScreenState();
+}
+
+class _SearchingScreenState extends State<SearchingScreen> {
+  String searchQuery = "";
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +82,9 @@ class SearchingScreen extends StatelessWidget {
                     ),
                     SearchWidget(
                       onSearchChanged: (searchQuery) {
+                        setState(() {
+                          this.searchQuery = searchQuery;
+                        });
                         Provider.of<DesaWisataViewModel>(context, listen: false)
                             .fetchDesaWisataBySearch(
                                 searchQuery, authViewModel.user!.id);
@@ -110,7 +120,8 @@ class SearchingScreen extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: DestinasiWidgetListVertical(),
+                    child:
+                        DestinasiWidgetListVertical(searchQuery: searchQuery),
                   )
                 ],
               ),
@@ -123,7 +134,8 @@ class SearchingScreen extends StatelessWidget {
 }
 
 class DestinasiWidgetListVertical extends StatefulWidget {
-  const DestinasiWidgetListVertical({super.key});
+  final String searchQuery;
+  const DestinasiWidgetListVertical({super.key, required this.searchQuery});
 
   @override
   State<DestinasiWidgetListVertical> createState() =>
@@ -157,6 +169,11 @@ class _DestinasiWidgetListVerticalState
 
     if (desaProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
+    }
+
+    if (desaProvider.desaWisataSearchList.isEmpty &&
+        widget.searchQuery.isNotEmpty) {
+      return Center(child: Text('Desa tidak ditemukan'));
     }
 
     return SizedBox(

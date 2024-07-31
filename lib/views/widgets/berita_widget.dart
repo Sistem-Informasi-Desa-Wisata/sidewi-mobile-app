@@ -21,8 +21,8 @@ class ListBeritaWidget extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
 
-          if (viewModel.errorMessage.isNotEmpty) {
-            return Center(child: Text('Error: ${viewModel.errorMessage}'));
+          if (viewModel.beritaByDesaList.isEmpty) {
+            return Center(child: Text('Data not found'));
           }
 
           return SizedBox(

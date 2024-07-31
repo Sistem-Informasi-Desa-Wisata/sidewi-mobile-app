@@ -26,8 +26,8 @@ class _ListProdukWidgetState extends State<ListProdukWidget> {
           if (viewModel.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (viewModel.errorMessage.isNotEmpty) {
-            return Center(child: Text('Error: ${viewModel.errorMessage}'));
+          if (viewModel.produkByDesaList.isEmpty) {
+            return Center(child: Text('Data not found'));
           }
 
           return Padding(

@@ -171,6 +171,25 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               notifikasiViewModel.notifikasiLebihLamaList),
                     ),
                   ],
+                  if (notifikasiViewModel.notifikasiHariIniList.isEmpty &&
+                      notifikasiViewModel.notifikasiKemarinList.isEmpty &&
+                      notifikasiViewModel.notifikasiLebihLamaList.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 24.0),
+                      child: Center(
+                        child: Text(
+                          "Tidak ada notifikasi",
+                          style: const TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff9fa5a9),
+                            height: 20 / 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
