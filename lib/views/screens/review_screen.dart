@@ -5,10 +5,23 @@ import 'package:provider/provider.dart';
 import 'package:sidewi_mobile_app/views/widgets/input_rating_widget.dart';
 import 'package:sidewi_mobile_app/viewmodels/review_viewmodel.dart';
 
-class ReviewScreen extends StatelessWidget {
+class ReviewScreen extends StatefulWidget {
   final int id_akun;
   final int id_destinasiwisata;
-  const ReviewScreen({required this.id_akun, required this.id_destinasiwisata, super.key});
+  const ReviewScreen(
+      {required this.id_akun, required this.id_destinasiwisata, super.key});
+
+  @override
+  State<ReviewScreen> createState() => _ReviewScreenState();
+}
+
+class _ReviewScreenState extends State<ReviewScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final reviewViewModel = Provider.of<ReviewViewModel>(context, listen: false);
+    reviewViewModel.setRating(0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,22 +175,35 @@ class ReviewScreen extends StatelessWidget {
                         SizedBox(height: 24),
                         GestureDetector(
                           onTap: () async {
-                            final success = await reviewViewModel.addReview(
-                              id_akun,id_destinasiwisata ,reviewController.text,
-                            );
-                            if (success) {
+                            print("rating: ${reviewViewModel.rating}");
+                            if (reviewViewModel.rating == 0) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text("Ulasan berhasil ditambahkan!"),
+                                  content: Text("Rating tidak boleh kosong."),
                                 ),
                               );
-                              Navigator.pop(context);
+                              return;
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Gagal menambahkan ulasan."),
-                                ),
+                              final success = await reviewViewModel.addReview(
+                                widget.id_akun,
+                                widget.id_destinasiwisata,
+                                reviewController.text,
                               );
+                              if (success) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text("Ulasan berhasil ditambahkan!"),
+                                  ),
+                                );
+                                Navigator.pop(context);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text("Gagal menambahkan ulasan."),
+                                  ),
+                                );
+                              }
                             }
                           },
                           child: Container(

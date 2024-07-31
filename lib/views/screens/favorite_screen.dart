@@ -8,6 +8,7 @@ import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/models/destinasiwisata_model.dart';
 import 'package:sidewi_mobile_app/views/screens/detail_desa_screen.dart';
 import 'package:sidewi_mobile_app/services/api_config.dart';
+import 'package:sidewi_mobile_app/views/screens/detail_wisata_screen.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -272,8 +273,6 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
       itemDesc = item.alamat;
       itemId = item.id;
       isFavorite = item.isFavorite;
-      print(itemId);
-      print(isFavorite);
 
       imageProvider = (item.gambar.isNotEmpty)
           ? NetworkImage(
@@ -306,8 +305,15 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
               PageRouteBuilder(
                 transitionDuration:
                     Duration(milliseconds: 500), // Transition duration
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    DetailScreen(id: itemId),
+                pageBuilder: (context, animation, secondaryAnimation) {
+                  if (widget.tab == "desa") {
+                    return DetailScreen(id: itemId);
+                  } else {
+                    var item = widget.item as DestinasiWisataModel;
+                    return DetailWisataScreen(
+                        destinasiwisata: item, desa: itemName);
+                  }
+                },
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   var fadeAnimation =
@@ -365,31 +371,59 @@ class _ItemWidgetState<T> extends State<ItemWidget<T>> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      transitionDuration: Duration(
-                                          milliseconds:
-                                              500), // Transition duration
-                                      pageBuilder: (context, animation,
-                                              secondaryAnimation) =>
-                                          DetailScreen(
-                                        id: itemId,
+                                  if (widget.tab == "desa") {
+                                    Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        transitionDuration:
+                                            Duration(milliseconds: 500),
+                                        pageBuilder: (context, animation,
+                                                secondaryAnimation) =>
+                                            DetailScreen(
+                                          id: itemId,
+                                        ),
+                                        transitionsBuilder: (context, animation,
+                                            secondaryAnimation, child) {
+                                          var fadeAnimation =
+                                              Tween(begin: 0.0, end: 1.0)
+                                                  .animate(CurvedAnimation(
+                                            parent: animation,
+                                            curve: Curves.ease,
+                                          ));
+                                          return FadeTransition(
+                                              opacity: fadeAnimation,
+                                              child: child);
+                                        },
                                       ),
-                                      transitionsBuilder: (context, animation,
-                                          secondaryAnimation, child) {
-                                        var fadeAnimation =
-                                            Tween(begin: 0.0, end: 1.0)
-                                                .animate(CurvedAnimation(
-                                          parent: animation,
-                                          curve: Curves.ease,
-                                        ));
-                                        return FadeTransition(
-                                            opacity: fadeAnimation,
-                                            child: child);
-                                      },
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    var item =
+                                        widget.item as DestinasiWisataModel;
+                                    Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        transitionDuration:
+                                            Duration(milliseconds: 500),
+                                        pageBuilder: (context, animation,
+                                                secondaryAnimation) =>
+                                            DetailWisataScreen(
+                                                destinasiwisata: item,
+                                                desa: itemName),
+                                        transitionsBuilder: (context, animation,
+                                            secondaryAnimation, child) {
+                                          var fadeAnimation =
+                                              Tween(begin: 0.0, end: 1.0)
+                                                  .animate(CurvedAnimation(
+                                            parent: animation,
+                                            curve: Curves.ease,
+                                          ));
+                                          return FadeTransition(
+                                              opacity: fadeAnimation,
+                                              child: child);
+                                        },
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: Container(
                                   color: Colors.transparent,

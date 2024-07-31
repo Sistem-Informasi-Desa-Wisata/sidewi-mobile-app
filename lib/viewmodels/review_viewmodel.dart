@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sidewi_mobile_app/models/review_model.dart';
 import 'package:sidewi_mobile_app/models/user_model.dart';
-import 'package:sidewi_mobile_app/services/review_service.dart'; 
-import 'package:sidewi_mobile_app/services/user_service.dart'; 
-
+import 'package:sidewi_mobile_app/services/review_service.dart';
+import 'package:sidewi_mobile_app/services/user_service.dart';
 
 class ReviewViewModel extends ChangeNotifier {
   final ReviewService _reviewService = ReviewService();
   final UserService _userService = UserService();
-
 
   List<ReviewModel> _reviewList = [];
   List<ReviewModel> _limitedReviewList = [];
@@ -24,6 +22,7 @@ class ReviewViewModel extends ChangeNotifier {
   int get reviewCount => _reviewCount;
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
+  int get rating => _rating;
 
   Future<void> fetchReviewList(String accessToken) async {
     _isLoading = true;
@@ -105,17 +104,15 @@ class ReviewViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> addReview(int id_akun, int id_destinasiwisata ,String reviewText) async {
-    print("masuk");
+  Future<bool> addReview(
+      int id_akun, int id_destinasiwisata, String reviewText) async {
     _isLoading = true;
     notifyListeners();
-
-    print(id_akun);
-    print(id_destinasiwisata);
-
     try {
-      return await _reviewService.addReview(
+      bool result = await _reviewService.addReview(
           id_akun, id_destinasiwisata, _rating, reviewText);
+      _rating = 0;
+      return result;
     } catch (e) {
       return false;
     } finally {
