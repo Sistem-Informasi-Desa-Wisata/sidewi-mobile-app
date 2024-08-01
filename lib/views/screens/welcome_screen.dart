@@ -14,7 +14,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 10), () {
+    Future.delayed(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginScreen()),
@@ -31,7 +31,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             width: 300,
             height: 300,
             child: Lottie.asset(
-              'assets/lotties/animate.json',
+              'assets/lotties/logo.json',
             ),
           ),
         ),
