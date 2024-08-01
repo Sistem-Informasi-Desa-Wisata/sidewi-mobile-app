@@ -119,7 +119,27 @@ class _ListReviewState extends State<ListReview> {
     return Consumer<ReviewViewModel>(
       builder: (context, reviewViewModel, child) {
         if (reviewViewModel.reviewList.isEmpty) {
-          return Center(child: CircularProgressIndicator());
+          return Padding(
+            padding: const EdgeInsets.only(top: 200),
+            child: Center(
+              child: Container(
+                width: 180,
+                height: 180,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/ic_empty.svg',
+                      height: 128, // Set the height of the picture to 16
+                    ),
+                    SizedBox(height: 16),
+                    // Add some spacing between the SVG and the text
+                    Text("Tidak ada review"),
+                  ],
+                ),
+              ),
+            ),
+          );
         }
 
         return ListView.builder(

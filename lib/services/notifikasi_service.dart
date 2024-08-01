@@ -19,4 +19,23 @@ class NotifikasiService {
     }
   }
 
+  Future<void> addNotifikasi(int id_akun, String deskripsi) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/notifikasi/add'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'deskripsi': deskripsi,
+        'id_akun': id_akun,
+        'status': 0,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Notifikasi berhasil ditambah');
+    } else {
+      print('Error Response: ${response.body}');
+    }
+  }
 }

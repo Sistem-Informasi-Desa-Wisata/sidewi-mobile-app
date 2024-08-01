@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:sidewi_mobile_app/models/informasidesawisata_model.dart';
 import 'package:sidewi_mobile_app/services/desawisata_service.dart';
 import 'package:sidewi_mobile_app/services/desafavorit_service.dart';
+import 'package:sidewi_mobile_app/services/notifikasi_service.dart';
 import 'package:sidewi_mobile_app/models/desawisata_model.dart';
 import 'package:sidewi_mobile_app/models/desafavorit_model.dart';
 
 class DesaWisataViewModel extends ChangeNotifier {
   final DesaWisataService _desaWisataService = DesaWisataService();
   final DesaFavoritService _desaFavoritService = DesaFavoritService();
+  final NotifikasiService _notifikasiService = NotifikasiService();
 
   List<DesaWisataModel> _desaWisataList = [];
   List<DesaWisataModel> _desaWisataSearchList = [];
@@ -238,6 +240,8 @@ class DesaWisataViewModel extends ChangeNotifier {
         }
       } else {
         await _desaFavoritService.addFavorite(userId, desa.id);
+        await _notifikasiService.addNotifikasi(
+            userId, "Anda mulai menyukai desa ${desa.nama}!");
       }
       await fetchIsFavoriter(userId, null, desa);
       notifyListeners();

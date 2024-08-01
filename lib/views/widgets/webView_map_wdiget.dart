@@ -27,11 +27,16 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Split the coordinates string and format it for JavaScript
-    List<String> coords = widget.maps.split(',').map((s) => s.trim()).toList();
+    String maps = widget.maps;
+    if (!RegExp(r'^-?\d+(\.\d+)?\s*,\s*-?\d+(\.\d+)?$').hasMatch(maps)) {
+      maps = '-8.4553335,114.7419119';
+    }
+
+    List<String> coords = maps.split(',').map((s) => s.trim()).toList();
     String jsCoords = '[${coords[0]}, ${coords[1]}]';
+
     final Uri url = Uri.parse(
-        'https://www.google.com/maps/search/?api=1&query=-8.400862980803357,115.21842560228728');
+        'https://www.google.com/maps/search/?api=1&query=${coords[0]},${coords[1]}');
 
     return Scaffold(
       // appBar: AppBar(

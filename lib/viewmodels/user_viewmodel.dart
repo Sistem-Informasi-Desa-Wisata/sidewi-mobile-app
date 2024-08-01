@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/user_model.dart';
 import '../services/user_service.dart';
+import '../services/notifikasi_service.dart';
 import 'auth_viewmodel.dart';
 
 class UserViewModel extends ChangeNotifier {
@@ -8,6 +9,7 @@ class UserViewModel extends ChangeNotifier {
   String? _errorMessage;
   List<UserModel> _allUsers = [];
   final UserService _userService = UserService();
+  final NotifikasiService _notifikasiService = NotifikasiService();
   final AuthViewModel _authViewModel;
 
   UserViewModel(this._authViewModel);
@@ -52,6 +54,8 @@ class UserViewModel extends ChangeNotifier {
           accessToken: accessToken);
       // Refresh user data after update
       await _authViewModel.fetchUserById(id, accessToken);
+      await _notifikasiService.addNotifikasi(
+          id, "Anda telah berhasil melakukan pembaharuan akun!");
     } catch (e) {
       _errorMessage = e.toString();
       notifyListeners();

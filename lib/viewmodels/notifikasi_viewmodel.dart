@@ -27,13 +27,15 @@ class NotifikasiViewModel extends ChangeNotifier {
       final notifikasiList =
           await _notifikasiService.fetchNotifikasiById(userId);
       final now = DateTime.now();
-      final startOfDay = DateTime(now.year, now.month, now.day);
-      final endOfDay = startOfDay.add(Duration(days: 1));
+      final startOfDay = DateTime(now.year, now.month, now.day).toLocal();
 
       _notifikasiHariIniList = notifikasiList.where((notifikasi) {
-        return notifikasi.createdAt.isAfter(startOfDay) &&
-            notifikasi.createdAt.isBefore(endOfDay);
+        final createdAt = notifikasi.createdAt.toUtc().toLocal();
+        return createdAt.isAfter(startOfDay);
       }).toList();
+
+      // Sort in descending order
+      _notifikasiHariIniList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     } catch (e) {
       print('Error fetching data: $e');
     } finally {
@@ -50,14 +52,17 @@ class NotifikasiViewModel extends ChangeNotifier {
       final notifikasiList =
           await _notifikasiService.fetchNotifikasiById(userId);
       final now = DateTime.now();
-      final startOfYesterday =
-          DateTime(now.year, now.month, now.day).subtract(Duration(days: 1));
-      final endOfYesterday = startOfYesterday.add(Duration(days: 1));
+      final startOfDay = DateTime(now.year, now.month, now.day).toLocal();
+      final startOfYesterday = startOfDay.subtract(Duration(days: 1));
 
       _notifikasiKemarinList = notifikasiList.where((notifikasi) {
-        return notifikasi.createdAt.isAfter(startOfYesterday) &&
-            notifikasi.createdAt.isBefore(endOfYesterday);
+        final createdAt = notifikasi.createdAt.toUtc().toLocal();
+        return createdAt.isAfter(startOfYesterday) &&
+            createdAt.isBefore(startOfDay);
       }).toList();
+
+      // Sort in descending order
+      _notifikasiKemarinList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     } catch (e) {
       print('Error fetching data: $e');
     } finally {
@@ -74,12 +79,17 @@ class NotifikasiViewModel extends ChangeNotifier {
       final notifikasiList =
           await _notifikasiService.fetchNotifikasiById(userId);
       final now = DateTime.now();
-      final startOfYesterday =
-          DateTime(now.year, now.month, now.day).subtract(Duration(days: 1));
+      final startOfDay = DateTime(now.year, now.month, now.day).toLocal();
+      final startOfYesterday = startOfDay.subtract(Duration(days: 1));
 
       _notifikasiLebihLamaList = notifikasiList.where((notifikasi) {
-        return notifikasi.createdAt.isBefore(startOfYesterday);
+        final createdAt = notifikasi.createdAt.toUtc().toLocal();
+        return createdAt.isBefore(startOfYesterday);
       }).toList();
+
+      // Sort in descending order
+      _notifikasiLebihLamaList
+          .sort((a, b) => b.createdAt.compareTo(a.createdAt));
     } catch (e) {
       print('Error fetching data: $e');
     } finally {
@@ -95,6 +105,17 @@ class NotifikasiViewModel extends ChangeNotifier {
       fetchNotifikasiHariIniById(userId);
       fetchNotifikasiKemarinById(userId);
       fetchNotifikasiLebihLamaById(userId);
+    } catch (e) {
+      print('Error fetching data: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> addNotifikasi(int id_akun, String deskripsi) async {
+    try {
+      await _notifikasiService.addNotifikasi(id_akun, deskripsi);
     } catch (e) {
       print('Error fetching data: $e');
     } finally {

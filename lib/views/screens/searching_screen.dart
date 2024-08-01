@@ -179,7 +179,18 @@ class _DestinasiWidgetListVerticalState
             child: Container(
           width: 180,
           height: 180,
-          child: SvgPicture.asset('assets/icons/ic_empty.svg'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                'assets/icons/ic_empty.svg',
+                height: 128, // Set the height of the picture to 16
+              ),
+              SizedBox(height: 16),
+              // Add some spacing between the SVG and the text
+              Text("Pencarian desa tidak ditemukan"),
+            ],
+          ),
         )),
       );
     }

@@ -10,7 +10,6 @@ class ReviewScreen extends StatefulWidget {
   final int id_destinasiwisata;
   const ReviewScreen(
       {required this.id_akun, required this.id_destinasiwisata, super.key});
-
   @override
   State<ReviewScreen> createState() => _ReviewScreenState();
 }
@@ -19,7 +18,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
   @override
   void initState() {
     super.initState();
-    final reviewViewModel = Provider.of<ReviewViewModel>(context, listen: false);
+    final reviewViewModel =
+        Provider.of<ReviewViewModel>(context, listen: false);
     reviewViewModel.setRating(0);
   }
 
